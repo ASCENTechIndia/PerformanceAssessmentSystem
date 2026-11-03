@@ -58,59 +58,102 @@ const EmployeeMaster = () => {
                             required
                         />
 
-                        <CustomInput
-                            value={name}
-                            onChange={setName}
-                            placeholder="Enter name"
-                            removeSpecialCharacters
-                            allowOnlyLetters
+                        <input
+                            type="text"
+                            className="form-input-box"
                         />
                     </div>
                     <div>
+
                         <Label text="Designation" required />
 
-                        <CustomDropdown
-                            options={designationOptions}
-                            value={designation}
-                            onChange={setDesignation}
-                            placeholder="-- Select --"
-                        />
+                        <div className="relative w-full">
+                            <select
+                                className="form-input-box w-full appearance-none border border-gray-400 rounded-md px-3 py-2 pr-10 text-sm cursor-pointer"
+                            >
+                                <option value="">-- Select --</option>
+                                {designationOptions.map(item => (
+                                    <option value={item.value}>
+                                        {item.label}
+                                    </option>
+                                ))}
+                            </select>
+
+                            <ChevronDown
+                                size={16}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                            />
+                        </div>
+
                     </div>
                     <div>
                         <Label
                             text={"Department"}
                             required
                         />
-                        <CustomDropdown
-                            options={departmentOptions}
-                            value={department}
-                            onChange={setDepartment}
-                            placeholder="-- Select --"
-                        />
+                        <div className="relative w-full">
+                            <select
+                                className="form-input-box w-full appearance-none border border-gray-400 rounded-md px-3 py-2 pr-10 text-sm cursor-pointer"
+                            >
+                                <option value="">-- Select --</option>
+                                {departmentOptions.map(item => (
+                                    <option value={item.value}>
+                                        {item.label}
+                                    </option>
+                                ))}
+                            </select>
+
+                            <ChevronDown
+                                size={16}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                            />
+                        </div>
                     </div>
                     <div>
                         <Label
                             text={"Reporting Officer"}
                             required
                         />
-                        <CustomDropdown
-                            options={officerOptions}
-                            value={officer}
-                            onChange={setOfficer}
-                            placeholder="-- Select --"
-                        />
+                        <div className="relative w-full">
+                            <select
+                                className="form-input-box w-full appearance-none border border-gray-400 rounded-md px-3 py-2 pr-10 text-sm cursor-pointer"
+                            >
+                                <option value="">-- Select --</option>
+                                {officerOptions.map(item => (
+                                    <option value={item.value}>
+                                        {item.label}
+                                    </option>
+                                ))}
+                            </select>
+
+                            <ChevronDown
+                                size={16}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                            />
+                        </div>
                     </div>
                     <div>
                         <Label
                             text={"Status"}
                             required
                         />
-                        <CustomDropdown
-                            options={statusOptions}
-                            value={status}
-                            onChange={setStatus}
-                            placeholder="-- Select --"
-                        />
+                        <div className="relative w-full">
+                            <select
+                                className="form-input-box w-full appearance-none border border-gray-400 rounded-md px-3 py-2 pr-10 text-sm cursor-pointer"
+                            >
+                                <option value="">-- Select --</option>
+                                {statusOptions.map(item => (
+                                    <option value={item.value}>
+                                        {item.label}
+                                    </option>
+                                ))}
+                            </select>
+
+                            <ChevronDown
+                                size={16}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                            />
+                        </div>
                     </div>
                 </div>
                 <div className="flex justify-center gap-2 px-5 py-3 bg-white flex-shrink-0">
