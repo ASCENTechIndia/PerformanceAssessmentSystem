@@ -39,7 +39,7 @@ const Layout = ({ title, breadcrumb, children }) => {
       {/* Main content */}
       <div
         className={`flex-1 flex flex-col min-h-screen max-h-screen overflow-hidden transition-all duration-300
-          bg-gradient-to-br from-slate-50 via-slate-50 to-slate-100
+          bg-gradient-to-br from-[##00B99B] via-[#00B4B8] to-[#00ABE1]
           ${isOpen ? "md:ml-0" : "md:ml-0"}`}
       >
         {/* Top header */}
@@ -55,7 +55,7 @@ const Layout = ({ title, breadcrumb, children }) => {
                 <div className="px-4 py-3 border-b border-slate-100 bg-gradient-to-r from-white to-slate-50/60">
                   <div className="flex items-center gap-3">
                     {/* Accent bar */}
-                    <span className="h-7 w-1 rounded-full bg-gradient-to-b from-blue-500 to-indigo-500" />
+                    <span className="h-10 w-1 rounded-full bg-gradient-to-b from-[#00B4B8] to-[#00ABE1]" />
 
                     <div className="flex-1 min-w-0">
                       {title && (
@@ -64,7 +64,7 @@ const Layout = ({ title, breadcrumb, children }) => {
                         </h1>
                       )}
 
-                      {breadcrumb && (
+                      {/* {breadcrumb && (
                         <nav className="flex items-center gap-1.5 text-xs text-slate-500 mt-0.5">
                           <Link
                             to={breadcrumb.homeLink || "/dashboard"}
@@ -82,7 +82,7 @@ const Layout = ({ title, breadcrumb, children }) => {
                             </>
                           )}
                         </nav>
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </div>
