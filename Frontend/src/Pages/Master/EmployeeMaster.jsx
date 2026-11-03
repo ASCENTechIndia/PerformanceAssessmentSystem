@@ -67,24 +67,13 @@ const EmployeeMaster = () => {
 
                         <Label text="Designation" required />
 
-                        <div className="relative w-full">
-                            <select
-                                className="form-input-box w-full appearance-none border border-gray-400 rounded-md px-3 py-2 pr-10 text-sm cursor-pointer"
-                            >
-                                <option value="">-- Select --</option>
-                                {designationOptions.map(item => (
-                                    <option value={item.value}>
-                                        {item.label}
-                                    </option>
-                                ))}
-                            </select>
-
-                            <ChevronDown
-                                size={16}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
-                            />
-                        </div>
-
+                        <CustomDropdown
+                            options={designationOptions}
+                            value={designation}
+                            onChange={setDesignation}
+                            placeholder="-- Select --"
+                        />
+                        
                     </div>
                     <div>
                         <Label

@@ -23,7 +23,7 @@ function App() {
                   <Route path="/dashboard" element={<Dashboard />} />
 
                   {/* Master routes */}
-                  <Route path="/Master/FrmTaskTypeMst" element={FrmTaskTypeMst}/>
+                  <Route path="/Master/FrmTaskTypeMst" element={<FrmTaskTypeMst/>}/>
                   <Route path="/master/employees" element={<EmployeeMaster />} />
                 </Routes>
               </ProtectedRoute>
