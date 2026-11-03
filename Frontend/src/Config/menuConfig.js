@@ -39,6 +39,12 @@ export const STATIC_MENU = [
         PAGEPATH: "/master/criteria",
         ICON: ClipboardList,
       },
+      {
+        MENUID: 103,
+        MENUTITLE: "Task Type Master",
+        PAGEPATH: "/master/",
+        ICON: ClipboardList,
+      },
     ],
   },
   {

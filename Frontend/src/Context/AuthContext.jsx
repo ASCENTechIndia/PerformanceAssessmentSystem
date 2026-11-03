@@ -164,7 +164,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       try {
-        const res = await axios.get(`${API_BASE_URL}/me`, {
+        const res = await axios.post(`${API_BASE_URL}/me`, {
           withCredentials: true,
         });
         if (res.data?.user) {
@@ -174,8 +174,8 @@ export const AuthProvider = ({ children }) => {
         } else {
           setUser(null);
         }
-      } catch {
-        console.log("ME API ERROR:", error.response?.data);
+      } catch (error) {
+        console.log("ME API ERROR:", error);
         setUser(null);
       }
 

@@ -76,7 +76,7 @@ const Header = ({ toggleSidebar, onOpenCommandPalette }) => {
 
   return (
     <header
-      className="relative sticky top-0 z-30 w-full h-[67px] px-3 sm:px-4 md:px-6
+      className="relative  top-0 z-30 w-full h-[67px] px-3 sm:px-4 md:px-6
         bg-white/80 backdrop-blur-md
         border-b border-slate-200/80
         shadow-[0_1px_2px_rgba(15,23,42,0.04)]
