@@ -6,6 +6,11 @@ import {
   Plus,
   BarChart3,
   ShieldCheck,
+  ClipboardCheck,
+  LayoutList,
+  UserCog,
+  FileChartPie,
+  ChartColumnBig
 } from "lucide-react";
 
 export const HOME_ITEM = {
@@ -37,19 +42,19 @@ export const STATIC_MENU = [
         MENUID: 103,
         MENUTITLE: "Criteria",
         PAGEPATH: "/master/criteria",
-        ICON: ClipboardList,
+        ICON: ClipboardCheck,
       },
       {
         MENUID: 104,
         MENUTITLE: "Task Type Master",
         PAGEPATH: "/Master/FrmTaskTypeMst",
-        ICON: ClipboardList,
+        ICON: LayoutList,
       },
       {
         MENUID: 105,
         MENUTITLE: "Designation Master",
         PAGEPATH: "/master/DesignationMaster",
-        ICON: ClipboardList,
+        ICON: UserCog,
       },
     ],
   },
@@ -85,13 +90,13 @@ export const STATIC_MENU = [
         MENUID: 301,
         MENUTITLE: "Performance Report",
         PAGEPATH: "/reports/performance",
-        ICON: BarChart3,
+        ICON: FileChartPie,
       },
       {
         MENUID: 302,
         MENUTITLE: "Department Comparison",
         PAGEPATH: "/reports/departments",
-        ICON: BarChart3,
+        ICON: ChartColumnBig,
       },
     ],
   },
