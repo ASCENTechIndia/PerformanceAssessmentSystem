@@ -10,6 +10,7 @@ import Button from "../../Components/Button";
 import { ChevronDown } from "lucide-react";
 import CustomDropdown from "../../Components/CustomDropdown";
 import CustomInput from "../../Components/CustomInput";
+import { toast, ToastContainer } from "react-toastify";
 
 
 const designationOptions = [
@@ -35,11 +36,43 @@ const statusOptions = [
 ]
 
 const EmployeeMaster = () => {
+    const { setLoading } = useLoader();
+
     const [designation, setDesignation] = useState("");
     const [name, setName] = useState("");
     const [department, setDepartment] = useState("");
     const [officer, setOfficer] = useState("");
     const [status, setStatus] = useState("");
+
+    const {
+        register,
+        watch,
+        setValue,
+        getValues,
+        control,
+        reset,
+        handleSubmit,
+        formState: { errors }
+    } = useForm({
+        defaultValues: {
+            name: "",
+            designation: "",
+            department: "",
+            reportingOfficer: "",
+            status: ""
+        }
+    });
+
+    const onSubmit = async (data) => {
+        try {
+            setLoading(true);
+            console.log(data);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     return (
         <Layout
@@ -50,116 +83,136 @@ const EmployeeMaster = () => {
                 current: "Employee Master"
             }}
         >
-            <form className="w-full space-y-6">
+            <ToastContainer position="top-right" autoClose={4000} />
+            <form className="w-full space-y-6" onSubmit={handleSubmit(onSubmit)}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <div>
-                        <Label
-                            text={"Name"}
-                            required
-                        />
+                        <label htmlFor="Name" className="pas-label">
+                            Name <span className="text-rose-500">*</span>
+                        </label>
 
                         <input
+                            id="Name"
                             type="text"
-                            className="form-input-box"
+                            placeholder="Enter Name"
+                            className="pas-input"
+                            aria-invalid={!!errors.name}
+                            {...register("name", {
+                                required: "Name is required",
+                                minLength: { value: 2, message: "At least 2 characters" },
+                                maxLength: { value: 60, message: "Max 60 characters" },
+                            })}
                         />
+                        {errors.name && (
+                            <p className="pas-error">{errors.name.message}</p>
+                        )}
                     </div>
                     <div>
-
-                        <Label text="Designation" required />
-
-                        <CustomDropdown
-                            options={designationOptions}
-                            value={designation}
-                            onChange={setDesignation}
-                            placeholder="-- Select --"
-                        />
-                        
+                        <label htmlFor="designation" className="pas-label">
+                            Designation <span className="text-rose-500">*</span>
+                        </label>
+                        <select
+                            id="designation"
+                            className="pas-input"
+                            aria-invalid={!!errors.designation}
+                            {...register("designation", { required: "Designation is required" })}
+                        >
+                            <option value="">Select designation…</option>
+                            {designationOptions.map((p) => (
+                                <option key={p.value} value={p.value}>
+                                    {p.label}
+                                </option>
+                            ))}
+                        </select>
+                        {errors.designation && (
+                            <p className="pas-error">{errors.designation.message}</p>
+                        )}
                     </div>
                     <div>
-                        <Label
-                            text={"Department"}
-                            required
-                        />
-                        <div className="relative w-full">
-                            <select
-                                className="form-input-box w-full appearance-none border border-gray-400 rounded-md px-3 py-2 pr-10 text-sm cursor-pointer"
-                            >
-                                <option value="">-- Select --</option>
-                                {departmentOptions.map(item => (
-                                    <option value={item.value}>
-                                        {item.label}
-                                    </option>
-                                ))}
-                            </select>
-
-                            <ChevronDown
-                                size={16}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
-                            />
-                        </div>
+                        <label htmlFor="department" className="pas-label">
+                            Department <span className="text-rose-500">*</span>
+                        </label>
+                        <select
+                            id="department"
+                            className="pas-input"
+                            aria-invalid={!!errors.department}
+                            {...register("department", { required: "Department is required" })}
+                        >
+                            <option value="">Select department…</option>
+                            {departmentOptions.map((p) => (
+                                <option key={p.value} value={p.value}>
+                                    {p.label}
+                                </option>
+                            ))}
+                        </select>
+                        {errors.department && (
+                            <p className="pas-error">{errors.department.message}</p>
+                        )}
                     </div>
                     <div>
-                        <Label
-                            text={"Reporting Officer"}
-                            required
-                        />
-                        <div className="relative w-full">
-                            <select
-                                className="form-input-box w-full appearance-none border border-gray-400 rounded-md px-3 py-2 pr-10 text-sm cursor-pointer"
-                            >
-                                <option value="">-- Select --</option>
-                                {officerOptions.map(item => (
-                                    <option value={item.value}>
-                                        {item.label}
-                                    </option>
-                                ))}
-                            </select>
-
-                            <ChevronDown
-                                size={16}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
-                            />
-                        </div>
+                        <label htmlFor="officer" className="pas-label">
+                            Reporting Officer <span className="text-rose-500">*</span>
+                        </label>
+                        <select
+                            id="officer"
+                            className="pas-input"
+                            aria-invalid={!!errors.reportingOfficer}
+                            {...register("reportingOfficer", { required: "Officer is required" })}
+                        >
+                            <option value="">Select Officer…</option>
+                            {officerOptions.map((p) => (
+                                <option key={p.value} value={p.value}>
+                                    {p.label}
+                                </option>
+                            ))}
+                        </select>
+                        {errors.reportingOfficer && (
+                            <p className="pas-error">{errors.reportingOfficer.message}</p>
+                        )}
                     </div>
                     <div>
-                        <Label
-                            text={"Status"}
-                            required
-                        />
-                        <div className="relative w-full">
-                            <select
-                                className="form-input-box w-full appearance-none border border-gray-400 rounded-md px-3 py-2 pr-10 text-sm cursor-pointer"
-                            >
-                                <option value="">-- Select --</option>
-                                {statusOptions.map(item => (
-                                    <option value={item.value}>
-                                        {item.label}
-                                    </option>
-                                ))}
-                            </select>
-
-                            <ChevronDown
-                                size={16}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
-                            />
-                        </div>
+                        <label htmlFor="status" className="pas-label">
+                            Status <span className="text-rose-500">*</span>
+                        </label>
+                        <select
+                            id="status"
+                            className="pas-input"
+                            aria-invalid={!!errors.status}
+                            {...register("status", { required: "Status is required" })}
+                        >
+                            <option value="">Select Status…</option>
+                            {statusOptions.map((p) => (
+                                <option key={p.value} value={p.value}>
+                                    {p.label}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                 </div>
-                <div className="flex justify-center gap-2 px-5 py-3 bg-white flex-shrink-0">
-                    <Button type="submit" size="md">
-                        Submit
-                    </Button>
-
-                    <Button
+                <div className="flex items-center justify-center gap-2 pt-4 border-t border-slate-100">
+                    <button
                         type="button"
-                        variant="secondary"
-                        size="md"
-                        onClick={() => {
-                            navigate("/dashboard")
-                        }}
+                        onClick={() => reset()}
+                        // disabled={!isDirty}
+                        className="px-4 py-2 rounded-xl text-[13px] font-semibold text-slate-600
+              bg-white border border-slate-200
+              hover:bg-slate-50 hover:border-slate-300
+              disabled:opacity-50 disabled:cursor-not-allowed
+              transition-colors duration-150"
                     >
-                        Back
-                    </Button>
+                        Reset
+                    </button>
+                    <button
+                        type="submit"
+                        className="px-5 py-2 rounded-xl text-[13px] font-semibold text-white
+              bg-gradient-to-r from-emerald-500 to-sky-500
+              shadow-[0_8px_20px_-8px_rgba(16,185,129,0.7)]
+              hover:from-emerald-600 hover:to-sky-600
+              active:scale-[0.99]
+              transition-all duration-150"
+                    >
+                        Submit
+                    </button>
                 </div>
             </form>
         </Layout>
