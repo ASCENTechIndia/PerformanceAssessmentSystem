@@ -40,13 +40,13 @@ export const STATIC_MENU = [
         ICON: ClipboardList,
       },
       {
-        MENUID: 103,
+        MENUID: 104,
         MENUTITLE: "Task Type Master",
         PAGEPATH: "/Master/FrmTaskTypeMst",
         ICON: ClipboardList,
       },
       {
-        MENUID: 104,
+        MENUID: 105,
         MENUTITLE: "Designation Master",
         PAGEPATH: "/master/DesignationMaster",
         ICON: ClipboardList,
