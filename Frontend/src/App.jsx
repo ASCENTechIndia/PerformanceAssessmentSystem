@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./HOC/Login/Login";
 import ProtectedRoute from "./HOC/ProtectedRoute.jsx";
 import Dashboard from "./Pages/Dashboard/Dashboard.jsx";
+import EmployeeMaster from "./Pages/Master/EmployeeMaster.jsx";
 
 function App() {
   const hostname = window.location.hostname;
@@ -21,6 +22,7 @@ function App() {
                   <Route path="/dashboard" element={<Dashboard />} />
 
                   {/* Master routes */}
+                  <Route path="/master/employees" element={<EmployeeMaster />} />
                 </Routes>
               </ProtectedRoute>
             }
