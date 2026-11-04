@@ -18,6 +18,11 @@ const userOptions = [
     { label: "User 5", value: "5" }
 ];
 
+const departmentOptions = [
+    { label: "Department 1", value: "1" },
+    { label: "Department 2", value: "2" },
+];
+
 const UserAccess = () => {
     const [rows, setRows] = useState([
         {
@@ -63,6 +68,7 @@ const UserAccess = () => {
     } = useForm({
         defaultValues: {
             userName: "",
+            department: "",
             pageStr: []
         }
     });
@@ -151,24 +157,45 @@ const UserAccess = () => {
             }}
         >
             <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-6">
-                <div>
-                    <Label
-                        text={"User: "}
-                        required
-                    />
-                    <select
-                        className="pas-input"
-                        aria-invalid={!!errors.userName}
-                        {...register("userName", { required: "User is required" })}
-                    >
-                        <option value="">Select User…</option>
-                        {userOptions.map((p) => (
-                            <option key={p.value} value={p.value}>
-                                {p.label}
-                            </option>
-                        ))}
-                    </select>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <div>
+                        <Label
+                            text={"User: "}
+                            required
+                        />
+                        <select
+                            className="pas-input"
+                            aria-invalid={!!errors.userName}
+                            {...register("userName", { required: "User is required" })}
+                        >
+                            <option value="">Select User…</option>
+                            {userOptions.map((p) => (
+                                <option key={p.value} value={p.value}>
+                                    {p.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
+                        <Label
+                            text={"Department: "}
+                            required
+                        />
+                        <select
+                            className="pas-input"
+                            aria-invalid={!!errors.department}
+                            {...register("department", { required: "Department is required" })}
+                        >
+                            <option value="">Select Department…</option>
+                            {departmentOptions.map((p) => (
+                                <option key={p.value} value={p.value}>
+                                    {p.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
+
 
                 <div className="mt-3">
                     <ConfigTable
