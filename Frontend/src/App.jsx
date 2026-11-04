@@ -6,6 +6,7 @@ import Dashboard from "./Pages/Dashboard/Dashboard.jsx";
 import FrmTaskTypeMst from "./Pages/Master/TaskTypeMaster/FrmTaskTypeMst.jsx";
 import EmployeeMaster from "./Pages/Master/EmployeeMaster.jsx";
 import DesignationMaster from "./Pages/Master/DesignationMaster/DesignationMaster.jsx";
+import HierarchyMapping from "./Pages/Master/HierarchyMapping/HierarchyMapping.jsx";
 
 function App() {
   const hostname = window.location.hostname;
@@ -27,6 +28,7 @@ function App() {
                   <Route path="/Master/FrmTaskTypeMst" element={<FrmTaskTypeMst/>}/>
                   <Route path="/master/employees" element={<EmployeeMaster />} />
                   <Route path="/master/DesignationMaster" element={<DesignationMaster />} />
+                  <Route path="/master/HierarchyMapping" element={<HierarchyMapping />} />
                 </Routes>
               </ProtectedRoute>
             }

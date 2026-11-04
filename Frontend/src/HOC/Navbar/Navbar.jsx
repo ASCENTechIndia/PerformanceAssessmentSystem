@@ -117,7 +117,7 @@ const Navbar = ({
                       <span className="tracking-tight">
                         {section.MENUTITLE}
                       </span>
-                      <ChevronDown
+                      <ChevronDown  
                         className={`w-4 h-4 transition-transform duration-300
                           ${
                             isOpenSection

@@ -10,7 +10,8 @@ import {
   LayoutList,
   UserCog,
   FileChartPie,
-  ChartColumnBig
+  ChartColumnBig,
+  GitGraph
 } from "lucide-react";
 
 export const HOME_ITEM = {
@@ -56,6 +57,12 @@ export const STATIC_MENU = [
         PAGEPATH: "/master/DesignationMaster",
         ICON: UserCog,
       },
+      {
+        MENUID: 106,
+        MENUTITLE: "Hierarchy Mapping",
+        PAGEPATH: "/master/HierarchyMapping",
+        ICON: GitGraph
+      }
     ],
   },
   {
