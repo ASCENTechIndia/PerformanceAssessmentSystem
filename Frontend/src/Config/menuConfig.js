@@ -33,18 +33,18 @@ export const STATIC_MENU = [
         PAGEPATH: "/master/employees",
         ICON: Users,
       },
-      {
-        MENUID: 102,
-        MENUTITLE: "Departments",
-        PAGEPATH: "/master/departments",
-        ICON: Building2,
-      },
-      {
-        MENUID: 103,
-        MENUTITLE: "Criteria",
-        PAGEPATH: "/master/criteria",
-        ICON: ClipboardCheck,
-      },
+      // {
+      //   MENUID: 102,
+      //   MENUTITLE: "Departments",
+      //   PAGEPATH: "/master/departments",
+      //   ICON: Building2,
+      // },
+      // {
+      //   MENUID: 103,
+      //   MENUTITLE: "Criteria",
+      //   PAGEPATH: "/master/criteria",
+      //   ICON: ClipboardCheck,
+      // },
       {
         MENUID: 104,
         MENUTITLE: "Task Type Master",
@@ -65,48 +65,48 @@ export const STATIC_MENU = [
       }
     ],
   },
-  {
-    MENUID: 2,
-    MENUTITLE: "Assessments",
-    children: [
-      {
-        MENUID: 201,
-        MENUTITLE: "New Assessment",
-        PAGEPATH: "/assessments/new",
-        ICON: Plus,
-      },
-      {
-        MENUID: 202,
-        MENUTITLE: "My Assessments",
-        PAGEPATH: "/assessments/my",
-        ICON: ClipboardList,
-      },
-      {
-        MENUID: 203,
-        MENUTITLE: "Team Reviews",
-        PAGEPATH: "/assessments/team",
-        ICON: ShieldCheck,
-      },
-    ],
-  },
-  {
-    MENUID: 3,
-    MENUTITLE: "Reports",
-    children: [
-      {
-        MENUID: 301,
-        MENUTITLE: "Performance Report",
-        PAGEPATH: "/reports/performance",
-        ICON: FileChartPie,
-      },
-      {
-        MENUID: 302,
-        MENUTITLE: "Department Comparison",
-        PAGEPATH: "/reports/departments",
-        ICON: ChartColumnBig,
-      },
-    ],
-  },
+  // {
+  //   MENUID: 2,
+  //   MENUTITLE: "Assessments",
+  //   children: [
+  //     {
+  //       MENUID: 201,
+  //       MENUTITLE: "New Assessment",
+  //       PAGEPATH: "/assessments/new",
+  //       ICON: Plus,
+  //     },
+  //     {
+  //       MENUID: 202,
+  //       MENUTITLE: "My Assessments",
+  //       PAGEPATH: "/assessments/my",
+  //       ICON: ClipboardList,
+  //     },
+  //     {
+  //       MENUID: 203,
+  //       MENUTITLE: "Team Reviews",
+  //       PAGEPATH: "/assessments/team",
+  //       ICON: ShieldCheck,
+  //     },
+  //   ],
+  // },
+  // {
+  //   MENUID: 3,
+  //   MENUTITLE: "Reports",
+  //   children: [
+  //     {
+  //       MENUID: 301,
+  //       MENUTITLE: "Performance Report",
+  //       PAGEPATH: "/reports/performance",
+  //       ICON: FileChartPie,
+  //     },
+  //     {
+  //       MENUID: 302,
+  //       MENUTITLE: "Department Comparison",
+  //       PAGEPATH: "/reports/departments",
+  //       ICON: ChartColumnBig,
+  //     },
+  //   ],
+  // },
 ];
 
 /** Flattened, command-palette-ready list */
