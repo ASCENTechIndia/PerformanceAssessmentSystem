@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Layout from "../../../Components/Layout";
 import { useLoader } from "../../../Context/LoaderContext";
 import apiService from "../../../../apiService";
 import Label from "../../../Components/Label";
+import { toast } from "sonner";
+
 
 const DesignationMaster = () => {
     const { setLoading } = useLoader();
@@ -27,8 +27,11 @@ const DesignationMaster = () => {
     const onSubmit = async (data) => {
         try {
             setLoading(true);
+            console.log(data);
+            toast.success("Designation Data submitted successfully");
         } catch (error) {
             console.error(error);
+            toast.error(error.message || "Failed to submit designation data");
         } finally {
             setLoading(false);
         }
@@ -43,7 +46,6 @@ const DesignationMaster = () => {
                 current: "Designation Master"
             }}
         >
-            <ToastContainer position="top-right" autoClose={4000} />
             <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <div>

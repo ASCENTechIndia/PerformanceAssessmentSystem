@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { ChevronDown } from "lucide-react";
-import { toast, ToastContainer } from "react-toastify";
 import Layout from "../../../Components/Layout";
 import Label from "../../../Components/Label";
 import apiService from "../../../../apiService";
@@ -32,8 +31,10 @@ const HierarchyMapping = () => {
         try {
             setLoading(true);
             console.log(data);
+            toast.success("Mapping Data submitted successfully");
         } catch (error) {
             console.error(error);
+            toast.error(error.message || "Failed to submit mapping data.");
         } finally {
             setLoading(false);
         }

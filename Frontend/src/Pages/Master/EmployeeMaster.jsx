@@ -10,7 +10,7 @@ import Button from "../../Components/Button";
 import { ChevronDown } from "lucide-react";
 import CustomDropdown from "../../Components/CustomDropdown";
 import CustomInput from "../../Components/CustomInput";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "sonner";
 
 
 const designationOptions = [
@@ -67,8 +67,11 @@ const EmployeeMaster = () => {
         try {
             setLoading(true);
             console.log(data);
+            toast.success("Employee Data Submitted Successfully");
+            reset();
         } catch (error) {
             console.error(error);
+            toast.error(error.message || "Failed to submit employee data");
         } finally {
             setLoading(false);
         }
@@ -83,7 +86,6 @@ const EmployeeMaster = () => {
                 current: "Employee Master"
             }}
         >
-            <ToastContainer position="top-right" autoClose={4000} />
             <form className="w-full space-y-6" onSubmit={handleSubmit(onSubmit)}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <div>
