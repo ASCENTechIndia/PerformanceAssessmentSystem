@@ -11,7 +11,8 @@ import {
   UserCog,
   FileChartPie,
   ChartColumnBig,
-  GitGraph
+  GitGraph,
+  ListChecks,
 } from "lucide-react";
 
 export const HOME_ITEM = {
@@ -33,18 +34,6 @@ export const STATIC_MENU = [
         PAGEPATH: "/master/employees",
         ICON: Users,
       },
-      // {
-      //   MENUID: 102,
-      //   MENUTITLE: "Departments",
-      //   PAGEPATH: "/master/departments",
-      //   ICON: Building2,
-      // },
-      // {
-      //   MENUID: 103,
-      //   MENUTITLE: "Criteria",
-      //   PAGEPATH: "/master/criteria",
-      //   ICON: ClipboardCheck,
-      // },
       {
         MENUID: 104,
         MENUTITLE: "Task Type Master",
@@ -61,52 +50,22 @@ export const STATIC_MENU = [
         MENUID: 106,
         MENUTITLE: "Hierarchy Mapping",
         PAGEPATH: "/master/HierarchyMapping",
-        ICON: GitGraph
-      }
+        ICON: GitGraph,
+      },
     ],
   },
-  // {
-  //   MENUID: 2,
-  //   MENUTITLE: "Assessments",
-  //   children: [
-  //     {
-  //       MENUID: 201,
-  //       MENUTITLE: "New Assessment",
-  //       PAGEPATH: "/assessments/new",
-  //       ICON: Plus,
-  //     },
-  //     {
-  //       MENUID: 202,
-  //       MENUTITLE: "My Assessments",
-  //       PAGEPATH: "/assessments/my",
-  //       ICON: ClipboardList,
-  //     },
-  //     {
-  //       MENUID: 203,
-  //       MENUTITLE: "Team Reviews",
-  //       PAGEPATH: "/assessments/team",
-  //       ICON: ShieldCheck,
-  //     },
-  //   ],
-  // },
-  // {
-  //   MENUID: 3,
-  //   MENUTITLE: "Reports",
-  //   children: [
-  //     {
-  //       MENUID: 301,
-  //       MENUTITLE: "Performance Report",
-  //       PAGEPATH: "/reports/performance",
-  //       ICON: FileChartPie,
-  //     },
-  //     {
-  //       MENUID: 302,
-  //       MENUTITLE: "Department Comparison",
-  //       PAGEPATH: "/reports/departments",
-  //       ICON: ChartColumnBig,
-  //     },
-  //   ],
-  // },
+  {
+    MENUID: 2,
+    MENUTITLE: "Tasks",
+    children: [
+      {
+        MENUID: 201,
+        MENUTITLE: "My Taks",
+        PAGEPATH: "/Task/MyTask",
+        ICON: ListChecks,
+      },
+    ],
+  },
 ];
 
 /** Flattened, command-palette-ready list */
