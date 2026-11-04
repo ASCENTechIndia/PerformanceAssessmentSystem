@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "sonner";
 
 import Layout from "../../../Components/Layout";
 import { useLoader } from "../../../Context/LoaderContext";
@@ -50,8 +49,6 @@ const FrmTaskTypeMst = () => {
         current: "Task Type Master",
       }}
     >
-      <ToastContainer position="top-right" autoClose={4000} />
-
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Type Name */}
         <div>
@@ -146,10 +143,7 @@ const FrmTaskTypeMst = () => {
           >
             Reset
           </button>
-          <button
-            type="submit"
-            className="submit-btn"
-          >
+          <button type="submit" className="submit-btn">
             Save Task Type
           </button>
         </div>
