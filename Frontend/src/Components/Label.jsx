@@ -4,10 +4,10 @@ const Label = ({ htmlFor, text, required = false, className = "" }) => {
   return (
     <label
       htmlFor={htmlFor}
-      className={`mb-2 ${className}`}
+      className={`${className ? className : "pas-label"}`}
     >
-      <span className="text-[#007A70] ml-3">{text}</span>
-      {required && <span className="text-red-500">*</span>}
+      <span className="">{text}</span>
+      {required && <span className="text-red-500"> *</span>}
     </label>
   );
 };
