@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Layout from "../../../Components/Layout";
 import { useLoader } from "../../../Context/LoaderContext";
 import apiService from "../../../../apiService";
+import Label from "../../../Components/Label";
 
 const PRIORITY_OPTIONS = ["High", "Medium", "Low"];
 
@@ -54,9 +55,7 @@ const FrmTaskTypeMst = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Type Name */}
         <div>
-          <label htmlFor="typeName" className="pas-label">
-            Type Name <span className="text-rose-500">*</span>
-          </label>
+          <Label text={"Type Name"} required={true} />
           <input
             id="typeName"
             type="text"
@@ -77,9 +76,7 @@ const FrmTaskTypeMst = () => {
         {/* Two-column row: timeline + priority */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
-            <label htmlFor="defaultTimeline" className="pas-label">
-              Default Timeline (days) <span className="text-rose-500">*</span>
-            </label>
+            <Label text={"Default Timeline (days)"} required={true} />
             <input
               id="defaultTimeline"
               type="number"
@@ -104,9 +101,7 @@ const FrmTaskTypeMst = () => {
           </div>
 
           <div>
-            <label htmlFor="priority" className="pas-label">
-              Priority <span className="text-rose-500">*</span>
-            </label>
+            <Label text={"Priority"} required={true} />
             <select
               id="priority"
               className="pas-input"
