@@ -67,11 +67,11 @@ export const STATIC_MENU = [
     ],
   },
   {
-    MENUID: 2,
+    MENUID: 3,
     MENUTITLE: "Admin",
     children: [
       {
-        MENUID: 201,
+        MENUID: 301,
         MENUTITLE: "User Access",
         PAGEPATH: "/admin/userAccess"
       }
