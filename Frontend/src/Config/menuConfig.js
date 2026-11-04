@@ -65,6 +65,17 @@ export const STATIC_MENU = [
       }
     ],
   },
+  {
+    MENUID: 2,
+    MENUTITLE: "Admin",
+    children: [
+      {
+        MENUID: 201,
+        MENUTITLE: "User Access",
+        PAGEPATH: "/admin/userAccess"
+      }
+    ]
+  }
   // {
   //   MENUID: 2,
   //   MENUTITLE: "Assessments",
