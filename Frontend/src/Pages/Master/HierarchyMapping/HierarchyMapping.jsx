@@ -51,9 +51,10 @@ const HierarchyMapping = () => {
             <form className="w-full space-y-6" onSubmit={handleSubmit(onHierarchyMapSubmit)}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <div>
-                        <label htmlFor="designation" className="pas-label">
-                            Designation Level <span className="text-rose-500">*</span>
-                        </label>
+                        <Label 
+                            text={"Designation Level"}
+                            required
+                        />
 
                         <select
                             id="designation"
@@ -73,9 +74,10 @@ const HierarchyMapping = () => {
                         )}
                     </div>
                     <div>
-                        <label htmlFor="reportingOfficer" className="pas-label">
-                            Reporting Officer <span className="text-rose-500">*</span>
-                        </label>
+                        <Label 
+                            text={"Hierarchy Level"}
+                            required
+                        />
 
                         <select
                             id="HierarchyLevel"
@@ -100,22 +102,13 @@ const HierarchyMapping = () => {
                         type="button"
                         onClick={() => reset()}
                         // disabled={!isDirty}
-                        className="px-4 py-2 rounded-xl text-[13px] font-semibold text-slate-600
-              bg-white border border-slate-200
-              hover:bg-slate-50 hover:border-slate-300
-              disabled:opacity-50 disabled:cursor-not-allowed
-              transition-colors duration-150"
+                        className="reset-btn"
                     >
                         Reset
                     </button>
                     <button
                         type="submit"
-                        className="px-5 py-2 rounded-xl text-[13px] font-semibold text-white
-              bg-gradient-to-r from-emerald-500 to-sky-500
-              shadow-[0_8px_20px_-8px_rgba(16,185,129,0.7)]
-              hover:from-emerald-600 hover:to-sky-600
-              active:scale-[0.99]
-              transition-all duration-150"
+                        className="submit-btn"
                     >
                         Submit
                     </button>
