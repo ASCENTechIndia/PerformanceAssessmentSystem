@@ -64,6 +64,24 @@ export const STATIC_MENU = [
         PAGEPATH: "/Task/MyTask",
         ICON: ListChecks,
       },
+      {
+        MENUID: 202,
+        MENUTITLE: "Assing Task",
+        PAGEPATH: "/Task/AssignTask",
+        ICON: ListChecks,
+      },
+      {
+        MENUID: 203,
+        MENUTITLE: "Team Tasks",
+        PAGEPATH: "/Task/TeamTasks",
+        ICON: ListChecks,
+      },
+      {
+        MENUID: 204,
+        MENUTITLE: "Review Queue",
+        PAGEPATH: "/Task/ReviewQueue",
+        ICON: ListChecks,
+      },
     ],
   },
   {

@@ -9,6 +9,9 @@ import DesignationMaster from "./Pages/Master/DesignationMaster/DesignationMaste
 import HierarchyMapping from "./Pages/Master/HierarchyMapping/HierarchyMapping.jsx";
 import MyTask from "./Pages/Task/MyTask.jsx";
 import JuniorTaskManagement from "./Pages/Admin/UserAccess.jsx";
+import AssignTask from "./Pages/Task/AssignTask.jsx";
+import TeamTasks from "./Pages/Task/TeamTasks.jsx";
+import ReviewQueue from "./Pages/Task/ReviewQueue.jsx";
 
 function App() {
   const hostname = window.location.hostname;
@@ -32,11 +35,13 @@ function App() {
                   <Route path="/master/DesignationMaster" element={<DesignationMaster />} />
                   <Route path="/master/HierarchyMapping" element={<HierarchyMapping />} />
 
-                  {/* Tasks */}
-                  <Route path="/Task/MyTask" element={<MyTask />} />
-                  
                   {/* Task Management */}
+                  <Route path="/Task/MyTask" element={<MyTask />} />
                   <Route path="/admin/userAccess" element={<JuniorTaskManagement />} />
+                  <Route path="/Task/AssignTask" element={<AssignTask />} />
+                  <Route path="/Task/TeamTasks" element={<TeamTasks />} />
+                  <Route path="/Task/ReviewQueue" element={<ReviewQueue />} />
+
                 </Routes>
               </ProtectedRoute>
             }
