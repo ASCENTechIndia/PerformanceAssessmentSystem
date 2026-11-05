@@ -13,6 +13,8 @@ import {
   ChartColumnBig,
   GitGraph,
   ListChecks,
+  Hourglass,
+  // UserRoundArrowLeft
 } from "lucide-react";
 
 export const HOME_ITEM = {
@@ -60,7 +62,7 @@ export const STATIC_MENU = [
     children: [
       {
         MENUID: 201,
-        MENUTITLE: "My Taks",
+        MENUTITLE: "My Task",
         PAGEPATH: "/Task/MyTask",
         ICON: ListChecks,
       },
@@ -80,7 +82,7 @@ export const STATIC_MENU = [
         MENUID: 204,
         MENUTITLE: "Review Queue",
         PAGEPATH: "/Task/ReviewQueue",
-        ICON: ListChecks,
+        ICON: Hourglass,
       },
     ],
   },
