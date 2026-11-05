@@ -14,6 +14,9 @@ import {
   GitGraph,
   ListChecks,
   Hourglass,
+  Menu,
+  ListTodo,
+  
   // UserRoundArrowLeft
 } from "lucide-react";
 
@@ -64,19 +67,19 @@ export const STATIC_MENU = [
         MENUID: 201,
         MENUTITLE: "My Task",
         PAGEPATH: "/Task/MyTask",
-        ICON: ListChecks,
+        ICON: Menu,
       },
       {
         MENUID: 202,
         MENUTITLE: "Assign Task",
         PAGEPATH: "/Task/AssignTask",
-        ICON: ListChecks,
+        ICON: ListTodo,
       },
       {
         MENUID: 203,
         MENUTITLE: "Team Tasks",
         PAGEPATH: "/Task/TeamTasks",
-        ICON: ListChecks,
+        ICON: ListTodo,
       },
       {
         MENUID: 204,
