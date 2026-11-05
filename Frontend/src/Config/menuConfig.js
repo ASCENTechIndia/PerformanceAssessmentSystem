@@ -16,8 +16,7 @@ import {
   Hourglass,
   Menu,
   ListTodo,
-  
-  // UserRoundArrowLeft
+  UsersRound
 } from "lucide-react";
 
 export const HOME_ITEM = {
@@ -85,7 +84,7 @@ export const STATIC_MENU = [
         MENUID: 203,
         MENUTITLE: "Team Tasks",
         PAGEPATH: "/Task/TeamTasks",
-        ICON: ListTodo,
+        ICON: UsersRound,
       },
       {
         MENUID: 204,
