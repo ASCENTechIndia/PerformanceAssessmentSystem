@@ -92,6 +92,12 @@ export const STATIC_MENU = [
         PAGEPATH: "/Task/ReviewQueue",
         ICON: Hourglass,
       },
+      {
+        MENUID: 205,
+        MENUTITLE: "Extension Queue",
+        PAGEPATH: "/Task/ExtensionQueue",
+        ICON: Hourglass,
+      },
     ],
   },
   {

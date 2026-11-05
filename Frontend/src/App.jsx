@@ -12,6 +12,7 @@ import AssignTask from "./Pages/Task/AssignTask.jsx";
 import TeamTasks from "./Pages/Task/TeamTasks.jsx";
 import ReviewQueue from "./Pages/Task/ReviewQueue.jsx";
 import MyTasks from "./Pages/Task/MyTask/MyTasks.jsx";
+import ExtensionRequests from "./Pages/Task/ExtensionRequests/ExtensionRequests.jsx";
 
 function App() {
   const hostname = window.location.hostname;
@@ -41,6 +42,7 @@ function App() {
                   <Route path="/Task/AssignTask" element={<AssignTask />} />
                   <Route path="/Task/TeamTasks" element={<TeamTasks />} />
                   <Route path="/Task/ReviewQueue" element={<ReviewQueue />} />
+                  <Route path="/Task/ExtensionQueue" element={<ExtensionRequests />} />
 
                 </Routes>
               </ProtectedRoute>
