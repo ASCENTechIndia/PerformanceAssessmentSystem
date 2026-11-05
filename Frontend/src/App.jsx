@@ -7,11 +7,11 @@ import FrmTaskTypeMst from "./Pages/Master/TaskTypeMaster/FrmTaskTypeMst.jsx";
 import EmployeeMaster from "./Pages/Master/EmployeeMaster.jsx";
 import DesignationMaster from "./Pages/Master/DesignationMaster/DesignationMaster.jsx";
 import HierarchyMapping from "./Pages/Master/HierarchyMapping/HierarchyMapping.jsx";
-import MyTask from "./Pages/Task/MyTask.jsx";
 import JuniorTaskManagement from "./Pages/Admin/UserAccess.jsx";
 import AssignTask from "./Pages/Task/AssignTask.jsx";
 import TeamTasks from "./Pages/Task/TeamTasks.jsx";
 import ReviewQueue from "./Pages/Task/ReviewQueue.jsx";
+import MyTasks from "./Pages/Task/MyTask/MyTasks.jsx";
 
 function App() {
   const hostname = window.location.hostname;
@@ -36,7 +36,7 @@ function App() {
                   <Route path="/master/HierarchyMapping" element={<HierarchyMapping />} />
 
                   {/* Task Management */}
-                  <Route path="/Task/MyTask" element={<MyTask />} />
+                  <Route path="/Task/MyTask" element={<MyTasks />} />
                   <Route path="/admin/userAccess" element={<JuniorTaskManagement />} />
                   <Route path="/Task/AssignTask" element={<AssignTask />} />
                   <Route path="/Task/TeamTasks" element={<TeamTasks />} />

@@ -60,15 +60,21 @@ export const STATIC_MENU = [
     ],
   },
   {
-    MENUID: 2,
-    MENUTITLE: "Tasks",
+    MENUID: 4,
+    MENUTITLE: "My Work",
     children: [
       {
-        MENUID: 201,
+        MENUID: 401,
         MENUTITLE: "My Task",
         PAGEPATH: "/Task/MyTask",
         ICON: Menu,
       },
+    ],
+  },
+  {
+    MENUID: 2,
+    MENUTITLE: "Tasks",
+    children: [
       {
         MENUID: 202,
         MENUTITLE: "Assign Task",
@@ -96,10 +102,10 @@ export const STATIC_MENU = [
       {
         MENUID: 301,
         MENUTITLE: "User Access",
-        PAGEPATH: "/admin/userAccess"
-      }
-    ]
-  }
+        PAGEPATH: "/admin/userAccess",
+      },
+    ],
+  },
 ];
 
 /** Flattened, command-palette-ready list */
