@@ -13,6 +13,9 @@ import TeamTasks from "./Pages/Task/TeamTasks.jsx";
 import ReviewQueue from "./Pages/Task/ReviewQueue.jsx";
 import MyTasks from "./Pages/Task/MyTask/MyTasks.jsx";
 import ExtensionRequests from "./Pages/Task/ExtensionRequests/ExtensionRequests.jsx";
+import PerformanceDashboard from "./Pages/PerformanceDashboard/PerformanceDashboard.jsx";
+import SeniorPerformanceDashboard from "./Pages/PerformanceDashboard/SeniorPerformanceDashboard.jsx";
+import JuniorPerformanceDashboard from "./Pages/PerformanceDashboard/JuniorPerformanceDashboard.jsx";
 
 function App() {
   const hostname = window.location.hostname;
@@ -43,6 +46,8 @@ function App() {
                   <Route path="/Task/TeamTasks" element={<TeamTasks />} />
                   <Route path="/Task/ReviewQueue" element={<ReviewQueue />} />
                   <Route path="/Task/ExtensionQueue" element={<ExtensionRequests />} />
+                  <Route path="/performance/senior" element={<SeniorPerformanceDashboard />} />
+                  <Route path="/performance/junior" element={<JuniorPerformanceDashboard />} />
 
                 </Routes>
               </ProtectedRoute>

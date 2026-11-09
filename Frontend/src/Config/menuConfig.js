@@ -111,6 +111,23 @@ export const STATIC_MENU = [
       },
     ],
   },
+  {
+    MENUID: 4,
+    MENUTITLE: "Performance Details",
+    children: [
+      {
+        MENUID: 401,
+        MENUTITLE: "Junior Employee",
+        PAGEPATH: "/performance/junior"
+      },
+      {
+        MENUID: 402,
+        MENUTITLE: "Senior Employee",
+        PAGEPATH: "/performance/senior"
+      }
+    ]
+  }
+
 ];
 
 /** Flattened, command-palette-ready list */
