@@ -66,6 +66,7 @@ const AssignTask = () => {
       priority: "Medium",
       assignTo: "",
       deadline: "",
+      attachments: [],
       instructions: "",
     },
     mode: "onBlur",
@@ -74,6 +75,53 @@ const AssignTask = () => {
   const watched = watch();
   const selectedEmployee = EMPLOYEES.find((e) => e.value === watched.assignTo);
   const selectedType = TASK_TYPES.find((t) => t.value === watched.taskType);
+
+  const attachments = watch("attachments") || [];
+
+  const handleFileChange = (e) => {
+    const selectedFiles = Array.from(e.target.files || []);
+    const existingFiles = Array.from(attachments);
+
+    const newFiles = [...existingFiles, ...selectedFiles];
+
+    // Remove duplicate files
+    const uniqueFiles = newFiles.filter(
+      (file, index, self) =>
+        index ===
+        self.findIndex(
+          (f) =>
+            f.name === file.name &&
+            f.size === file.size &&
+            f.lastModified === file.lastModified
+        )
+    );
+
+    setValue("attachments", uniqueFiles, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+
+    // Allow selecting the same file again
+    e.target.value = "";
+  };
+
+  const handleRemoveFile = (index) => {
+    const updatedFiles = attachments.filter(
+      (_, i) => i !== index
+    );
+
+    setValue("attachments", updatedFiles, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+  };
+
+  const handleClearFiles = () => {
+    setValue("attachments", [], {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+  };
 
   const daysUntil = watched.deadline
     ? Math.ceil((new Date(watched.deadline) - new Date()) / 86_400_000)
@@ -95,17 +143,34 @@ const AssignTask = () => {
 
   const onSubmit = async (data) => {
     try {
-      // Replace with: await apiService.post("/tasks", data)
-      await new Promise((r) => setTimeout(r, 700));
+      const formData = new FormData();
+
+      formData.append("title", data.title);
+      formData.append("description", data.description);
+      formData.append("taskType", data.taskType);
+      formData.append("priority", data.priority);
+      formData.append("assignTo", data.assignTo);
+      formData.append("deadline", data.deadline);
+      formData.append("instructions", data.instructions);
+
+      Array.from(data.attachments || []).forEach((file) => {
+        formData.append("attachments", file);
+      });
+
+      // Replace with your API call
+      // await apiService.post("/tasks", formData);
+
       toast.success(
         `Task assigned to ${selectedEmployee?.label || "employee"}`,
       );
+
       reset();
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Failed to assign task");
+      toast.error(
+        err?.response?.data?.message || "Failed to assign task",
+      );
     }
   };
-
   return (
     <Layout
       title="Assign Task"
@@ -314,6 +379,91 @@ const AssignTask = () => {
               </div>
             </fieldset>
 
+
+            {/* Attachments */}
+            <fieldset className="space-y-4 pt-2">
+              <legend className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400 mb-2">
+                Attachments{" "}
+                <span className="text-slate-300 normal-case tracking-normal font-normal">
+                  (optional)
+                </span>
+              </legend>
+
+              <div>
+                <label htmlFor="attachments" className="pas-label">
+                  Upload Documents
+                </label>
+
+                <input
+                  id="attachments"
+                  type="file"
+                  multiple
+                  accept=".pdf,.jpg,.jpeg,application/pdf,image/jpeg"
+                  className="pas-input file:mr-3 file:rounded-md file:border-0 file:bg-emerald-50 file:px-3 file:py-1.5 file:text-[11px] file:font-semibold file:text-emerald-700 file:cursor-pointer"
+                  onChange={handleFileChange}
+                />
+
+                <p className="pas-help">
+                  Supported formats: PDF, JPG, JPEG. You can select multiple files.
+                </p>
+              </div>
+
+              {/* Selected Files */}
+              {attachments.length > 0 && (
+                <div className="rounded-lg border border-slate-200 overflow-hidden">
+
+                  <div className="flex items-center justify-between px-3 py-2 bg-slate-50 border-b border-slate-200">
+                    <p className="text-[11px] font-semibold text-slate-700">
+                      Selected Files ({attachments.length})
+                    </p>
+
+                    <button
+                      type="button"
+                      onClick={handleClearFiles}
+                      className="text-[11px] font-semibold text-rose-600 hover:text-rose-700"
+                    >
+                      Clear All
+                    </button>
+                  </div>
+
+                  <div className="divide-y divide-slate-100">
+                    {attachments.map((file, index) => (
+                      <div
+                        key={`${file.name}-${file.lastModified}-${index}`}
+                        className="flex items-center justify-between gap-3 px-3 py-2.5"
+                      >
+                        <div className="flex items-center gap-2 min-w-0">
+                          <div className="w-8 h-8 rounded-md bg-emerald-50 flex items-center justify-center flex-shrink-0">
+                            <ClipboardList className="w-4 h-4 text-emerald-600" />
+                          </div>
+
+                          <div className="min-w-0">
+                            <p className="text-[11.5px] font-medium text-slate-700 truncate">
+                              {file.name}
+                            </p>
+
+                            <p className="text-[10px] text-slate-400">
+                              {(file.size / 1024).toFixed(1)} KB
+                            </p>
+                          </div>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveFile(index)}
+                          className="flex-shrink-0 text-[11px] font-medium text-rose-500 hover:text-rose-700 px-2 py-1 rounded hover:bg-rose-50"
+                          title="Remove file"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </fieldset>
+
+
             {/* Notes */}
             <fieldset className="space-y-4 pt-2">
               <legend className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400 mb-2">
@@ -383,13 +533,12 @@ const AssignTask = () => {
                         <div className="flex items-center justify-between">
                           <dt className="text-slate-500">Deadline in</dt>
                           <dd
-                            className={`font-semibold ${
-                              daysUntil < 0
-                                ? "text-rose-600"
-                                : daysUntil < 3
-                                  ? "text-amber-600"
-                                  : "text-emerald-600"
-                            }`}
+                            className={`font-semibold ${daysUntil < 0
+                              ? "text-rose-600"
+                              : daysUntil < 3
+                                ? "text-amber-600"
+                                : "text-emerald-600"
+                              }`}
                           >
                             {daysUntil < 0
                               ? "Past due"
@@ -403,13 +552,12 @@ const AssignTask = () => {
                       <div className="flex items-center justify-between">
                         <dt className="text-slate-500">Priority</dt>
                         <dd
-                          className={`font-semibold ${
-                            watched.priority === "High"
-                              ? "text-rose-600"
-                              : watched.priority === "Medium"
-                                ? "text-amber-600"
-                                : "text-slate-600"
-                          }`}
+                          className={`font-semibold ${watched.priority === "High"
+                            ? "text-rose-600"
+                            : watched.priority === "Medium"
+                              ? "text-amber-600"
+                              : "text-slate-600"
+                            }`}
                         >
                           {watched.priority}
                         </dd>
