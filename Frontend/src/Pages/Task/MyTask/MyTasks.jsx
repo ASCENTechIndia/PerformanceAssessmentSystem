@@ -18,6 +18,7 @@ import ExtensionModal from "./ExtensionModal";
 import FinishTaskModal from "./FinishTaskModal";
 import RaiseQueryModal from "./RaiseQueryModal";
 import RejectTaskModal from "./RejectTaskModal";
+import ViewTaskModal from "./ViewTaskModal";
 
 /* ---------- Dummy data ---------- */
 const MOCK_TASKS = [
@@ -134,6 +135,7 @@ const MyTasks = () => {
   const [finishTask, setFinishTask] = useState(null);
   const [queryTask, setQueryTask] = useState(null);
   const [rejectTask, setRejectTask] = useState(null);
+  const [viewTask, setViewTask] = useState(null);
 
   const counts = useMemo(
     () => ({
@@ -167,7 +169,7 @@ const MyTasks = () => {
   const handleAction = (action, task) => {
     switch (action) {
       case "view":
-        toast.info(`Opening ${task.id}…`);
+        setViewTask(task);
         return;
       case "start":
         toast.success(`${task.id} moved to In Progress`);
@@ -484,6 +486,12 @@ const MyTasks = () => {
       </div>
 
       {/* ===================== Modals ===================== */}
+      <ViewTaskModal
+        open={!!viewTask}
+        task={viewTask}
+        onClose={() => setViewTask(null)}
+      />
+
       <ExtensionModal
         open={!!extensionTask}
         task={extensionTask}
