@@ -49,7 +49,7 @@ const Layout = ({ title, breadcrumb, children }) => {
 
       <div
         className={`flex-1 flex flex-col min-h-screen max-h-screen overflow-hidden transition-all duration-300
-          bg-gradient-to-br from-emerald-50/40 via-white to-sky-50/40`}
+          bg-gradient-to-br from-blue-50/40 via-white to-sky-50/40`}
       >
         <Header
           toggleSidebar={handleToggleSidebar}
@@ -60,12 +60,12 @@ const Layout = ({ title, breadcrumb, children }) => {
           <div className="max-w-screen-2xl mx-auto">
             <div className="bg-white rounded-2xl border border-slate-200/80 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-8px_rgba(15,23,42,0.08)] overflow-hidden">
               {/* Brand accent strip */}
-              <div className="h-[3px] w-full bg-gradient-to-r from-emerald-400 via-teal-400 to-sky-400" />
+              <div className="h-[3px] w-full bg-gradient-to-r from-blue-600 via-blue-400 to-sky-500" />
 
               {(title || breadcrumb) && (
                 <div className="px-4 py-3 border-b border-slate-100 bg-gradient-to-r from-white via-white to-emerald-50/40">
                   <div className="flex items-center gap-3">
-                    <span className="h-7 w-1 rounded-full bg-gradient-to-b from-emerald-500 to-sky-500" />
+                    <span className="h-7 w-1 rounded-full bg-gradient-to-b from-blue-600 via-blue-400 to-sky-500" />
                     <div className="flex-1 min-w-0">
                       {title && (
                         <h1 className="text-lg md:text-xl font-semibold text-slate-800 tracking-tight truncate">

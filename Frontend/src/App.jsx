@@ -5,7 +5,7 @@ import ProtectedRoute from "./HOC/ProtectedRoute.jsx";
 import Dashboard from "./Pages/Dashboard/Dashboard.jsx";
 import FrmTaskTypeMst from "./Pages/Master/TaskTypeMaster/FrmTaskTypeMst.jsx";
 import HierarchyMapping from "./Pages/Master/HierarchyMapping/HierarchyMapping.jsx";
-import JuniorTaskManagement from "./Pages/Admin/UserAccess.jsx";
+import UserAccess from "./Pages/Admin/UserAccess.jsx";
 import AssignTask from "./Pages/Task/AssignTask.jsx";
 import TeamTasks from "./Pages/Task/TeamTasks.jsx";
 import ReviewQueue from "./Pages/Task/ReviewQueue.jsx";
@@ -42,7 +42,7 @@ function App() {
 
                   {/* Task Management */}
                   <Route path="/Task/MyTask" element={<MyTasks />} />
-                  <Route path="/admin/userAccess" element={<JuniorTaskManagement />} />
+                  <Route path="/admin/userAccess" element={<UserAccess />} />
                   <Route path="/Task/AssignTask" element={<AssignTask />} />
                   <Route path="/Task/TeamTasks" element={<TeamTasks />} />
                   <Route path="/Task/ReviewQueue" element={<ReviewQueue />} />
