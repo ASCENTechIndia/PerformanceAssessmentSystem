@@ -229,15 +229,15 @@ const Login = () => {
   //   }
   // }, []);
 
-  // useEffect(() => {
-  //   const checkSession = async () => {
-  //     const ok = await validateTokenAndLogin();
-  //     if (!ok) {
-  //       window.location.href = "https://nagarkaryavalinewuat.com/";
-  //     }
-  //   };
-  //   checkSession();
-  // }, []);
+  useEffect(() => {
+    const checkSession = async () => {
+      const ok = await validateTokenAndLogin();
+      if (!ok) {
+        window.location.href = "https://nagarkaryavalinewuat.com/";
+      }
+    };
+    checkSession();
+  }, []);
 
   return (
     <>

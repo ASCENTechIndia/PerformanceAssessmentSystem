@@ -3,7 +3,6 @@ import {
   Users,
   Building2,
   ClipboardList,
-  Plus,
   BarChart3,
   ShieldCheck,
   ClipboardCheck,
@@ -16,7 +15,7 @@ import {
   Hourglass,
   Menu,
   ListTodo,
-  UsersRound
+  UsersRound,
 } from "lucide-react";
 
 export const HOME_ITEM = {
@@ -28,109 +27,135 @@ export const HOME_ITEM = {
 };
 
 export const STATIC_MENU = [
+  /* ============================================================
+     GROUP 1 — Tasks (HOD daily workflow)
+     ============================================================ */
   {
     MENUID: 1,
-    MENUTITLE: "Master",
-    children: [
-      {
-        MENUID: 101,
-        MENUTITLE: "Employees",
-        PAGEPATH: "/master/employees",
-        ICON: Users,
-      },
-      {
-        MENUID: 104,
-        MENUTITLE: "Task Type Master",
-        PAGEPATH: "/Master/FrmTaskTypeMst",
-        ICON: LayoutList,
-      },
-      {
-        MENUID: 105,
-        MENUTITLE: "Designation Master",
-        PAGEPATH: "/master/DesignationMaster",
-        ICON: UserCog,
-      },
-      {
-        MENUID: 106,
-        MENUTITLE: "Hierarchy Mapping",
-        PAGEPATH: "/master/HierarchyMapping",
-        ICON: GitGraph,
-      },
-    ],
-  },
-  {
-    MENUID: 4,
-    MENUTITLE: "My Work",
-    children: [
-      {
-        MENUID: 401,
-        MENUTITLE: "My Task",
-        PAGEPATH: "/Task/MyTask",
-        ICON: Menu,
-      },
-    ],
-  },
-  {
-    MENUID: 2,
     MENUTITLE: "Tasks",
     children: [
       {
-        MENUID: 202,
+        MENUID: 101,
         MENUTITLE: "Assign Task",
         PAGEPATH: "/Task/AssignTask",
         ICON: ListTodo,
       },
       {
-        MENUID: 203,
+        MENUID: 102,
         MENUTITLE: "Team Tasks",
         PAGEPATH: "/Task/TeamTasks",
         ICON: UsersRound,
       },
       {
-        MENUID: 204,
+        MENUID: 103,
         MENUTITLE: "Review Queue",
         PAGEPATH: "/Task/ReviewQueue",
         ICON: Hourglass,
       },
       {
-        MENUID: 205,
+        MENUID: 104,
         MENUTITLE: "Extension Queue",
         PAGEPATH: "/Task/ExtensionQueue",
         ICON: Hourglass,
       },
     ],
   },
+
+  /* ============================================================
+     GROUP 2 — My Work (Junior daily workflow)
+     ============================================================ */
   {
-    MENUID: 3,
-    MENUTITLE: "Admin",
+    MENUID: 2,
+    MENUTITLE: "My Work",
     children: [
       {
-        MENUID: 301,
-        MENUTITLE: "User Access",
-        PAGEPATH: "/admin/userAccess",
+        MENUID: 201,
+        MENUTITLE: "My Task",
+        PAGEPATH: "/Task/MyTask",
+        ICON: Menu,
       },
     ],
   },
+
+  /* ============================================================
+     GROUP 3 — Performance Details (reports, drill-down)
+     ============================================================ */
   {
-    MENUID: 4,
+    MENUID: 3,
     MENUTITLE: "Performance Details",
     children: [
       {
-        MENUID: 401,
+        MENUID: 301,
         MENUTITLE: "Junior Employee",
-        PAGEPATH: "/performance/junior"
+        PAGEPATH: "/performance/junior",
+        ICON: FileChartPie,
+      },
+      {
+        MENUID: 302,
+        MENUTITLE: "Senior Employee",
+        PAGEPATH: "/performance/senior",
+        ICON: ChartColumnBig,
+      },
+    ],
+  },
+
+  /* ============================================================
+     GROUP 4 — Master (Setup, Admin mostly)
+     ============================================================ */
+  {
+    MENUID: 4,
+    MENUTITLE: "Master",
+    children: [
+      {
+        MENUID: 401,
+        MENUTITLE: "Employees",
+        PAGEPATH: "/master/employees",
+        ICON: Users,
       },
       {
         MENUID: 402,
-        MENUTITLE: "Senior Employee",
-        PAGEPATH: "/performance/senior"
-      }
-    ]
-  }
+        MENUTITLE: "Departments",
+        PAGEPATH: "/master/DepartmentMaster",
+        ICON: Building2,
+      }, 
+      {
+        MENUID: 403,
+        MENUTITLE: "Designation Master",
+        PAGEPATH: "/master/DesignationMaster",
+        ICON: UserCog,
+      },
+      {
+        MENUID: 404,
+        MENUTITLE: "Task Type Master",
+        PAGEPATH: "/Master/FrmTaskTypeMst",
+        ICON: LayoutList,
+      },
+      {
+        MENUID: 405,
+        MENUTITLE: "Hierarchy Mapping",
+        PAGEPATH: "/master/HierarchyMapping",
+        ICON: GitGraph,
+      },
+    ],
+  },
 
+  /* ============================================================
+     GROUP 5 — Admin (User access management)
+     ============================================================ */
+  {
+    MENUID: 5,
+    MENUTITLE: "Admin",
+    children: [
+      {
+        MENUID: 501,
+        MENUTITLE: "User Access",
+        PAGEPATH: "/admin/userAccess",
+        ICON: ShieldCheck,
+      },
+    ],
+  },
 ];
 
-/** Flattened, command-palette-ready list */
 export const ALL_NAV = [
   HOME_ITEM,
   ...STATIC_MENU.flatMap((section) => [

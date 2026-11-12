@@ -4,8 +4,6 @@ import Login from "./HOC/Login/Login";
 import ProtectedRoute from "./HOC/ProtectedRoute.jsx";
 import Dashboard from "./Pages/Dashboard/Dashboard.jsx";
 import FrmTaskTypeMst from "./Pages/Master/TaskTypeMaster/FrmTaskTypeMst.jsx";
-import EmployeeMaster from "./Pages/Master/EmployeeMaster.jsx";
-import DesignationMaster from "./Pages/Master/DesignationMaster/DesignationMaster.jsx";
 import HierarchyMapping from "./Pages/Master/HierarchyMapping/HierarchyMapping.jsx";
 import JuniorTaskManagement from "./Pages/Admin/UserAccess.jsx";
 import AssignTask from "./Pages/Task/AssignTask.jsx";
@@ -16,6 +14,9 @@ import ExtensionRequests from "./Pages/Task/ExtensionRequests/ExtensionRequests.
 import PerformanceDashboard from "./Pages/PerformanceDashboard/PerformanceDashboard.jsx";
 import SeniorPerformanceDashboard from "./Pages/PerformanceDashboard/SeniorPerformanceDashboard.jsx";
 import JuniorPerformanceDashboard from "./Pages/PerformanceDashboard/JuniorPerformanceDashboard.jsx";
+import DesignationMaster from "./Pages/Master/DesignationMaster/DesignationMaster.jsx";
+import DepartmentMaster from "./Pages/Master/DepartmentMaster/DepartmentMaster.jsx";
+import EmployeeMaster from "./Pages/Master/EmployeeMaster/EmployeeMaster.jsx";
 
 function App() {
   const hostname = window.location.hostname;
@@ -36,8 +37,9 @@ function App() {
                   {/* Master routes */}
                   <Route path="/Master/FrmTaskTypeMst" element={<FrmTaskTypeMst/>}/>
                   <Route path="/master/employees" element={<EmployeeMaster />} />
-                  <Route path="/master/DesignationMaster" element={<DesignationMaster />} />
                   <Route path="/master/HierarchyMapping" element={<HierarchyMapping />} />
+                  <Route path="/master/DepartmentMaster"  element={<DepartmentMaster />} />
+                  <Route path="/master/DesignationMaster" element={<DesignationMaster />} />
 
                   {/* Task Management */}
                   <Route path="/Task/MyTask" element={<MyTasks />} />
