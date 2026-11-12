@@ -15,6 +15,9 @@ import Layout from "../../../Components/Layout";
 import StatCard from "./StatCard";
 import RowActions from "./RowActions";
 import ExtensionModal from "./ExtensionModal";
+import FinishTaskModal from "./FinishTaskModal";
+import RaiseQueryModal from "./RaiseQueryModal";
+import RejectTaskModal from "./RejectTaskModal";
 
 /* ---------- Dummy data ---------- */
 const MOCK_TASKS = [
@@ -92,6 +95,14 @@ const MOCK_TASKS = [
   },
 ];
 
+/* ---------- Task Type → rules map (dummy bridge until API) ---------- */
+const TASK_TYPE_RULES = {
+  Inspection: { docsMandatory: true },
+  Audit: { docsMandatory: true },
+  Review: { docsMandatory: false },
+  Report: { docsMandatory: false },
+};
+
 /* ---------- Style maps ---------- */
 const statusStyles = {
   Assigned: "bg-slate-100  text-slate-700   ring-slate-200",
@@ -117,7 +128,12 @@ const MyTasks = () => {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("");
+
+  /* Modal state — one per action */
   const [extensionTask, setExtensionTask] = useState(null);
+  const [finishTask, setFinishTask] = useState(null);
+  const [queryTask, setQueryTask] = useState(null);
+  const [rejectTask, setRejectTask] = useState(null);
 
   const counts = useMemo(
     () => ({
@@ -147,34 +163,69 @@ const MyTasks = () => {
     });
   }, [search, statusFilter, priorityFilter]);
 
+  /* ---------- Action router ---------- */
   const handleAction = (action, task) => {
-    if (action === "view") {
-      toast.info(`Opening ${task.id}…`);
-      return;
+    switch (action) {
+      case "view":
+        toast.info(`Opening ${task.id}…`);
+        return;
+      case "start":
+        toast.success(`${task.id} moved to In Progress`);
+        return;
+      case "finish":
+        setFinishTask(task);
+        return;
+      case "query":
+        setQueryTask(task);
+        return;
+      case "extend":
+        setExtensionTask(task);
+        return;
+      case "reject":
+        setRejectTask(task);
+        return;
+      default:
+        toast.info("Action coming soon");
     }
-    if (action === "extend") {
-      setExtensionTask(task);
-      return;
-    }
-    const labels = {
-      start: "Start working",
-      finish: "Submit for review",
-      query: "Raise Query modal",
-      reject: "Reject Task modal",
-    };
-    toast.info(`${labels[action]} — coming next`);
   };
 
+  /* ---------- Submit handlers ---------- */
   const handleExtensionSubmit = ({ extraDays, reason }) => {
     toast.success(
       `Extension request submitted — ${extraDays} extra day${extraDays !== 1 ? "s" : ""} requested`,
     );
-    console.log("Extension request →", {
+    console.log("Extension →", {
       taskId: extensionTask?.id,
       extraDays,
       reason,
     });
     setExtensionTask(null);
+  };
+
+  const handleFinishSubmit = ({ remarks, file }) => {
+    toast.success(`${finishTask.id} submitted for review`);
+    console.log("Finish →", {
+      taskId: finishTask.id,
+      remarks,
+      file: file?.name,
+    });
+    setFinishTask(null);
+  };
+
+  const handleQuerySubmit = ({ question, file }) => {
+    toast.success(`Query sent to HOD for ${queryTask.id}`);
+    console.log("Query →", {
+      taskId: queryTask.id,
+      question,
+      file: file?.name,
+    });
+    setQueryTask(null);
+  };
+
+  const handleRejectSubmit = ({ reason, details }) => {
+    toast.success(`${rejectTask.id} returned to HOD`);
+    console.log("Reject →", { taskId: rejectTask.id, reason, details });
+    setRejectTask(null);
   };
 
   const clearFilters = () => {
@@ -247,15 +298,14 @@ const MyTasks = () => {
         </div>
 
         {/* Filter row */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:items-center">
+        <div className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_150px_auto] gap-3 md:items-center">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search task ID or title…"
-              className="pas-input"
-              style={{ paddingLeft: "35px" }}
+              className="pas-input pl-9"
             />
           </div>
 
@@ -433,12 +483,38 @@ const MyTasks = () => {
         </div>
       </div>
 
-      {/* Extension Request Modal */}
+      {/* ===================== Modals ===================== */}
       <ExtensionModal
         open={!!extensionTask}
         task={extensionTask}
         onClose={() => setExtensionTask(null)}
         onSubmit={handleExtensionSubmit}
+      />
+
+      <FinishTaskModal
+        open={!!finishTask}
+        task={finishTask}
+        docsMandatory={
+          finishTask
+            ? (TASK_TYPE_RULES[finishTask.type]?.docsMandatory ?? false)
+            : false
+        }
+        onClose={() => setFinishTask(null)}
+        onSubmit={handleFinishSubmit}
+      />
+
+      <RaiseQueryModal
+        open={!!queryTask}
+        task={queryTask}
+        onClose={() => setQueryTask(null)}
+        onSubmit={handleQuerySubmit}
+      />
+
+      <RejectTaskModal
+        open={!!rejectTask}
+        task={rejectTask}
+        onClose={() => setRejectTask(null)}
+        onSubmit={handleRejectSubmit}
       />
     </Layout>
   );
