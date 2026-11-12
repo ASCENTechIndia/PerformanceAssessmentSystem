@@ -11,12 +11,11 @@ import TeamTasks from "./Pages/Task/TeamTasks.jsx";
 import ReviewQueue from "./Pages/Task/ReviewQueue.jsx";
 import MyTasks from "./Pages/Task/MyTask/MyTasks.jsx";
 import ExtensionRequests from "./Pages/Task/ExtensionRequests/ExtensionRequests.jsx";
-import PerformanceDashboard from "./Pages/PerformanceDashboard/PerformanceDashboard.jsx";
-import SeniorPerformanceDashboard from "./Pages/PerformanceDashboard/SeniorPerformanceDashboard.jsx";
-import JuniorPerformanceDashboard from "./Pages/PerformanceDashboard/JuniorPerformanceDashboard.jsx";
 import DesignationMaster from "./Pages/Master/DesignationMaster/DesignationMaster.jsx";
 import DepartmentMaster from "./Pages/Master/DepartmentMaster/DepartmentMaster.jsx";
 import EmployeeMaster from "./Pages/Master/EmployeeMaster/EmployeeMaster.jsx";
+import SeniorPerformanceDashboard from "./Pages/PerformanceDashboard/SeniorDashboard/SeniorPerformanceDashboard.jsx";
+import JuniorPerformanceDashboard from "./Pages/PerformanceDashboard/JuniorDashboard/JuniorPerformanceDashboard.jsx";
 
 function App() {
   const hostname = window.location.hostname;
