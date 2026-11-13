@@ -99,7 +99,7 @@ const RequestCard = ({ request, onApprove, onReject }) => {
       <div className="flex items-center gap-2 mt-1.5 text-[11.5px] text-slate-500 flex-wrap">
         <div className="flex items-center gap-1.5">
           <div
-            className="w-5 h-5 rounded-full bg-gradient-to-br from-emerald-500 to-sky-500
+            className="w-5 h-5 rounded-full bg-gradient-to-br from-blue-500 to-sky-500
             text-white text-[9px] font-semibold flex items-center justify-center"
           >
             {getInitials(request.employee)}
