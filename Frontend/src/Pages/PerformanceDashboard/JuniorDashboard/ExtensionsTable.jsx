@@ -34,7 +34,7 @@ const ExtensionsTable = ({ extensions }) => {
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-slate-50 border-b border-slate-100">
+            <thead className="bg-blue-50 border-b border-slate-100">
               <tr>
                 <th className="px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
                   Task ID

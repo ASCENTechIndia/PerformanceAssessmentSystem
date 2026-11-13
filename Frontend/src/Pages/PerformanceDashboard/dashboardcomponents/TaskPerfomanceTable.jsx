@@ -20,7 +20,7 @@ const TaskPerformanceTable = ({
 
       <div className="overflow-x-auto">
         <table className="w-full text-left whitespace-nowrap">
-          <thead className="bg-slate-50">
+          <thead className="bg-blue-50">
             <tr className="text-[10px] uppercase text-slate-500">
               <th className="px-4 py-3">Task</th>
 
