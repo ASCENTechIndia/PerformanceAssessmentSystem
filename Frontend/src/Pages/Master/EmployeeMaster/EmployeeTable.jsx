@@ -1,4 +1,4 @@
-import { Inbox } from "lucide-react";
+import { Inbox, Eye, Pencil, Trash2 } from "lucide-react";
 
 const formatDate = (iso) => {
   if (!iso) return "—";
@@ -9,7 +9,14 @@ const formatDate = (iso) => {
   });
 };
 
-const EmployeeTable = ({ employees, departments, designations }) => {
+const EmployeeTable = ({
+  employees,
+  departments,
+  designations,
+  onView,
+  onEdit,
+  onDelete,
+}) => {
   const departmentMap = Object.fromEntries(departments.map((d) => [d.id, d]));
   const designationMap = Object.fromEntries(designations.map((d) => [d.id, d]));
   const employeeMap = Object.fromEntries(employees.map((e) => [e.id, e]));
@@ -18,7 +25,7 @@ const EmployeeTable = ({ employees, departments, designations }) => {
     <div className="rounded-xl border border-slate-200">
       <div className="overflow-x-auto">
         <table className="w-full text-left">
-          <thead className="bg-slate-50 border-b border-slate-200">
+          <thead className="bg-blue-50 border-b border-slate-200">
             <tr>
               <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 w-12">
                 Sr. No
@@ -49,6 +56,9 @@ const EmployeeTable = ({ employees, departments, designations }) => {
               </th>
               <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
                 Status
+              </th>
+              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 text-center whitespace-nowrap">
+                Actions
               </th>
             </tr>
           </thead>
@@ -139,11 +149,10 @@ const EmployeeTable = ({ employees, departments, designations }) => {
                       <span
                         className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full
                         text-[10.5px] font-semibold ring-1
-                        ${
-                          emp.active
+                        ${emp.active
                             ? "bg-blue-50 text-blue-700 ring-blue-200"
                             : "bg-slate-100 text-slate-500 ring-slate-200"
-                        }`}
+                          }`}
                       >
                         <span
                           className={`w-1.5 h-1.5 rounded-full ${emp.active ? "bg-blue-500" : "bg-slate-400"}`}
@@ -151,6 +160,47 @@ const EmployeeTable = ({ employees, departments, designations }) => {
                         {emp.active ? "Active" : "Inactive"}
                       </span>
                     </td>
+
+                    <td className="px-3 py-3">
+                      <div className="flex items-center justify-center gap-1.5">
+                        {/* View */}
+                        <button
+                          type="button"
+                          onClick={() => onView?.(emp)}
+                          title="View Employee"
+                          className="w-7 h-7 flex items-center justify-center rounded-md
+      text-blue-600 bg-blue-50 hover:bg-blue-100
+      transition-colors"
+                        >
+                          <Eye className="w-3.5 h-3.5" />
+                        </button>
+
+                        {/* Edit */}
+                        <button
+                          type="button"
+                          onClick={() => onEdit?.(emp)}
+                          title="Edit Employee"
+                          className="w-7 h-7 flex items-center justify-center rounded-md
+      text-amber-600 bg-amber-50 hover:bg-amber-100
+      transition-colors"
+                        >
+                          <Pencil className="w-3.5 h-3.5" />
+                        </button>
+
+                        {/* Delete */}
+                        <button
+                          type="button"
+                          onClick={() => onDelete?.(emp)}
+                          title="Delete Employee"
+                          className="w-7 h-7 flex items-center justify-center rounded-md
+      text-rose-600 bg-rose-50 hover:bg-rose-100
+      transition-colors"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </td>
+
                   </tr>
                 );
               })
