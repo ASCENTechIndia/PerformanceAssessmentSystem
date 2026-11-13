@@ -48,7 +48,7 @@ const Navbar = ({
           ${railWidth}`}
       >
         {/* Brand accent strip */}
-        <div className="flex-shrink-0 h-[3px] w-full bg-gradient-to-r from-emerald-400 via-teal-400 to-sky-400" />
+        <div className="flex-shrink-0 h-[3px] w-full bg-gradient-to-r from-blue-600 via-blue-400 to-sky-500" />
 
         {/* Brand */}
         <div
@@ -56,7 +56,7 @@ const Navbar = ({
             ${isCollapsed ? "md:justify-center md:px-0" : "px-4"} px-4`}
         >
           <div
-            className="w-9 h-9 flex-shrink-0 rounded-xl bg-gradient-to-br from-emerald-500 to-sky-500
+            className="w-9 h-9 flex-shrink-0 rounded-xl bg-gradient-to-br from-blue-600 to-sky-500
             flex items-center justify-center shadow-[0_6px_14px_-4px_rgba(16,185,129,0.55)]"
           >
             <Gauge className="w-5 h-5 text-white" strokeWidth={2.2} />
@@ -68,7 +68,7 @@ const Navbar = ({
             <span className="text-[12.5px] font-semibold text-slate-800 tracking-tight leading-snug ">
               {title}
             </span>
-            <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-emerald-600/80 mt-1">
+            <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-blue-600/80 mt-1">
               Assessment Suite
             </span>
           </div>
