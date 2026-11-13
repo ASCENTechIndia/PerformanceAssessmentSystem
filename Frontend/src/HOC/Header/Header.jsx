@@ -129,7 +129,7 @@ const Header = ({ toggleSidebar, onOpenCommandPalette }) => {
           </h1>
           <p
             className="text-[9.5px] md:text-[10.5px] font-semibold uppercase tracking-[0.18em]
-            bg-gradient-to-r from-emerald-600 to-sky-500 bg-clip-text text-transparent"
+            bg-blue-500 bg-clip-text text-transparent"
           >
             Performance Assessment System
           </p>
@@ -192,14 +192,14 @@ const Header = ({ toggleSidebar, onOpenCommandPalette }) => {
                 ring-1 ring-slate-200 shadow-[0_12px_32px_-12px_rgba(15,23,42,0.18)]
                 overflow-hidden z-50"
             >
-              <div className="h-[3px] bg-gradient-to-r from-emerald-400 via-teal-400 to-sky-400" />
+              <div className="h-[3px] bg-gradient-to-r from-blue-600 via-blue-400 to-sky-500" />
               <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
                 <p className="text-[13px] font-semibold text-slate-800">
                   Notifications
                   {unreadCount > 0 && (
                     <span
                       className="ml-2 inline-flex items-center justify-center px-1.5 h-5 text-[10px]
-                      font-semibold text-emerald-700 bg-emerald-50 rounded-md"
+                      font-semibold text-blue-700 bg-blue-50 rounded-md"
                     >
                       {unreadCount}
                     </span>
@@ -211,7 +211,7 @@ const Header = ({ toggleSidebar, onOpenCommandPalette }) => {
                       prev.map((n) => ({ ...n, unread: false })),
                     )
                   }
-                  className="text-[11px] font-medium text-emerald-600 hover:text-emerald-700
+                  className="text-[11px] font-medium text-blue-600 hover:text-blue-700
                     inline-flex items-center gap-1 transition-colors"
                 >
                   <CheckCheck className="w-3 h-3" /> Mark all read
@@ -222,12 +222,12 @@ const Header = ({ toggleSidebar, onOpenCommandPalette }) => {
                   <li
                     key={n.id}
                     className={`px-4 py-3 hover:bg-slate-50 transition-colors cursor-pointer
-                      ${n.unread ? "bg-emerald-50/30" : ""}`}
+                      ${n.unread ? "bg-blue-50/30" : ""}`}
                   >
                     <div className="flex items-start gap-2">
                       <span
                         className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0
-                          ${n.unread ? "bg-emerald-500" : "bg-slate-300"}`}
+                          ${n.unread ? "bg-blue-500" : "bg-slate-300"}`}
                       />
                       <div className="min-w-0 flex-1">
                         <p className="text-[12.5px] font-semibold text-slate-800 truncate">
