@@ -213,7 +213,7 @@ const RowActions = ({ task, onAction }) => {
     <div ref={ref} className="relative inline-block">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
+        className="p-1.5 rounded-lg text-blue-400 hover:bg-blue-100 hover:text-blue-700 transition-colors"
         aria-label="Task actions"
       >
         <MoreVertical className="w-4 h-4" />
@@ -221,7 +221,7 @@ const RowActions = ({ task, onAction }) => {
 
       {open && (
         <div className="absolute right-0 top-full mt-1 z-20 w-52 origin-top-right rounded-xl bg-white ring-1 ring-slate-200 shadow-[0_12px_32px_-12px_rgba(15,23,42,0.18)] overflow-hidden">
-          <div className="h-[3px] bg-gradient-to-r from-emerald-400 via-teal-400 to-sky-400" />
+          <div className="h-[3px] bg-gradient-to-r from-blue-600 via-blue-400 to-sky-500" />
           <div className="p-1">
             {items
               .filter((i) => i.show)
@@ -236,7 +236,7 @@ const RowActions = ({ task, onAction }) => {
                   ${
                     danger
                       ? "text-rose-600 hover:bg-rose-50"
-                      : "text-slate-700 hover:bg-emerald-50 hover:text-emerald-700"
+                      : "text-slate-700 hover:bg-blue-50 hover:text-blue-700"
                   }`}
                 >
                   <Icon
@@ -556,7 +556,7 @@ const TeamTasks = () => {
         <div className="rounded-xl border border-slate-200">
           <div className="overflow-x-auto">
             <table className="w-full text-left">
-              <thead className="bg-slate-50 border-b border-slate-200">
+              <thead className="bg-blue-50 border-b border-slate-200">
                 <tr>
                   <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
                     Task
@@ -629,7 +629,7 @@ const TeamTasks = () => {
 
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
-                            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-emerald-500 to-sky-500 flex items-center justify-center text-white text-[10px] font-semibold flex-shrink-0">
+                            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-sky-500 flex items-center justify-center text-white text-[10px] font-semibold flex-shrink-0">
                               {getInitials(task.employee)}
                             </div>
                             <span className="text-[12.5px] text-slate-700 truncate max-w-[120px]">
@@ -697,15 +697,15 @@ const TeamTasks = () => {
           </p>
           <div className="flex items-center gap-1">
             <button
-              className="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 disabled:opacity-40"
+              className="p-1.5 rounded-lg text-blue-400 hover:bg-blue-100 disabled:opacity-40"
               disabled
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <span className="px-3 py-1 rounded-lg bg-slate-100 text-slate-700 font-semibold">
+            <span className="px-3 py-1 rounded-lg bg-blue-100 text-blue-700 font-semibold">
               1
             </span>
-            <button className="p-1.5 rounded-lg text-slate-600 hover:bg-slate-100">
+            <button className="p-1.5 rounded-lg text-blue-600 hover:bg-blue-100">
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
