@@ -13,7 +13,7 @@ const EmployeePerformanceList = ({ employees }) => {
     <div className="bg-white rounded-xl ring-1 ring-slate-200 overflow-hidden">
       <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-100">
         <div
-          className="w-9 h-9 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-500 text-white
+          className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500 to-sky-500 text-white
           flex items-center justify-center shadow-[0_3px_8px_-2px_rgba(15,23,42,0.25)]"
         >
           <Users className="w-4 h-4" strokeWidth={2.2} />
@@ -39,7 +39,7 @@ const EmployeePerformanceList = ({ employees }) => {
               <div className="flex justify-between items-center mb-2">
                 <div className="flex items-center gap-2.5">
                   <div
-                    className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-sky-500
+                    className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-sky-500
                     text-white text-[10px] font-semibold flex items-center justify-center flex-shrink-0"
                   >
                     {getInitials(emp.name)}
@@ -53,13 +53,13 @@ const EmployeePerformanceList = ({ employees }) => {
                     </p>
                   </div>
                 </div>
-                <span className="text-[13px] font-bold text-emerald-700">
+                <span className="text-[13px] font-bold text-blue-700">
                   {emp.onTimeRate.toFixed(1)}%
                 </span>
               </div>
               <div className="h-2 rounded-full bg-slate-100 overflow-hidden">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-teal-500 transition-all duration-500"
+                  className="h-full rounded-full bg-gradient-to-r from-blue-500 to-sky-500 transition-all duration-500"
                   style={{ width: `${emp.onTimeRate}%` }}
                 />
               </div>

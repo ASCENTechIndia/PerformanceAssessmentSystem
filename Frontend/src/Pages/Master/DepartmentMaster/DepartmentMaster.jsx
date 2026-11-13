@@ -198,7 +198,7 @@ const DepartmentMaster = () => {
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-3">
                             <div
-                              className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-sky-500
+                              className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-sky-500
                               text-white flex items-center justify-center flex-shrink-0"
                             >
                               <Building2
@@ -238,7 +238,7 @@ const DepartmentMaster = () => {
                           {head ? (
                             <div className="flex items-center gap-2">
                               <div
-                                className="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-sky-500
+                                className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-sky-500
                                 text-white text-[9px] font-semibold flex items-center justify-center flex-shrink-0"
                               >
                                 {getInitials(head.name)}
@@ -261,12 +261,12 @@ const DepartmentMaster = () => {
                               text-[10.5px] font-semibold ring-1 transition-colors
                               ${
                                 dept.active
-                                  ? "bg-emerald-50 text-emerald-700 ring-emerald-200 hover:bg-emerald-100"
+                                  ? "bg-blue-50 text-blue-700 ring-blue-200 hover:bg-blue-100"
                                   : "bg-slate-100 text-slate-500 ring-slate-200 hover:bg-slate-200"
                               }`}
                           >
                             <span
-                              className={`w-1.5 h-1.5 rounded-full ${dept.active ? "bg-emerald-500" : "bg-slate-400"}`}
+                              className={`w-1.5 h-1.5 rounded-full ${dept.active ? "bg-blue-500" : "bg-slate-400"}`}
                             />
                             {dept.active ? "Active" : "Inactive"}
                           </button>

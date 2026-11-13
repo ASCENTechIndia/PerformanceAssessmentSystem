@@ -80,12 +80,12 @@ const UserIconDropdown = ({
         aria-expanded={isOpen}
         aria-label="Open user menu"
         className={`group relative inline-flex items-center justify-center rounded-full
-          bg-gradient-to-br from-emerald-500 to-sky-500 text-white
+          bg-gradient-to-br from-blue-500 to-sky-500 text-white
           ring-2 ring-white
-          shadow-[0_4px_12px_-4px_rgba(16,185,129,0.55)]
-          hover:shadow-[0_6px_16px_-4px_rgba(16,185,129,0.7)]
+          shadow-[0_4px_12px_-4px_rgba(59,130,246,0.55)]
+          hover:shadow-[0_6px_16px_-4px_rgba(59,130,246,0.7)]
           hover:scale-[1.03] active:scale-95
-          focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400
+          focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400
           transition-all duration-150
           ${className}`}
       >
@@ -105,7 +105,7 @@ const UserIconDropdown = ({
         <span
           aria-hidden="true"
           className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full
-            bg-emerald-500 ring-2 ring-white"
+            bg-blue-500 ring-2 ring-white"
         />
       </button>
 
@@ -119,7 +119,7 @@ const UserIconDropdown = ({
             overflow-hidden z-50"
         >
           {/* Brand accent strip */}
-          <div className="h-[3px] bg-gradient-to-r from-emerald-400 via-teal-400 to-sky-400" />
+          <div className="h-[3px] bg-gradient-to-r from-blue-500 via-sky-400 to-cyan-400" />
 
           {/* User info */}
           <div className="flex items-center gap-3 px-4 py-3.5 border-b border-slate-100">
@@ -128,13 +128,13 @@ const UserIconDropdown = ({
                 <img
                   src={imageUrl}
                   alt={name || "User"}
-                  className="w-full h-full rounded-full object-cover ring-2 ring-emerald-100"
+                  className="w-full h-full rounded-full object-cover ring-2 ring-blue-100"
                 />
               ) : (
                 <div
                   className="w-full h-full rounded-full flex items-center justify-center
-                    bg-gradient-to-br from-emerald-500 to-sky-500 text-white
-                    text-sm font-semibold ring-2 ring-emerald-100"
+                    bg-gradient-to-br from-blue-500 to-sky-500 text-white
+                    text-sm font-semibold ring-2 ring-blue-100"
                 >
                   {getInitials(name)}
                 </div>

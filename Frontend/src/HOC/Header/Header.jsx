@@ -85,7 +85,7 @@ const Header = ({ toggleSidebar, onOpenCommandPalette }) => {
       <span
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 bottom-0 h-px
-          bg-gradient-to-r from-emerald-300/0 via-emerald-300/60 to-sky-300/0"
+          bg-gradient-to-r from-blue-300/0 via-blue-300/60 to-sky-300/0"
       />
 
       {/* Left */}
@@ -95,7 +95,7 @@ const Header = ({ toggleSidebar, onOpenCommandPalette }) => {
           className="p-2 rounded-xl text-slate-600
             hover:bg-sky-50 hover:text-sky-700
             active:scale-95 transition-all duration-150
-            focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/50"
+            focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50"
           aria-label="Toggle sidebar"
           title="Toggle sidebar  [  ]"
         >
@@ -129,7 +129,7 @@ const Header = ({ toggleSidebar, onOpenCommandPalette }) => {
           </h1>
           <p
             className="text-[9.5px] md:text-[10.5px] font-semibold uppercase tracking-[0.18em]
-            bg-blue-500 bg-clip-text text-transparent"
+            bg-gradient-to-r from-blue-600 to-sky-500 bg-clip-text text-transparent"
           >
             Performance Assessment System
           </p>
@@ -143,9 +143,9 @@ const Header = ({ toggleSidebar, onOpenCommandPalette }) => {
           onClick={onOpenCommandPalette}
           className="hidden md:flex items-center gap-2 h-9 pl-3 pr-2 rounded-xl
             bg-slate-50 ring-1 ring-slate-200/80 text-slate-500
-            hover:bg-white hover:ring-emerald-200
+            hover:bg-white hover:ring-blue-200
             transition-colors duration-150
-            focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/50"
+            focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50"
           title="Search  ⌘K"
         >
           <Search className="w-3.5 h-3.5" />
@@ -161,7 +161,7 @@ const Header = ({ toggleSidebar, onOpenCommandPalette }) => {
         <button
           onClick={onOpenCommandPalette}
           className="md:hidden p-2 rounded-xl text-slate-600 hover:bg-sky-50 hover:text-sky-700
-            transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/50"
+            transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50"
           aria-label="Search"
         >
           <Search className="w-5 h-5" strokeWidth={2.2} />
@@ -174,13 +174,13 @@ const Header = ({ toggleSidebar, onOpenCommandPalette }) => {
             className="relative p-2 rounded-xl text-slate-600
               hover:bg-sky-50 hover:text-sky-700
               active:scale-95 transition-all duration-150
-              focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/50"
+              focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50"
             aria-label={`Notifications${unreadCount ? ` (${unreadCount} unread)` : ""}`}
           >
             <Bell className="w-5 h-5" strokeWidth={2.2} />
             {unreadCount > 0 && (
               <span
-                className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-500
+                className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-blue-500
                 ring-2 ring-white animate-pulse"
               />
             )}
@@ -192,7 +192,7 @@ const Header = ({ toggleSidebar, onOpenCommandPalette }) => {
                 ring-1 ring-slate-200 shadow-[0_12px_32px_-12px_rgba(15,23,42,0.18)]
                 overflow-hidden z-50"
             >
-              <div className="h-[3px] bg-gradient-to-r from-blue-600 via-blue-400 to-sky-500" />
+              <div className="h-[3px] bg-gradient-to-r from-blue-500 via-sky-400 to-cyan-400" />
               <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
                 <p className="text-[13px] font-semibold text-slate-800">
                   Notifications

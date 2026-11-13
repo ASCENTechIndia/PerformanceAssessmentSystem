@@ -63,7 +63,7 @@ const Layout = ({ title, breadcrumb, children }) => {
               <div className="h-[3px] w-full bg-gradient-to-r from-blue-600 via-blue-400 to-sky-500" />
 
               {(title || breadcrumb) && (
-                <div className="px-4 py-3 border-b border-slate-100 bg-gradient-to-r from-white via-white to-emerald-50/40">
+                <div className="px-4 py-3 border-b border-slate-100 bg-gradient-to-r from-white via-white to-blue-50/40">
                   <div className="flex items-center gap-3">
                     <span className="h-7 w-1 rounded-full bg-gradient-to-b from-blue-600 via-blue-400 to-sky-500" />
                     <div className="flex-1 min-w-0">
@@ -76,21 +76,21 @@ const Layout = ({ title, breadcrumb, children }) => {
                         <nav className="flex items-center gap-1.5 text-xs text-slate-500 mt-0.5">
                           <Link
                             to={breadcrumb.homeLink || "/dashboard"}
-                            className="inline-flex items-center gap-1 hover:text-emerald-600 transition-colors"
+                            className="inline-flex items-center gap-1 hover:text-blue-600 transition-colors"
                           >
                             <Home className="w-3 h-3" />
                             {breadcrumb.homeText || "Home"}
                           </Link>
                           {breadcrumb.current && (
                             <>
-                              <ChevronRight className="w-3 h-3 text-emerald-400/70" />
-                              <span className="text-emerald-700 font-medium">
+                              <ChevronRight className="w-3 h-3 text-blue-400/70" />
+                              <span className="text-blue-700 font-medium">
                                 {breadcrumb.current}
                               </span>
                             </>
                           )}
                         </nav>
-                      )} 
+                      )}
                     </div>
                   </div>
                 </div>

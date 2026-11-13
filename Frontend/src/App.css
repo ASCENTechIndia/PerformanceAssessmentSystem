@@ -36,9 +36,10 @@ body {
     text-rendering: optimizeLegibility;
   }
 
+  /* Blue selection — was emerald */
   ::selection {
-    background-color: rgba(16, 185, 129, 0.22);
-    color: rgb(6, 78, 59);
+    background-color: rgba(59, 130, 246, 0.22);
+    color: rgb(30, 58, 138);
   }
 }
 
@@ -96,6 +97,7 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
 /* ============ Inputs ============ */
 .pas-label {
   @apply block text-[12px] font-semibold text-slate-600 mb-1.5;
@@ -109,7 +111,7 @@ body {
          shadow-[inset_0_1px_2px_rgba(15,23,42,0.03)]
          transition-colors duration-150
          outline-none
-         focus:border-emerald-400 focus:ring-4 focus:ring-emerald-400/15;
+         focus:border-blue-400 focus:ring-4 focus:ring-blue-400/15;
 }
 
 .pas-error {
@@ -126,7 +128,7 @@ body {
          px-5 py-2 rounded-xl
          text-[13px] font-semibold text-white
          bg-gradient-to-r from-blue-500 to-sky-400
-         shadow-[0_8px_20px_-8px_rgba(16,185,129,0.7)]
+         shadow-[0_8px_20px_-8px_rgba(59,130,246,0.6)]
          hover:from-blue-600 hover:to-sky-500
          active:scale-[0.99]
          transition-all duration-150

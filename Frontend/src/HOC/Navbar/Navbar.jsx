@@ -28,7 +28,6 @@ const Navbar = ({
     setOpenSections((prev) => ({ ...prev, [menuId]: !prev[menuId] }));
 
   const railWidth = isCollapsed ? "md:w-16" : "md:w-64";
-  const contentPad = isCollapsed ? "md:px-2" : "md:px-4";
 
   return (
     <>
@@ -47,8 +46,8 @@ const Navbar = ({
           ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
           ${railWidth}`}
       >
-        {/* Brand accent strip */}
-        <div className="flex-shrink-0 h-[3px] w-full bg-gradient-to-r from-blue-600 via-blue-400 to-sky-500" />
+        {/* Brand accent strip — blue → sky → cyan */}
+        <div className="flex-shrink-0 h-[3px] w-full bg-gradient-to-r from-blue-500 via-sky-400 to-cyan-400" />
 
         {/* Brand */}
         <div
@@ -57,7 +56,7 @@ const Navbar = ({
         >
           <div
             className="w-9 h-9 flex-shrink-0 rounded-xl bg-gradient-to-br from-blue-600 to-sky-500
-            flex items-center justify-center shadow-[0_6px_14px_-4px_rgba(16,185,129,0.55)]"
+            flex items-center justify-center shadow-[0_6px_14px_-4px_rgba(59,130,246,0.55)]"
           >
             <Gauge className="w-5 h-5 text-white" strokeWidth={2.2} />
           </div>
@@ -65,7 +64,7 @@ const Navbar = ({
             className={`flex flex-col leading-tight min-w-0 overflow-hidden transition-all duration-200
               ${isCollapsed ? "md:opacity-0 md:w-0" : "opacity-100"}`}
           >
-            <span className="text-[12.5px] font-semibold text-slate-800 tracking-tight leading-snug ">
+            <span className="text-[12.5px] font-semibold text-slate-800 tracking-tight leading-snug">
               {title}
             </span>
             <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-blue-600/80 mt-1">
@@ -117,7 +116,7 @@ const Navbar = ({
                       <span className="tracking-tight">
                         {section.MENUTITLE}
                       </span>
-                      <ChevronDown  
+                      <ChevronDown
                         className={`w-4 h-4 transition-transform duration-300
                           ${
                             isOpenSection
@@ -155,11 +154,11 @@ const Navbar = ({
 
         {/* Footer */}
         <div
-          className={`flex-shrink-0 border-t border-slate-100 bg-gradient-to-r from-blue-50/60 via-blue to-sky-50/60 transition-all duration-200
+          className={`flex-shrink-0 border-t border-slate-100 bg-gradient-to-r from-blue-50/60 via-white to-sky-50/60 transition-all duration-200
             ${isCollapsed ? "md:px-2 md:py-3" : "px-4 py-3"}`}
         >
           <div className="flex items-center justify-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_0_3px_rgba(16,185,129,0.18)]" />
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_0_3px_rgba(59,130,246,0.18)]" />
             {!isCollapsed && (
               <p className="text-[10px] font-medium text-slate-500">
                 © {new Date().getFullYear()} · PAS v1.0.0

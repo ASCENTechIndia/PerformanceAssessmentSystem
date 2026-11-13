@@ -1,15 +1,21 @@
 const palette = {
+  blue: {
+    soft: "bg-blue-50",
+    text: "text-blue-700",
+    ring: "ring-blue-200",
+    grad: "from-blue-500 to-sky-500",
+  },
+  sky: {
+    soft: "bg-sky-50",
+    text: "text-sky-700",
+    ring: "ring-sky-200",
+    grad: "from-sky-400 to-cyan-500",
+  },
   indigo: {
     soft: "bg-indigo-50",
     text: "text-indigo-700",
     ring: "ring-indigo-200",
     grad: "from-indigo-400 to-blue-600",
-  },
-  emerald: {
-    soft: "bg-emerald-50",
-    text: "text-emerald-700",
-    ring: "ring-emerald-200",
-    grad: "from-emerald-400 to-teal-500",
   },
   amber: {
     soft: "bg-amber-50",
@@ -22,6 +28,12 @@ const palette = {
     text: "text-rose-700",
     ring: "ring-rose-200",
     grad: "from-rose-400 to-pink-500",
+  },
+  emerald: {
+    soft: "bg-emerald-50",
+    text: "text-emerald-700",
+    ring: "ring-emerald-200",
+    grad: "from-emerald-400 to-teal-500",
   },
 };
 

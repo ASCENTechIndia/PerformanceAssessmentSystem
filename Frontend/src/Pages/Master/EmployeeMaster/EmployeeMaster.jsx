@@ -360,7 +360,7 @@ const EmployeeMaster = () => {
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-3">
                             <div
-                              className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-500 to-sky-500
+                              className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-sky-500
                               text-white text-[11px] font-semibold flex items-center justify-center flex-shrink-0"
                             >
                               {getInitials(emp.name)}
@@ -432,12 +432,12 @@ const EmployeeMaster = () => {
                               text-[10.5px] font-semibold ring-1 transition-colors
                               ${
                                 emp.active
-                                  ? "bg-emerald-50 text-emerald-700 ring-emerald-200 hover:bg-emerald-100"
+                                  ? "bg-blue-50 text-blue-700 ring-blue-200 hover:bg-blue-100"
                                   : "bg-slate-100 text-slate-500 ring-slate-200 hover:bg-slate-200"
                               }`}
                           >
                             <span
-                              className={`w-1.5 h-1.5 rounded-full ${emp.active ? "bg-emerald-500" : "bg-slate-400"}`}
+                              className={`w-1.5 h-1.5 rounded-full ${emp.active ? "bg-blue-500" : "bg-slate-400"}`}
                             />
                             {emp.active ? "Active" : "Inactive"}
                           </button>

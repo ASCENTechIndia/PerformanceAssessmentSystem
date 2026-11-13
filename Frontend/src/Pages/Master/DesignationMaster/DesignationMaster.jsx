@@ -191,7 +191,7 @@ const DesignationMaster = () => {
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-3">
                             <div
-                              className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-sky-500
+                              className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-sky-500
                               text-white flex items-center justify-center flex-shrink-0"
                             >
                               <UserCog className="w-4 h-4" strokeWidth={2.2} />
@@ -243,12 +243,12 @@ const DesignationMaster = () => {
                               text-[10.5px] font-semibold ring-1 transition-colors
                               ${
                                 d.active
-                                  ? "bg-emerald-50 text-emerald-700 ring-emerald-200 hover:bg-emerald-100"
+                                  ? "bg-blue-50 text-blue-700 ring-blue-200 hover:bg-blue-100"
                                   : "bg-slate-100 text-slate-500 ring-slate-200 hover:bg-slate-200"
                               }`}
                           >
                             <span
-                              className={`w-1.5 h-1.5 rounded-full ${d.active ? "bg-emerald-500" : "bg-slate-400"}`}
+                              className={`w-1.5 h-1.5 rounded-full ${d.active ? "bg-blue-500" : "bg-slate-400"}`}
                             />
                             {d.active ? "Active" : "Inactive"}
                           </button>

@@ -138,13 +138,13 @@ const SeniorPerformanceDashboard = () => {
           <SeniorStatCard
             label="Total Assigned"
             value={metrics.total}
-            color="indigo"
+            color="blue"
             icon={ClipboardList}
           />
           <SeniorStatCard
             label="Completed"
             value={metrics.completed}
-            color="emerald"
+            color="sky"
             icon={CheckCircle2}
           />
           <SeniorStatCard

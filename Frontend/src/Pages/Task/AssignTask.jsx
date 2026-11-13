@@ -92,8 +92,8 @@ const AssignTask = () => {
           (f) =>
             f.name === file.name &&
             f.size === file.size &&
-            f.lastModified === file.lastModified
-        )
+            f.lastModified === file.lastModified,
+        ),
     );
 
     setValue("attachments", uniqueFiles, {
@@ -106,9 +106,7 @@ const AssignTask = () => {
   };
 
   const handleRemoveFile = (index) => {
-    const updatedFiles = attachments.filter(
-      (_, i) => i !== index
-    );
+    const updatedFiles = attachments.filter((_, i) => i !== index);
 
     setValue("attachments", updatedFiles, {
       shouldDirty: true,
@@ -166,9 +164,7 @@ const AssignTask = () => {
 
       reset();
     } catch (err) {
-      toast.error(
-        err?.response?.data?.message || "Failed to assign task",
-      );
+      toast.error(err?.response?.data?.message || "Failed to assign task");
     }
   };
   return (
@@ -182,8 +178,8 @@ const AssignTask = () => {
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Intro */}
-        <div className="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-r from-emerald-50 via-white to-sky-50 ring-1 ring-emerald-100">
-          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-emerald-500 to-sky-500 flex items-center justify-center flex-shrink-0">
+        <div className="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-r from-blue-50 via-white to-sky-50 ring-1 ring-blue-100">
+          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500 to-sky-500 flex items-center justify-center flex-shrink-0">
             <ClipboardList className="w-5 h-5 text-white" strokeWidth={2.2} />
           </div>
           <div className="flex-1 min-w-0">
@@ -195,7 +191,7 @@ const AssignTask = () => {
               submitted, it lands in your <b>Review Queue</b>.
             </p>
           </div>
-          <span className="hidden md:inline-flex text-[10px] font-semibold uppercase tracking-wider text-emerald-600 bg-emerald-100/70 px-2 py-1 rounded">
+          <span className="hidden md:inline-flex text-[10px] font-semibold uppercase tracking-wider text-blue-600 bg-blue-100/70 px-2 py-1 rounded">
             Step 1 of 3
           </span>
         </div>
@@ -379,7 +375,6 @@ const AssignTask = () => {
               </div>
             </fieldset>
 
-
             {/* Attachments */}
             <fieldset className="space-y-4 pt-2">
               <legend className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400 mb-2">
@@ -399,19 +394,19 @@ const AssignTask = () => {
                   type="file"
                   multiple
                   accept=".pdf,.jpg,.jpeg,application/pdf,image/jpeg"
-                  className="pas-input file:mr-3 file:rounded-md file:border-0 file:bg-emerald-50 file:px-3 file:py-1.5 file:text-[11px] file:font-semibold file:text-emerald-700 file:cursor-pointer"
+                  className="pas-input file:mr-3 file:rounded-md file:border-0 file:bg-blue-50 file:px-3 file:py-1.5 file:text-[11px] file:font-semibold file:text-blue-700 file:cursor-pointer"
                   onChange={handleFileChange}
                 />
 
                 <p className="pas-help">
-                  Supported formats: PDF, JPG, JPEG. You can select multiple files.
+                  Supported formats: PDF, JPG, JPEG. You can select multiple
+                  files.
                 </p>
               </div>
 
               {/* Selected Files */}
               {attachments.length > 0 && (
                 <div className="rounded-lg border border-slate-200 overflow-hidden">
-
                   <div className="flex items-center justify-between px-3 py-2 bg-slate-50 border-b border-slate-200">
                     <p className="text-[11px] font-semibold text-slate-700">
                       Selected Files ({attachments.length})
@@ -433,8 +428,8 @@ const AssignTask = () => {
                         className="flex items-center justify-between gap-3 px-3 py-2.5"
                       >
                         <div className="flex items-center gap-2 min-w-0">
-                          <div className="w-8 h-8 rounded-md bg-emerald-50 flex items-center justify-center flex-shrink-0">
-                            <ClipboardList className="w-4 h-4 text-emerald-600" />
+                          <div className="w-8 h-8 rounded-md bg-blue-50 flex items-center justify-center flex-shrink-0">
+                            <ClipboardList className="w-4 h-4 text-blue-600" />
                           </div>
 
                           <div className="min-w-0">
@@ -462,7 +457,6 @@ const AssignTask = () => {
                 </div>
               )}
             </fieldset>
-
 
             {/* Notes */}
             <fieldset className="space-y-4 pt-2">
@@ -492,7 +486,7 @@ const AssignTask = () => {
             <div className="lg:sticky lg:top-20 space-y-4">
               <div className="p-4 rounded-xl bg-white border border-slate-200">
                 <div className="flex items-center gap-2 mb-3">
-                  <UserCheck className="w-4 h-4 text-emerald-500" />
+                  <UserCheck className="w-4 h-4 text-blue-500" />
                   <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
                     Assignment Preview
                   </p>
@@ -500,8 +494,8 @@ const AssignTask = () => {
 
                 {selectedEmployee ? (
                   <div className="space-y-3">
-                    <div className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-br from-emerald-50 to-sky-50 border border-emerald-100">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-sky-500 flex items-center justify-center text-white text-[12px] font-semibold flex-shrink-0">
+                    <div className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-br from-blue-50 to-sky-50 border border-blue-100">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-sky-500 flex items-center justify-center text-white text-[12px] font-semibold flex-shrink-0">
                         {getInitials(selectedEmployee.label)}
                       </div>
                       <div className="min-w-0">
@@ -533,12 +527,13 @@ const AssignTask = () => {
                         <div className="flex items-center justify-between">
                           <dt className="text-slate-500">Deadline in</dt>
                           <dd
-                            className={`font-semibold ${daysUntil < 0
-                              ? "text-rose-600"
-                              : daysUntil < 3
-                                ? "text-amber-600"
-                                : "text-emerald-600"
-                              }`}
+                            className={`font-semibold ${
+                              daysUntil < 0
+                                ? "text-rose-600"
+                                : daysUntil < 3
+                                  ? "text-amber-600"
+                                  : "text-blue-600"
+                            }`}
                           >
                             {daysUntil < 0
                               ? "Past due"
@@ -552,12 +547,13 @@ const AssignTask = () => {
                       <div className="flex items-center justify-between">
                         <dt className="text-slate-500">Priority</dt>
                         <dd
-                          className={`font-semibold ${watched.priority === "High"
-                            ? "text-rose-600"
-                            : watched.priority === "Medium"
-                              ? "text-amber-600"
-                              : "text-slate-600"
-                            }`}
+                          className={`font-semibold ${
+                            watched.priority === "High"
+                              ? "text-rose-600"
+                              : watched.priority === "Medium"
+                                ? "text-amber-600"
+                                : "text-slate-600"
+                          }`}
                         >
                           {watched.priority}
                         </dd>

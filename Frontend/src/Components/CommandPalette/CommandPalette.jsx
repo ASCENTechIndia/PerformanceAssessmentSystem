@@ -91,7 +91,7 @@ const CommandPalette = ({ open, onOpenChange }) => {
           overflow-hidden animate-[paletteIn_180ms_cubic-bezier(0.16,1,0.3,1)]"
       >
         {/* Top brand hairline */}
-        <div className="h-[3px] w-full bg-gradient-to-r from-emerald-400 via-teal-400 to-sky-400" />
+        <div className="h-[3px] w-full bg-gradient-to-r from-blue-500 via-sky-400 to-cyan-400" />
 
         {/* Search input */}
         <div className="flex items-center gap-3 px-4 h-14 border-b border-slate-100">
@@ -136,7 +136,7 @@ const CommandPalette = ({ open, onOpenChange }) => {
                         transition-colors duration-100
                         ${
                           isActive
-                            ? "bg-emerald-50 text-emerald-700"
+                            ? "bg-blue-50 text-blue-700"
                             : "text-slate-700 hover:bg-slate-50"
                         }`}
                     >
@@ -145,7 +145,7 @@ const CommandPalette = ({ open, onOpenChange }) => {
                           transition-colors duration-100
                           ${
                             isActive
-                              ? "bg-emerald-100 text-emerald-600"
+                              ? "bg-blue-100 text-blue-600"
                               : "bg-slate-100 text-slate-500"
                           }`}
                       >
@@ -166,7 +166,7 @@ const CommandPalette = ({ open, onOpenChange }) => {
                         )}
                       </span>
                       {isActive && (
-                        <ArrowRight className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
+                        <ArrowRight className="w-3.5 h-3.5 text-blue-500 flex-shrink-0" />
                       )}
                     </button>
                   </li>
@@ -196,7 +196,7 @@ const CommandPalette = ({ open, onOpenChange }) => {
             </span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
             <span>PAS Command</span>
           </div>
         </div>
