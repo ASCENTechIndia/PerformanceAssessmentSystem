@@ -244,24 +244,24 @@ const Login = () => {
       {loading ? (
         <div className="fixed inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm z-50">
           <div className="relative h-16 w-16">
-            <div className="absolute inset-0 rounded-full border-4 border-emerald-100" />
-            <div className="absolute inset-0 animate-spin rounded-full border-4 border-transparent border-t-emerald-500 border-r-sky-500" />
+            <div className="absolute inset-0 rounded-full border-4 border-blue-100" />
+            <div className="absolute inset-0 animate-spin rounded-full border-4 border-transparent border-t-blue-500 border-r-sky-500" />
           </div>
         </div>
       ) : (
-        <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-emerald-50/60 via-white to-sky-50/60 flex items-center justify-center p-4">
+        <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-blue-50/60 via-white to-sky-50/60 flex items-center justify-center p-4">
           {/* Ambient brand blobs */}
-          <div className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-emerald-200/40 blur-3xl" />
+          <div className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-blue-200/40 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-sky-200/40 blur-3xl" />
 
           <div className="relative w-full max-w-md">
             <div className="bg-white rounded-2xl shadow-[0_20px_50px_-20px_rgba(15,23,42,0.25)] ring-1 ring-slate-200/80 overflow-hidden">
               {/* Brand accent strip */}
-              <div className="h-[3px] w-full bg-gradient-to-r from-emerald-400 via-teal-400 to-sky-400" />
+              <div className="h-[3px] w-full bg-gradient-to-r from-blue-500 via-sky-400 to-cyan-400" />
 
               {/* Header */}
               <div className="px-8 pt-8 pb-6 text-center border-b border-slate-100">
-                <div className="mx-auto mb-4 w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-sky-500 flex items-center justify-center shadow-[0_8px_20px_-6px_rgba(16,185,129,0.6)]">
+                <div className="mx-auto mb-4 w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-sky-500 flex items-center justify-center shadow-[0_8px_20px_-6px_rgba(59,130,246,0.6)]">
                   {/* Gauge icon (inline SVG so no extra import is needed) */}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -282,7 +282,7 @@ const Login = () => {
                 <h1 className="text-[19px] sm:text-xl font-semibold text-slate-800 tracking-tight">
                   Performance Assessment System
                 </h1>
-                <p className="mt-1.5 text-[10.5px] font-semibold uppercase tracking-[0.18em] bg-gradient-to-r from-emerald-600 to-sky-500 bg-clip-text text-transparent">
+                <p className="mt-1.5 text-[10.5px] font-semibold uppercase tracking-[0.18em] bg-gradient-to-r from-blue-600 to-sky-500 bg-clip-text text-transparent">
                   Secure Sign In
                 </p>
               </div>
@@ -299,7 +299,7 @@ const Login = () => {
                   </label>
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                      <FaUser className="text-slate-400 group-focus-within:text-emerald-500 transition-colors duration-150" />
+                      <FaUser className="text-slate-400 group-focus-within:text-blue-500 transition-colors duration-150" />
                     </div>
                     <input
                       type="text"
@@ -311,7 +311,7 @@ const Login = () => {
                         bg-white border border-slate-200 rounded-xl
                         placeholder:text-slate-400
                         shadow-[inset_0_1px_2px_rgba(15,23,42,0.03)]
-                        focus:outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-400/15
+                        focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-400/15
                         transition-colors duration-150"
                       value={formData.in_UserId}
                       onChange={handleChange}
@@ -330,7 +330,7 @@ const Login = () => {
                   </label>
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                      <FaLock className="text-slate-400 group-focus-within:text-emerald-500 transition-colors duration-150" />
+                      <FaLock className="text-slate-400 group-focus-within:text-blue-500 transition-colors duration-150" />
                     </div>
                     <input
                       type="password"
@@ -342,7 +342,7 @@ const Login = () => {
                         bg-white border border-slate-200 rounded-xl
                         placeholder:text-slate-400
                         shadow-[inset_0_1px_2px_rgba(15,23,42,0.03)]
-                        focus:outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-400/15
+                        focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-400/15
                         transition-colors duration-150"
                       required
                       value={displayPassword}
@@ -385,12 +385,12 @@ const Login = () => {
                   type="submit"
                   className="w-full flex justify-center items-center gap-2 py-2.5 px-4 rounded-xl
                     text-[13.5px] font-semibold text-white tracking-wide
-                    bg-gradient-to-r from-emerald-500 to-sky-500
-                    shadow-[0_8px_20px_-8px_rgba(16,185,129,0.7)]
-                    hover:from-emerald-600 hover:to-sky-600
-                    hover:shadow-[0_10px_24px_-8px_rgba(16,185,129,0.85)]
+                    bg-gradient-to-r from-blue-500 to-sky-500
+                    shadow-[0_8px_20px_-8px_rgba(59,130,246,0.6)]
+                    hover:from-blue-600 hover:to-sky-600
+                    hover:shadow-[0_10px_24px_-8px_rgba(59,130,246,0.7)]
                     active:scale-[0.99]
-                    focus:outline-none focus-visible:ring-4 focus-visible:ring-emerald-400/30
+                    focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-400/30
                     transition-all duration-150"
                 >
                   Login
@@ -398,9 +398,9 @@ const Login = () => {
               </form>
 
               {/* Footer */}
-              <div className="px-8 py-3 border-t border-slate-100 bg-gradient-to-r from-emerald-50/60 via-white to-sky-50/60">
+              <div className="px-8 py-3 border-t border-slate-100 bg-gradient-to-r from-blue-50/60 via-white to-sky-50/60">
                 <div className="flex items-center justify-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_0_3px_rgba(16,185,129,0.18)]" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_0_3px_rgba(59,130,246,0.18)]" />
                   <p className="text-[10px] font-medium text-slate-500">
                     © {new Date().getFullYear()} · PAS v1.0.0
                   </p>
