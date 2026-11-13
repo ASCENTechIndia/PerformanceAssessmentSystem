@@ -1,11 +1,12 @@
 import { useState, useMemo } from "react";
 import { toast } from "sonner";
-import Layout from "../../Components/Layout";
+import Layout from "../../../Components/Layout";
 import TaskListStats from "./TaskListStats";
 import TaskListFilters from "./TaskListFilters";
 import TaskTabs from "./TaskTabs";
 import TaskListTable from "./TaskListTable";
 import CreateTaskModal from "./CreateTaskModal";
+import AssignTaskModal from "./AssignTaskModal";
 
 /* ---------- Dummy data ---------- */
 const MOCK_TASKS = [
@@ -155,6 +156,7 @@ const TaskList = () => {
   const [tasks, setTasks] = useState(MOCK_TASKS);
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [activeTab, setActiveTab] = useState("all");
+  const [assigningTask, setAssigningTask] = useState(null);
   const [createOpen, setCreateOpen] = useState(false);
 
   /* Apply filters (before tab logic) */
@@ -223,11 +225,26 @@ const TaskList = () => {
     setTasks((prev) => [newTask, ...prev]);
     setCreateOpen(false);
     toast.success(`${data.title} created as ${newTask.id}`);
+    setAssigningTask(data);
   };
 
   /* Assign — placeholder */
   const handleAssign = (task) => {
-    toast.info(`Assign action for ${task.id} — wire up later`);
+    setAssigningTask(task);
+  };
+
+  const handleAssignSubmit = (data) => {
+    setTasks((prev) =>
+      prev.map((t) =>
+        t.id === assigningTask.id
+          ? { ...t, assignedTo: data.assignedToName }
+          : t,
+      ),
+    );
+    toast.success(
+      `Task ${assigningTask.id} assigned to ${data.assignedToName}`,
+    );
+    setAssigningTask(null);
   };
 
   /* Dropdown options from data */
@@ -295,6 +312,12 @@ const TaskList = () => {
         parentTaskOptions={parentTaskOptions}
         createdBy="Shri Kumar"
         nextTaskId={`T-${String(tasks.length + 1).padStart(3, "0")}`}
+      />
+      <AssignTaskModal
+        open={!!assigningTask}
+        onClose={() => setAssigningTask(null)}
+        task={assigningTask}
+        onAssign={handleAssignSubmit}
       />
     </Layout>
   );

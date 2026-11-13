@@ -103,13 +103,10 @@ const CreateTaskModal = ({
               <ClipboardList className="w-5 h-5" strokeWidth={2.2} />
             </div>
             <div>
-              <p className="text-[14.5px] font-semibold text-slate-800">
-                Create task
-              </p>
-              <p className="text-[11.5px] text-slate-500 mt-0.5">
-                New task ID will be{" "}
-                <span className="font-mono font-semibold text-slate-700">
-                  {nextTaskId}
+              <p className="text-[14.5px] font-bold text-slate-800">
+                Create task{" "}
+                <span className="text-[11px] font-medium text-slate-400">
+                  Step 1 of 2 · Create task
                 </span>
               </p>
             </div>

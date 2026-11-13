@@ -8,7 +8,6 @@ import UserAccess from "./Pages/Admin/UserAccess.jsx";
 import AssignTask from "./Pages/Task/AssignTask.jsx";
 import TeamTasks from "./Pages/Task/TeamTasks.jsx";
 import ReviewQueue from "./Pages/Task/ReviewQueue.jsx";
-import MyTasks from "./Pages/Task/MyTask/MyTasks.jsx";
 import ExtensionRequests from "./Pages/Task/ExtensionRequests/ExtensionRequests.jsx";
 import DesignationMaster from "./Pages/Master/DesignationMaster/DesignationMaster.jsx";
 import DepartmentMaster from "./Pages/Master/DepartmentMaster/DepartmentMaster.jsx";
@@ -18,7 +17,9 @@ import JuniorPerformanceDashboard from "./Pages/PerformanceDashboard/JuniorDashb
 import AddEmployee from "./Pages/Master/EmployeeMaster/AddEmployee.jsx";
 import TaskTypeMaster from "./Pages/Master/TaskTypeMaster/TaskTypeMaster.jsx";
 import FrmAddTaskType from "./Pages/Master/TaskTypeMaster/FrmAddTaskType.jsx";
-import TaskList from "./Pages/TaskManagement/TaskList.jsx";
+import TaskList from "./Pages/TaskManagement/TaksList/TaskList.jsx";
+import MyTasks from "./Pages/MyTask/MyTask/MyTasks.jsx";
+import TaskStatus from "./Pages/MyTask/TaskStatus/TaskStatus.jsx";
 
 function App() {
   const hostname = window.location.hostname;
@@ -45,9 +46,12 @@ function App() {
                   <Route path="/master/DepartmentMaster"  element={<DepartmentMaster />} />
                   <Route path="/master/DesignationMaster" element={<DesignationMaster />} />
 
+                  {/* My Task */}
+                  <Route path="/Task/MyTask" element={<MyTasks />} />
+                  <Route path="/Task/task-status" element={<TaskStatus />} />
+
                   {/* Task Management */}
                   <Route path="/task-management/tasks" element={<TaskList />} />
-                  <Route path="/Task/MyTask" element={<MyTasks />} />
                   <Route path="/admin/userAccess" element={<UserAccess />} />
                   <Route path="/Task/AssignTask" element={<AssignTask />} />
                   <Route path="/Task/TeamTasks" element={<TeamTasks />} />

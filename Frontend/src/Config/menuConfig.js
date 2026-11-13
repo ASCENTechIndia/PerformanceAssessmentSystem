@@ -66,12 +66,18 @@ export const STATIC_MENU = [
      ============================================================ */
   {
     MENUID: 2,
-    MENUTITLE: "My Work",
+    MENUTITLE: "My Task",
     children: [
       {
         MENUID: 201,
         MENUTITLE: "My Task",
         PAGEPATH: "/Task/MyTask",
+        ICON: Menu,
+      },
+      {
+        MENUID: 202,
+        MENUTITLE: "Task Status",
+        PAGEPATH: "/Task/task-status",
         ICON: Menu,
       },
     ],
