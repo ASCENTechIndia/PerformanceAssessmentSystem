@@ -142,7 +142,7 @@ const DesignationMaster = () => {
         <div className="rounded-xl border border-slate-200">
           <div className="overflow-x-auto">
             <table className="w-full text-left">
-              <thead className="bg-slate-50 border-b border-slate-200">
+              <thead className="bg-blue-50 border-b border-slate-200">
                 <tr>
                   <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
                     Designation
