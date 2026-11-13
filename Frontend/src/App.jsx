@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./HOC/Login/Login";
 import ProtectedRoute from "./HOC/ProtectedRoute.jsx";
 import Dashboard from "./Pages/Dashboard/Dashboard.jsx";
-import FrmTaskTypeMst from "./Pages/Master/TaskTypeMaster/FrmTaskTypeMst.jsx";
 import HierarchyMapping from "./Pages/Master/HierarchyMapping/HierarchyMapping.jsx";
 import UserAccess from "./Pages/Admin/UserAccess.jsx";
 import AssignTask from "./Pages/Task/AssignTask.jsx";
@@ -16,6 +15,10 @@ import DepartmentMaster from "./Pages/Master/DepartmentMaster/DepartmentMaster.j
 import EmployeeMaster from "./Pages/Master/EmployeeMaster/EmployeeMaster.jsx";
 import SeniorPerformanceDashboard from "./Pages/PerformanceDashboard/SeniorDashboard/SeniorPerformanceDashboard.jsx";
 import JuniorPerformanceDashboard from "./Pages/PerformanceDashboard/JuniorDashboard/JuniorPerformanceDashboard.jsx";
+import AddEmployee from "./Pages/Master/EmployeeMaster/AddEmployee.jsx";
+import TaskTypeMaster from "./Pages/Master/TaskTypeMaster/TaskTypeMaster.jsx";
+import FrmAddTaskType from "./Pages/Master/TaskTypeMaster/FrmAddTaskType.jsx";
+import TaskList from "./Pages/TaskManagement/TaskList.jsx";
 
 function App() {
   const hostname = window.location.hostname;
@@ -34,13 +37,16 @@ function App() {
                   <Route path="/dashboard" element={<Dashboard />} />
 
                   {/* Master routes */}
-                  <Route path="/Master/FrmTaskTypeMst" element={<FrmTaskTypeMst/>}/>
+                  <Route path="/master/task-type" element={<TaskTypeMaster/>}/>
+                  <Route path="/Master/add-task-type" element={<FrmAddTaskType/>}/>
                   <Route path="/master/employees" element={<EmployeeMaster />} />
+                  <Route path="/master/add-employee" element={<AddEmployee />} />
                   <Route path="/master/HierarchyMapping" element={<HierarchyMapping />} />
                   <Route path="/master/DepartmentMaster"  element={<DepartmentMaster />} />
                   <Route path="/master/DesignationMaster" element={<DesignationMaster />} />
 
                   {/* Task Management */}
+                  <Route path="/task-management/tasks" element={<TaskList />} />
                   <Route path="/Task/MyTask" element={<MyTasks />} />
                   <Route path="/admin/userAccess" element={<UserAccess />} />
                   <Route path="/Task/AssignTask" element={<AssignTask />} />

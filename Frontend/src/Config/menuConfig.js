@@ -117,7 +117,7 @@ export const STATIC_MENU = [
         MENUTITLE: "Departments",
         PAGEPATH: "/master/DepartmentMaster",
         ICON: Building2,
-      }, 
+      },
       {
         MENUID: 403,
         MENUTITLE: "Designation Master",
@@ -127,7 +127,7 @@ export const STATIC_MENU = [
       {
         MENUID: 404,
         MENUTITLE: "Task Type Master",
-        PAGEPATH: "/Master/FrmTaskTypeMst",
+        PAGEPATH: "/master/task-type",
         ICON: LayoutList,
       },
       {
@@ -151,6 +151,18 @@ export const STATIC_MENU = [
         MENUTITLE: "User Access",
         PAGEPATH: "/admin/userAccess",
         ICON: ShieldCheck,
+      },
+    ],
+  },
+  {
+    MENUID: 6,
+    MENUTITLE: "Task Management",
+    children: [
+      {
+        MENUID: 601,
+        MENUTITLE: "Task List",
+        PAGEPATH: "/task-management/tasks",
+        ICON: ListTodo,
       },
     ],
   },
