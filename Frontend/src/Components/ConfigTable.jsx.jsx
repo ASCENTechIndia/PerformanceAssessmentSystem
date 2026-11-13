@@ -142,7 +142,7 @@ const ConfigTable = ({
         <table className="w-full table-fixed border-collapse">
 
           {/* Table Header */}
-          <thead className="bg-slate-50">
+          <thead className="bg-blue-50">
             <tr className="border-b border-slate-200">
 
               {/* Select All Checkbox */}
