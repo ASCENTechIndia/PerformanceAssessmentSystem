@@ -110,7 +110,7 @@ const Navbar = ({
                         text-[13.5px] font-semibold transition-colors duration-150 group
                         ${
                           isOpenSection
-                            ? "bg-emerald-50/80 text-emerald-700"
+                            ? "bg-blue-50/80 text-blue-700"
                             : "text-slate-600 hover:bg-sky-50 hover:text-slate-800"
                         }`}
                     >
@@ -121,7 +121,7 @@ const Navbar = ({
                         className={`w-4 h-4 transition-transform duration-300
                           ${
                             isOpenSection
-                              ? "rotate-180 text-emerald-500"
+                              ? "rotate-180 text-blue-500"
                               : "text-slate-400 group-hover:text-sky-500"
                           }`}
                       />
@@ -133,7 +133,7 @@ const Navbar = ({
                       ${isOpenSection || isCollapsed ? "max-h-[600px] opacity-100 mt-1" : "max-h-0 opacity-0"}`}
                   >
                     <div
-                      className={`${isCollapsed ? "" : "ml-4 pl-3 border-l-2 border-emerald-100/80"} space-y-1`}
+                      className={`${isCollapsed ? "" : "ml-4 pl-3 border-l-2 border-blue-100/80"} space-y-1`}
                     >
                       {(section.children || []).map((item) => (
                         <SidebarItem
@@ -155,11 +155,11 @@ const Navbar = ({
 
         {/* Footer */}
         <div
-          className={`flex-shrink-0 border-t border-slate-100 bg-gradient-to-r from-emerald-50/60 via-white to-sky-50/60 transition-all duration-200
+          className={`flex-shrink-0 border-t border-slate-100 bg-gradient-to-r from-blue-50/60 via-blue to-sky-50/60 transition-all duration-200
             ${isCollapsed ? "md:px-2 md:py-3" : "px-4 py-3"}`}
         >
           <div className="flex items-center justify-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_0_3px_rgba(16,185,129,0.18)]" />
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_0_3px_rgba(16,185,129,0.18)]" />
             {!isCollapsed && (
               <p className="text-[10px] font-medium text-slate-500">
                 © {new Date().getFullYear()} · PAS v1.0.0
