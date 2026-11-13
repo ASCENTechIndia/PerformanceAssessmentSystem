@@ -578,7 +578,7 @@ const ReviewQueue = () => {
 
                       <div className="flex items-center gap-2 mt-1.5 text-[11.5px] text-slate-500 flex-wrap">
                         <div className="flex items-center gap-1.5">
-                          <div className="w-5 h-5 rounded-full bg-gradient-to-br from-emerald-500 to-sky-500 text-white text-[9px] font-semibold flex items-center justify-center">
+                          <div className="w-5 h-5 rounded-full bg-gradient-to-br from-blue-500 to-sky-500 text-white text-[9px] font-semibold flex items-center justify-center">
                             {getInitials(task.employee)}
                           </div>
                           <span>{task.employee}</span>
@@ -652,15 +652,15 @@ const ReviewQueue = () => {
           </p>
           <div className="flex items-center gap-1">
             <button
-              className="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 disabled:opacity-40"
+              className="p-1.5 rounded-lg text-blue-400 hover:bg-blue-100 disabled:opacity-40"
               disabled
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <span className="px-3 py-1 rounded-lg bg-slate-100 text-slate-700 font-semibold">
+            <span className="px-3 py-1 rounded-lg bg-blue-100 text-blue-700 font-semibold">
               1
             </span>
-            <button className="p-1.5 rounded-lg text-slate-600 hover:bg-slate-100">
+            <button className="p-1.5 rounded-lg text-blue-600 hover:bg-blue-100">
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
