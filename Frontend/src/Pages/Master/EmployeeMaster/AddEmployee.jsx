@@ -1,7 +1,16 @@
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, User, Building2, Save, RotateCcw } from "lucide-react";
+import {
+  ArrowLeft,
+  User,
+  Building2,
+  Save,
+  RotateCcw,
+  History,
+  CalendarDays,
+  UserRound,
+} from "lucide-react";
 import Layout from "../../../Components/Layout";
 
 /* ---------- Options ---------- */
@@ -266,10 +275,9 @@ const AddEmployee = () => {
                     onClick={() => field.onChange(!field.value)}
                     className={`w-full flex items-center justify-between gap-3
                       px-3.5 py-2.5 rounded-xl border transition-all duration-150
-                      ${
-                        field.value
-                          ? "bg-blue-50/60 border-blue-200 hover:bg-blue-50"
-                          : "bg-white border-slate-200 hover:border-slate-300"
+                      ${field.value
+                        ? "bg-blue-50/60 border-blue-200 hover:bg-blue-50"
+                        : "bg-white border-slate-200 hover:border-slate-300"
                       }`}
                   >
                     <span
@@ -400,6 +408,70 @@ const AddEmployee = () => {
               {errors.reportingOfficerId && (
                 <p className="pas-error">{errors.reportingOfficerId.message}</p>
               )}
+            </div>
+          </div>
+        </div>
+
+        {/* ───────────── Section 3: Audit Information ───────────── */}
+        <div className="bg-white rounded-xl ring-1 ring-slate-200 p-5">
+          <SectionHeader
+            icon={History}
+            title="Audit Information"
+            subtitle="Record of employee creation and modification"
+            color="blue"
+          />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {/* Created By */}
+            <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-3.5">
+              <div className="flex items-center gap-2 mb-2">
+                <UserRound className="w-4 h-4 text-blue-500" />
+                <p className="text-[11px] font-medium text-slate-500">
+                  Created By
+                </p>
+              </div>
+              <p className="text-[13px] font-semibold text-slate-800">
+                Admin User
+              </p>
+            </div>
+
+            {/* Created Date */}
+            <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-3.5">
+              <div className="flex items-center gap-2 mb-2">
+                <CalendarDays className="w-4 h-4 text-blue-500" />
+                <p className="text-[11px] font-medium text-slate-500">
+                  Created Date
+                </p>
+              </div>
+              <p className="text-[13px] font-semibold text-slate-800">
+                14 Nov 2026
+              </p>
+            </div>
+
+            {/* Updated By */}
+            <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-3.5">
+              <div className="flex items-center gap-2 mb-2">
+                <UserRound className="w-4 h-4 text-violet-500" />
+                <p className="text-[11px] font-medium text-slate-500">
+                  Updated By
+                </p>
+              </div>
+              <p className="text-[13px] font-semibold text-slate-800">
+                Admin User
+              </p>
+            </div>
+
+            {/* Updated Date */}
+            <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-3.5">
+              <div className="flex items-center gap-2 mb-2">
+                <CalendarDays className="w-4 h-4 text-violet-500" />
+                <p className="text-[11px] font-medium text-slate-500">
+                  Updated Date
+                </p>
+              </div>
+              <p className="text-[13px] font-semibold text-slate-800">
+                14 Nov 2026
+              </p>
             </div>
           </div>
         </div>
