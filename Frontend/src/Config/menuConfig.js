@@ -30,36 +30,36 @@ export const STATIC_MENU = [
   /* ============================================================
      GROUP 1 — Tasks (HOD daily workflow)
      ============================================================ */
-  {
-    MENUID: 1,
-    MENUTITLE: "Tasks",
-    children: [
-      {
-        MENUID: 101,
-        MENUTITLE: "Assign Task",
-        PAGEPATH: "/Task/AssignTask",
-        ICON: ListTodo,
-      },
-      {
-        MENUID: 102,
-        MENUTITLE: "Team Tasks",
-        PAGEPATH: "/Task/TeamTasks",
-        ICON: UsersRound,
-      },
-      {
-        MENUID: 103,
-        MENUTITLE: "Review Queue",
-        PAGEPATH: "/Task/ReviewQueue",
-        ICON: Hourglass,
-      },
-      {
-        MENUID: 104,
-        MENUTITLE: "Extension Queue",
-        PAGEPATH: "/Task/ExtensionQueue",
-        ICON: Hourglass,
-      },
-    ],
-  },
+  // {
+  //   MENUID: 1,
+  //   MENUTITLE: "Tasks",
+  //   children: [
+  //     {
+  //       MENUID: 101,
+  //       MENUTITLE: "Assign Task",
+  //       PAGEPATH: "/Task/AssignTask",
+  //       ICON: ListTodo,
+  //     },
+  //     {
+  //       MENUID: 102,
+  //       MENUTITLE: "Team Tasks",
+  //       PAGEPATH: "/Task/TeamTasks",
+  //       ICON: UsersRound,
+  //     },
+  //     {
+  //       MENUID: 103,
+  //       MENUTITLE: "Review Queue",
+  //       PAGEPATH: "/Task/ReviewQueue",
+  //       ICON: Hourglass,
+  //     },
+  //     {
+  //       MENUID: 104,
+  //       MENUTITLE: "Extension Queue",
+  //       PAGEPATH: "/Task/ExtensionQueue",
+  //       ICON: Hourglass,
+  //     },
+  //   ],
+  // },
 
   /* ============================================================
      GROUP 2 — My Work (Junior daily workflow)
@@ -86,24 +86,24 @@ export const STATIC_MENU = [
   /* ============================================================
      GROUP 3 — Performance Details (reports, drill-down)
      ============================================================ */
-  {
-    MENUID: 3,
-    MENUTITLE: "Performance Details",
-    children: [
-      {
-        MENUID: 301,
-        MENUTITLE: "Junior Employee",
-        PAGEPATH: "/performance/junior",
-        ICON: FileChartPie,
-      },
-      {
-        MENUID: 302,
-        MENUTITLE: "Senior Employee",
-        PAGEPATH: "/performance/senior",
-        ICON: ChartColumnBig,
-      },
-    ],
-  },
+  // {
+  //   MENUID: 3,
+  //   MENUTITLE: "Performance Details",
+  //   children: [
+  //     {
+  //       MENUID: 301,
+  //       MENUTITLE: "Junior Employee",
+  //       PAGEPATH: "/performance/junior",
+  //       ICON: FileChartPie,
+  //     },
+  //     {
+  //       MENUID: 302,
+  //       MENUTITLE: "Senior Employee",
+  //       PAGEPATH: "/performance/senior",
+  //       ICON: ChartColumnBig,
+  //     },
+  //   ],
+  // },
 
   /* ============================================================
      GROUP 4 — Master (Setup, Admin mostly)
@@ -136,12 +136,12 @@ export const STATIC_MENU = [
         PAGEPATH: "/master/task-type",
         ICON: LayoutList,
       },
-      {
-        MENUID: 405,
-        MENUTITLE: "Hierarchy Mapping",
-        PAGEPATH: "/master/HierarchyMapping",
-        ICON: GitGraph,
-      },
+      // {
+      //   MENUID: 405,
+      //   MENUTITLE: "Hierarchy Mapping",
+      //   PAGEPATH: "/master/HierarchyMapping",
+      //   ICON: GitGraph,
+      // },
     ],
   },
 
