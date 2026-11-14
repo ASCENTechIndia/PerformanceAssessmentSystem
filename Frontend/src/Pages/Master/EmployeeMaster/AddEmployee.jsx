@@ -10,6 +10,8 @@ import {
   History,
   CalendarDays,
   UserRound,
+  UserRoundPen,
+  CalendarCheck2
 } from "lucide-react";
 import Layout from "../../../Components/Layout";
 
@@ -451,7 +453,7 @@ const AddEmployee = () => {
             {/* Updated By */}
             <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-3.5">
               <div className="flex items-center gap-2 mb-2">
-                <UserRound className="w-4 h-4 text-violet-500" />
+                <UserRoundPen className="w-4 h-4 text-blue-500" />
                 <p className="text-[11px] font-medium text-slate-500">
                   Updated By
                 </p>
@@ -464,7 +466,7 @@ const AddEmployee = () => {
             {/* Updated Date */}
             <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-3.5">
               <div className="flex items-center gap-2 mb-2">
-                <CalendarDays className="w-4 h-4 text-violet-500" />
+                <CalendarCheck2 className="w-4 h-4 text-blue-500" />
                 <p className="text-[11px] font-medium text-slate-500">
                   Updated Date
                 </p>
