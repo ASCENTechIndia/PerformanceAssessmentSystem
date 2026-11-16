@@ -51,7 +51,8 @@ const TaskListFilters = ({
             value={filters.search}
             onChange={(e) => onFilterChange("search", e.target.value)}
             placeholder="Search Task title or ID"
-            className="pas-input pl-9"
+            className="pas-input"
+            style={{paddingLeft: "35px"}}
           />
         </div>
 

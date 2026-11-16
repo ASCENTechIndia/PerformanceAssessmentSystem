@@ -113,10 +113,10 @@ export const STATIC_MENU = [
     MENUTITLE: "Master",
     children: [
       {
-        MENUID: 401,
-        MENUTITLE: "Employees",
-        PAGEPATH: "/master/employees",
-        ICON: Users,
+        MENUID: 404,
+        MENUTITLE: "Task Type Master",
+        PAGEPATH: "/master/task-type",
+        ICON: LayoutList,
       },
       {
         MENUID: 402,
@@ -131,10 +131,10 @@ export const STATIC_MENU = [
         ICON: UserCog,
       },
       {
-        MENUID: 404,
-        MENUTITLE: "Task Type Master",
-        PAGEPATH: "/master/task-type",
-        ICON: LayoutList,
+        MENUID: 401,
+        MENUTITLE: "Employees",
+        PAGEPATH: "/master/employees",
+        ICON: Users,
       },
       // {
       //   MENUID: 405,
