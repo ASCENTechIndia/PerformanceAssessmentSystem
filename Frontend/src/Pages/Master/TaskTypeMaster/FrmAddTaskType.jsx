@@ -22,6 +22,7 @@ const FrmAddTaskType = () => {
       name: taskType?.name || "",
       active: taskType?.active ?? true,
       description: taskType?.description || "",
+      ulb: taskType?.ulbId || ""
     },
     mode: "onBlur",
   });
@@ -34,7 +35,7 @@ const FrmAddTaskType = () => {
       toast.success(
         `${data.name} ${isEdit ? "updated" : "saved"} successfully`,
       );
-    //   navigate("/master/task-type");
+      //   navigate("/master/task-type");
     } catch (err) {
       toast.error(err?.response?.data?.message || "Failed to save task type");
     }
@@ -107,6 +108,27 @@ const FrmAddTaskType = () => {
               )}
             </div>
 
+            <div>
+              <label htmlFor="ulbName" className="pas-label">
+                ULB Name <span className="text-rose-500">*</span>
+              </label>
+              <select
+                id="ulbName"
+                className="pas-input"
+                aria-invalid={!!errors.ulb}
+                {...register("ulb", {
+                  required: "ULB is required"
+                })}
+              >
+                <option value={""}>
+                  -- SELECT --
+                </option>
+              </select>
+              {errors.ulb && (
+                <p className="pas-error">{errors.ulb.message}</p>
+              )}
+            </div>
+
             {/* Status toggle */}
             <div>
               <label className="pas-label">
@@ -121,10 +143,9 @@ const FrmAddTaskType = () => {
                     onClick={() => field.onChange(!field.value)}
                     className={`w-full flex items-center justify-between gap-3
                       px-3.5 py-2.5 rounded-xl border transition-all duration-150
-                      ${
-                        field.value
-                          ? "bg-blue-50/60 border-blue-200 hover:bg-blue-50"
-                          : "bg-white border-slate-200 hover:border-slate-300"
+                      ${field.value
+                        ? "bg-blue-50/60 border-blue-200 hover:bg-blue-50"
+                        : "bg-white border-slate-200 hover:border-slate-300"
                       }`}
                   >
                     <span

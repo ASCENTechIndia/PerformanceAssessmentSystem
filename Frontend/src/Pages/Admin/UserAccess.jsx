@@ -159,11 +159,11 @@ const UserAccess = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <div>
-                        <Label
-                            text={"User: "}
-                            required
-                        />
+                        <label htmlFor="userName" className="pas-label">
+                            User <span className="text-rose-500">*</span>
+                        </label>
                         <select
+                            id="userName"
                             className="pas-input"
                             aria-invalid={!!errors.userName}
                             {...register("userName", { required: "User is required" })}
@@ -177,11 +177,11 @@ const UserAccess = () => {
                         </select>
                     </div>
                     <div>
-                        <Label
-                            text={"Department: "}
-                            required
-                        />
+                        <label className="pas-label" htmlFor="department">
+                            Department <span className="text-rose-500">*</span>
+                        </label>
                         <select
+                            id="department"
                             className="pas-input"
                             aria-invalid={!!errors.department}
                             {...register("department", { required: "Department is required" })}
