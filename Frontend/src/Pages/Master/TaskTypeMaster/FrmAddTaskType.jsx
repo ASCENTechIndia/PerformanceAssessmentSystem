@@ -3,6 +3,8 @@ import { useNavigate, useParams, useLocation, Link } from "react-router-dom";
 import { toast } from "sonner";
 import { ArrowLeft, LayoutList, Save, RotateCcw } from "lucide-react";
 import Layout from "../../../Components/Layout";
+import apiClient from "../../../../apiClient";
+
 
 const ulbOptions = [
   { label: "Nagpur Municipal Corp", value: "1" },
@@ -13,6 +15,7 @@ const ulbOptions = [
 
 const FrmAddTaskType = () => {
   const navigate = useNavigate();
+
   const { id } = useParams();
   const location = useLocation();
   const taskType = location.state?.taskType; // present on edit, absent on add
@@ -37,6 +40,26 @@ const FrmAddTaskType = () => {
   const onSubmit = async (data) => {
     try {
       // await apiService[isEdit ? "put" : "post"](`/master/task-type${isEdit ? `/${id}` : ""}`, data);
+      console.log(data);
+      return;
+
+      const payload = {
+        "IN_MODE": isEdit ? 2 : 1,
+        "IN_TASKTYPE_ID": isEdit ? id : null,
+        "IN_TASKTYPE_NAME": data.name,
+        "IN_TASKTYPE_ULBID": Number(data.ulb),
+        "IN_TASKTYPE_DESC": data.description,
+        "IN_TASKTYPE_ISACTIVE": active ? "Y" : "N",
+        "IN_USERID": userId 
+      };
+
+      const response = await apiClient.post("/AOPT_TASKTYPE_INSUPD", payload);
+
+      console.log(response);
+
+      if (response.success) {
+        
+      }
       await new Promise((r) => setTimeout(r, 500));
       console.log(isEdit ? "Update →" : "Create →", data);
       toast.success(
