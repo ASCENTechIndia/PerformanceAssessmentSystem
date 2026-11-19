@@ -3,7 +3,6 @@ const { validate } = require("../../validators/validate");
 const {
   AOPT_TASKTYPE_INSUPD,
   getTaskTypeList,
-  getTaskTypeDropdown,
 } = require("../../controllers/PerformanceTracking/masterController");
 const {
   aoptTaskTypeInsUpdSchema,
@@ -18,8 +17,5 @@ router.post(
   AOPT_TASKTYPE_INSUPD,
 );
 router.get("/getTaskTypeList", getTaskTypeList);
-
-// Create Task
-router.get("/getTaskTypeDropdown", getTaskTypeDropdown);
 
 module.exports = router;
