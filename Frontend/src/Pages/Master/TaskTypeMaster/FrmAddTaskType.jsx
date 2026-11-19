@@ -6,13 +6,9 @@ import Layout from "../../../Components/Layout";
 import apiClient from "../../../../apiClient";
 import { useAuth } from "../../../Context/AuthContext";
 import { useLoader } from "../../../Context/LoaderContext";
+import { useEffect, useState } from "react";
 
-const ulbOptions = [
-  { label: "Nagpur Municipal Corp", value: "1" },
-  { label: "Pune Municipal Corp", value: "2" },
-  { label: "Mumbai Municipal Corp", value: "3" },
-  { label: "Nashik Municipal Corp", value: "4" },
-];
+
 
 const FrmAddTaskType = () => {
   const navigate = useNavigate();
@@ -23,6 +19,8 @@ const FrmAddTaskType = () => {
   const location = useLocation();
   const taskType = location.state?.taskType; // present on edit, absent on add
   const isEdit = !!id && !!taskType;
+
+  const [ulbOptions, setUlbOptions] = useState([]);
 
   const {
     register,
@@ -78,13 +76,23 @@ const FrmAddTaskType = () => {
       setLoading(true);
 
       const response = await apiClient.get("/getUlbDropdown");
-
-      console.log(response);
-
+    
+      if (response.success && Array.isArray(response.data) && response.data.length > 0) {
+        const formatted = response.data.map(item => ({
+          label: item.ULB_NAME,
+          value: item.ULBID
+        }));
+        setUlbOptions(formatted);
+      } else {
+        setUlbOptions([]);
+      }
 
     } catch (error) {
       console.error(error);
       toast(error.message || "Failed to fetch ULB Dropdown");
+      setUlbOptions([]);
+    } finally {
+      setLoading(false);
     }
   }
 
