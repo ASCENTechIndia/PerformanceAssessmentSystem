@@ -5,6 +5,7 @@ import { ArrowLeft, LayoutList, Save, RotateCcw } from "lucide-react";
 import Layout from "../../../Components/Layout";
 import apiClient from "../../../../apiClient";
 import { useAuth } from "../../../Context/AuthContext";
+import { useLoader } from "../../../Context/LoaderContext";
 
 const ulbOptions = [
   { label: "Nagpur Municipal Corp", value: "1" },
@@ -15,6 +16,7 @@ const ulbOptions = [
 
 const FrmAddTaskType = () => {
   const navigate = useNavigate();
+  const { setLoading } = useLoader();
   const { user } = useAuth();
   const userId = user?.userId;
   const { id } = useParams();
@@ -40,6 +42,7 @@ const FrmAddTaskType = () => {
 
   const onSubmit = async (data) => {
     try {
+      setLoading(true);
       // await apiService[isEdit ? "put" : "post"](`/master/task-type${isEdit ? `/${id}` : ""}`, data);
 
       const payload = {
@@ -65,8 +68,29 @@ const FrmAddTaskType = () => {
     } catch (err) {
       console.error(err);
       toast.error(err?.response?.data?.message || "Failed to save task type");
+    } finally {
+      setLoading(false);
     }
   };
+
+  const fetchULBDropdown = async () => {
+    try {
+      setLoading(true);
+
+      const response = await apiClient.get("/getUlbDropdown");
+
+      console.log(response);
+
+
+    } catch (error) {
+      console.error(error);
+      toast(error.message || "Failed to fetch ULB Dropdown");
+    }
+  }
+
+  useEffect(() => {
+    fetchULBDropdown();
+  }, [])
 
   return (
     <Layout
