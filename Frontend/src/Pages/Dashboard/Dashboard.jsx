@@ -5,7 +5,7 @@ import RoleBasedDashboard from "./RolesDashboard/RoleBasedDashboard";
 
 
 const Dashboard = () => {
-  const userRole = "";
+  const userRole = "HOD";
   return (
     <Layout
       title="Dashboard"

@@ -1,37 +1,55 @@
 import { z } from "zod";
 
-export const senderInsSchema = z.object({
-  in_UserId: z
-    .string({ required_error: "UserId is required" })
-    .trim()
-    .min(1, "UserId is required"),
-
-  in_Mode: z
-    .number({ invalid_type_error: "Mode must be a number" })
+export const aoptTaskTypeInsUpdSchema = z.object({
+  IN_MODE: z
+    .number({
+      required_error: "Mode is required",
+      invalid_type_error: "Mode must be a number",
+    })
     .int("Mode must be an integer"),
 
-  in_SenderId: z
-    .number({ invalid_type_error: "SenderId must be a number" })
-    .int("SenderId must be an integer")
+  IN_TASKTYPE_ID: z
+    .number({
+      invalid_type_error: "Task Type Id must be a number",
+    })
+    .int("Task Type Id must be an integer")
     .nullable()
     .optional(),
 
-  in_SenderName: z
-    .string({ required_error: "Sender name is required" })
+  IN_TASKTYPE_NAME: z
+    .string({
+      required_error: "Task Type Name is required",
+      invalid_type_error: "Task Type Name must be a string",
+    })
     .trim()
-    .min(1, "Sender name is required"),
+    .min(1, "Task Type Name is required"),
 
-  in_UlbId: z
-    .number({ invalid_type_error: "UlbId must be a number" })
-    .int("UlbId must be an integer"),
+  IN_TASKTYPE_ULBID: z
+    .number({
+      required_error: "Task Type ULB Id is required",
+      invalid_type_error: "Task Type ULB Id must be a number",
+    })
+    .int("Task Type ULB Id must be an integer"),
 
-  in_ipaddress: z
-    .string({ required_error: "IP address is required" })
+  IN_TASKTYPE_DESC: z
+    .string()
     .trim()
-    .min(1, "IP address is required"),
+    .max(2000, "Description is too long")
+    .nullish(),
 
-  in_source: z
-    .string({ required_error: "Source is required" })
+  IN_TASKTYPE_ISACTIVE: z
+    .string({
+      required_error: "Is Active flag is required",
+      invalid_type_error: "Is Active must be a string",
+    })
     .trim()
-    .min(1, "Source is required"),
+    .regex(/^[YN]$/, "Is Active must be 'Y' or 'N'"),
+
+  IN_USERID: z
+    .string({
+      required_error: "UserId is required",
+      invalid_type_error: "UserId must be a string",
+    })
+    .trim()
+    .min(1, "UserId is required"),
 });
