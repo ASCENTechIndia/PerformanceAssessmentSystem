@@ -14,7 +14,10 @@ const menurouted = require("./Admin/menuRoutes.js");
 router.use("/", menurouted);
 
 // Performance assessment system all pages routes
-const masterRoute = require("./PerformanceTracking/masterRoutes.js")
-router.use("/", masterRoute)
+const masterRoute = require("./PerformanceTracking/masterRoutes.js");
+router.use("/", masterRoute);
+
+const taskManagementRoute = require("./PerformanceTracking/taskManagementRoutes.js");
+router.use("/", taskManagementRoute);
 
 module.exports = router;

@@ -93,39 +93,10 @@ async function getTaskTypeList(req, res) {
   }
 }
 
-async function getTaskTypeDropdown(req, res) {
-  let connection;
-  try {
-    connection = await getConnection();
 
-    const query = `select tasktype_id, tasktype_name from view_TASKTYPE_list`;
-
-    const result = await connection.execute(
-      query,
-      {},
-      { outFormat: oracledb.OUT_FORMAT_OBJECT },
-    );
-
-    res.json({
-      success: true,
-      data: result.rows || [],
-    });
-  } catch (error) {
-    console.error("getTaskTypeDropdown error:", error);
-    res.status(500).json({ success: false, message: error.message });
-  } finally {
-    if (connection) {
-      try {
-        await connection.close();
-      } catch (err) {
-        console.error("Error closing DB connection:", err);
-      }
-    }
-  }
-}
 
 module.exports = {
   AOPT_TASKTYPE_INSUPD,
   getTaskTypeList,
-  getTaskTypeDropdown,
+
 };
