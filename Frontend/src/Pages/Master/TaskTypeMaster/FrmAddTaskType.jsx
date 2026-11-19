@@ -4,6 +4,13 @@ import { toast } from "sonner";
 import { ArrowLeft, LayoutList, Save, RotateCcw } from "lucide-react";
 import Layout from "../../../Components/Layout";
 
+const ulbOptions = [
+  { label: "Nagpur Municipal Corp", value: "1" },
+  { label: "Pune Municipal Corp", value: "2" },
+  { label: "Mumbai Municipal Corp", value: "3" },
+  { label: "Nashik Municipal Corp", value: "4" },
+];
+
 const FrmAddTaskType = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -123,6 +130,11 @@ const FrmAddTaskType = () => {
                 <option value={""}>
                   -- SELECT --
                 </option>
+                {ulbOptions.map(item => (
+                  <option key={item.value} value={item.value}>
+                    {item.label}
+                  </option>
+                ))}
               </select>
               {errors.ulb && (
                 <p className="pas-error">{errors.ulb.message}</p>
