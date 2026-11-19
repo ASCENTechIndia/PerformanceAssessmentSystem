@@ -138,6 +138,37 @@ async function AOPT_TASK_INSUPD(req, res) {
   }
 }
 
+async function getUlbDropdown(req, res) {
+  let connection;
+  try {
+    connection = await getConnection();
+
+    const query = `select ulbid, ulb_name from view_ulb_list`;
+
+    const result = await connection.execute(
+      query,
+      {},
+      { outFormat: oracledb.OUT_FORMAT_OBJECT },
+    );
+
+    res.json({
+      success: true,
+      data: result.rows || [],
+    });
+  } catch (error) {
+    console.error("getUlbDropdown error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error("Error closing DB connection:", err);
+      }
+    }
+  }
+}
+
 async function AOPT_TASKSTATUS_INSUPD(req, res) {
   let connection;
   try {
@@ -221,4 +252,5 @@ module.exports = {
   getTaskTypeDropdown,
   AOPT_TASK_INSUPD,
   AOPT_TASKSTATUS_INSUPD,
+  getUlbDropdown,
 };
