@@ -57,14 +57,16 @@ const FrmAddTaskType = () => {
 
       console.log(response);
 
-      if (response.success) {
-        
+      if (response.success && response.errorCode === 9999) {
+        toast.success(response.errorMessage);
+      } else {
+        toast.error(response.errorMessage)
       }
-      await new Promise((r) => setTimeout(r, 500));
-      console.log(isEdit ? "Update →" : "Create →", data);
-      toast.success(
-        `${data.name} ${isEdit ? "updated" : "saved"} successfully`,
-      );
+      // await new Promise((r) => setTimeout(r, 500));
+      // console.log(isEdit ? "Update →" : "Create →", data);
+      // toast.success(
+      //   `${data.name} ${isEdit ? "updated" : "saved"} successfully`,
+      // );
       //   navigate("/master/task-type");
     } catch (err) {
       toast.error(err?.response?.data?.message || "Failed to save task type");
