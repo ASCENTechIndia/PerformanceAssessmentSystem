@@ -148,10 +148,9 @@ const CreateTaskModal = ({
                   bg-gradient-to-br from-white to-blue-50/30 rounded-xl
                   placeholder:text-slate-400 placeholder:font-normal
                   border-2 transition-all duration-200 outline-none
-                  ${
-                    errors.title
-                      ? "border-rose-300 focus:border-rose-400 focus:ring-4 focus:ring-rose-400/15"
-                      : "border-slate-200 hover:border-blue-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-400/15"
+                  ${errors.title
+                    ? "border-rose-300 focus:border-rose-400 focus:ring-4 focus:ring-rose-400/15"
+                    : "border-slate-200 hover:border-blue-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-400/15"
                   }`}
                 aria-invalid={!!errors.title}
                 autoFocus
@@ -216,7 +215,7 @@ const CreateTaskModal = ({
               <label htmlFor="expectedDuration" className="pas-label">
                 Expected Duration <span className="text-rose-500">*</span>
               </label>
-              <select
+              {/* <select
                 id="expectedDuration"
                 className="pas-input"
                 aria-invalid={!!errors.expectedDuration}
@@ -230,7 +229,15 @@ const CreateTaskModal = ({
                     {d} {d === 1 ? "day" : "days"}
                   </option>
                 ))}
-              </select>
+              </select> */}
+              <input
+                type="date"
+                id="expectedDuration"
+                className="pas-input"
+                {...register("expectedDuration", {
+                  required: "Expected duration is required",
+                })}
+              />
               {errors.expectedDuration && (
                 <p className="pas-error">{errors.expectedDuration.message}</p>
               )}
@@ -269,10 +276,9 @@ const CreateTaskModal = ({
                     onClick={() => field.onChange(!field.value)}
                     className={`w-full flex items-center justify-between gap-3
                       px-3.5 py-2.5 rounded-xl border transition-all duration-150
-                      ${
-                        field.value
-                          ? "bg-violet-50/60 border-violet-200 hover:bg-violet-50"
-                          : "bg-white border-slate-200 hover:border-slate-300"
+                      ${field.value
+                        ? "bg-violet-50/60 border-violet-200 hover:bg-violet-50"
+                        : "bg-white border-slate-200 hover:border-slate-300"
                       }`}
                   >
                     <span
@@ -360,10 +366,9 @@ const CreateTaskModal = ({
                   onClick={() => field.onChange(!field.value)}
                   className={`w-full flex items-center justify-between gap-3
                     px-3.5 py-2.5 rounded-xl border transition-all duration-150
-                    ${
-                      field.value
-                        ? "bg-blue-50/60 border-blue-200 hover:bg-blue-50"
-                        : "bg-white border-slate-200 hover:border-slate-300"
+                    ${field.value
+                      ? "bg-blue-50/60 border-blue-200 hover:bg-blue-50"
+                      : "bg-white border-slate-200 hover:border-slate-300"
                     }`}
                 >
                   <span
