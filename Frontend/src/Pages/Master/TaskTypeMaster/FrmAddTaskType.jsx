@@ -14,11 +14,12 @@ const FrmAddTaskType = () => {
   const navigate = useNavigate();
   const { setLoading } = useLoader();
   const { user } = useAuth();
+  console.log(user);
   const userId = user?.userId;
-  const { id } = useParams();
+  // const { id } = useParams();
   const location = useLocation();
   const taskType = location.state?.taskType; // present on edit, absent on add
-  const isEdit = !!id && !!taskType;
+  const isEdit = !!taskType;
 
   const [ulbOptions, setUlbOptions] = useState([]);
 
@@ -27,12 +28,13 @@ const FrmAddTaskType = () => {
     handleSubmit,
     reset,
     control,
+    setValue,
     formState: { errors, isDirty, isSubmitting },
   } = useForm({
     defaultValues: {
-      name: taskType?.name || "",
-      active: taskType?.active ?? true,
-      description: taskType?.description || "",
+      name: taskType?.TASKTYPE_NAME || "",
+      active: taskType?.TASKTYPE_ISACTIVE === "Y" ? true : taskType?.TASKTYPE_ISACTIVE === "N" ? false : true,
+      description: taskType?.TASKTYPE_DESC || "",
       ulb: taskType?.ulbId || ""
     },
     mode: "onBlur",
@@ -45,7 +47,7 @@ const FrmAddTaskType = () => {
 
       const payload = {
         "IN_MODE": isEdit ? 2 : 1,
-        "IN_TASKTYPE_ID": isEdit ? id : null,
+        "IN_TASKTYPE_ID": isEdit ? taskType.TASKTYPE_ID : null,
         "IN_TASKTYPE_NAME": data.name,
         "IN_TASKTYPE_ULBID": Number(data.ulb),
         "IN_TASKTYPE_DESC": data.description,

@@ -57,7 +57,7 @@ const TaskTypeTable = ({ taskTypes, onView, onEdit, onDelete }) => {
             ) : (
               taskTypes.map((t, idx) => (
                 <tr
-                  key={t.id}
+                  key={t.TASKTYPE_ID}
                   className="hover:bg-slate-50/50 transition-colors"
                 >
                   <td className="px-3 py-3 text-[11.5px] font-mono text-slate-400">
@@ -66,16 +66,16 @@ const TaskTypeTable = ({ taskTypes, onView, onEdit, onDelete }) => {
 
                   <td className="px-3 py-3">
                     <span className="text-[13px] font-semibold text-slate-800">
-                      {t.name}
+                      {t.TASKTYPE_NAME}
                     </span>
                   </td>
 
                   <td className="px-3 py-3">
                     <span
                       className="text-[12px] text-slate-600 truncate max-w-[260px] block"
-                      title={t.description}
+                      title={t.TASKTYPE_DESC}
                     >
-                      {t.description || (
+                      {t.TASKTYPE_DESC || (
                         <span className="text-[11px] text-slate-400 italic">
                           —
                         </span>
@@ -87,25 +87,32 @@ const TaskTypeTable = ({ taskTypes, onView, onEdit, onDelete }) => {
                     <span
                       className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full
                       text-[10.5px] font-semibold ring-1
-                      ${
-                        t.active
+                      ${t.TASKTYPE_ISACTIVE === "Y"
                           ? "bg-blue-50 text-blue-700 ring-blue-200"
                           : "bg-slate-100 text-slate-500 ring-slate-200"
-                      }`}
+                        }`}
                     >
                       <span
-                        className={`w-1.5 h-1.5 rounded-full ${t.active ? "bg-blue-500" : "bg-slate-400"}`}
+                        className={`w-1.5 h-1.5 rounded-full ${t.TASKTYPE_ISACTIVE === "Y" ? "bg-blue-500" : "bg-slate-400"}`}
                       />
-                      {t.active ? "Active" : "Inactive"}
+                      {t.TASKTYPE_ISACTIVE === "Y" ? "Active" : "Inactive"}
                     </span>
                   </td>
 
                   <td className="px-3 py-3 text-[12px] text-slate-600 whitespace-nowrap">
-                    {t.createdBy}
+                    {t.TASKTYPE_UPBY ||
+                      <span className="text-[11px] text-slate-400 italic">
+                        —
+                      </span>
+                    }
                   </td>
 
                   <td className="px-3 py-3 text-[12px] text-slate-600 whitespace-nowrap">
-                    {formatDate(t.createdAt)}
+                    {formatDate(t.TASKTYPE_UPDT) ||
+                      <span className="text-[11px] text-slate-400 italic">
+                        —
+                      </span>
+                    }
                   </td>
 
                   <td className="px-3 py-3 text-right">
@@ -125,14 +132,6 @@ const TaskTypeTable = ({ taskTypes, onView, onEdit, onDelete }) => {
                         aria-label="Edit"
                       >
                         <Pencil className="w-3.5 h-3.5" strokeWidth={2.2} />
-                      </button>
-                      <button
-                        onClick={() => onDelete(t)}
-                        className="p-1.5 rounded-lg text-slate-500 hover:bg-rose-50 hover:text-rose-600 transition-colors"
-                        title="Delete"
-                        aria-label="Delete"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" strokeWidth={2.2} />
                       </button>
                     </div>
                   </td>

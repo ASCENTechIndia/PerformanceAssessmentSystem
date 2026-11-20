@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import Layout from "../../../Components/Layout";
@@ -7,6 +7,9 @@ import TaskTypeFilters from "./TaskTypeFilters";
 import TaskTypeTable from "./TaskTypeTable";
 import ViewTaskTypeModal from "./ViewTaskTypeModal";
 import DeleteConfirmModal from "./DeleteConfirmModal";
+import { useLoader } from "../../../Context/LoaderContext";
+import { useAuth } from "../../../Context/AuthContext";
+import apiClient from "../../../../apiClient";
 
 /* ---------- Dummy data ---------- */
 const MOCK_TASK_TYPES = [
@@ -64,6 +67,9 @@ const EMPTY_FILTERS = { name: "", status: "" };
 
 const TaskTypeMaster = () => {
   const navigate = useNavigate();
+  const { setLoading } = useLoader();
+  const { user } = useAuth();
+  const userId = user?.userId;
   const [taskTypes, setTaskTypes] = useState(MOCK_TASK_TYPES);
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [viewing, setViewing] = useState(null);
@@ -88,7 +94,7 @@ const TaskTypeMaster = () => {
 
   const handleView = (taskType) => setViewing(taskType);
   const handleEdit = (taskType) =>
-    navigate(`/master/task-type/edit/${taskType.id}`, { state: { taskType } });
+    navigate(`/master/add-task-type`, { state: { taskType } });
   const handleDelete = (taskType) => setDeleting(taskType);
 
   const confirmDelete = async () => {
@@ -107,6 +113,29 @@ const TaskTypeMaster = () => {
   };
 
   const hasActiveFilters = Object.values(filters).some((v) => v !== "");
+
+  const fetchTaskTypeTableData = async () => {
+    try {
+      setLoading(true);
+
+      const response = await apiClient.get("/getTaskTypeList");
+
+      console.log(response);
+      if (response.success && Array.isArray(response.data) && response.data.length > 0) {
+        setTaskTypes(response.data);
+      }
+    } catch (err) {
+      console.error(err);
+      toast(err.message || "Failed to the Task Types");
+      setTaskTypes([]);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchTaskTypeTableData();
+  }, []);
 
   return (
     <Layout

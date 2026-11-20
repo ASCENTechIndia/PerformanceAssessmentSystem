@@ -54,7 +54,7 @@ const ViewTaskTypeModal = ({ open, taskType, onClose }) => {
           <div>
             <p className="pas-label">Task Type Name</p>
             <p className="text-[14px] font-semibold text-slate-800">
-              {taskType.name}
+              {taskType.TASKTYPE_NAME}
             </p>
           </div>
 
@@ -63,25 +63,24 @@ const ViewTaskTypeModal = ({ open, taskType, onClose }) => {
             <span
               className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full
               text-[10.5px] font-semibold ring-1
-              ${
-                taskType.active
+              ${taskType.TASKTYPE_ISACTIVE === "Y"
                   ? "bg-blue-50 text-blue-700 ring-blue-200"
                   : "bg-slate-100 text-slate-500 ring-slate-200"
-              }`}
+                }`}
             >
               <span
-                className={`w-1.5 h-1.5 rounded-full ${taskType.active ? "bg-blue-500" : "bg-slate-400"}`}
+                className={`w-1.5 h-1.5 rounded-full ${taskType.TASKTYPE_ISACTIVE === "Y" ? "bg-blue-500" : "bg-slate-400"}`}
               />
-              {taskType.active ? "Active" : "Inactive"}
+              {taskType.TASKTYPE_ISACTIVE === "Y" ? "Active" : "Inactive"}
             </span>
           </div>
 
           <div>
             <p className="pas-label">Description</p>
-            {taskType.description ? (
+            {taskType.TASKTYPE_DESC ? (
               <div className="rounded-lg bg-slate-50 ring-1 ring-slate-200 p-3">
                 <p className="text-[12.5px] text-slate-700 leading-relaxed whitespace-pre-wrap">
-                  {taskType.description}
+                  {taskType.TASKTYPE_DESC}
                 </p>
               </div>
             ) : (
@@ -95,13 +94,17 @@ const ViewTaskTypeModal = ({ open, taskType, onClose }) => {
             <div>
               <p className="pas-label">Created By</p>
               <p className="text-[12.5px] font-medium text-slate-800">
-                {taskType.createdBy}
+                {taskType.TASKTYPE_UPBY ?? <span className="text-[11px] text-slate-400 italic">
+                  —
+                </span>}
               </p>
             </div>
             <div>
               <p className="pas-label">Created Date</p>
               <p className="text-[12.5px] font-medium text-slate-800">
-                {formatDate(taskType.createdAt)}
+                {taskType.TASKTYPE_UPDT ? formatDate(taskType.TASKTYPE_UPDT) : <span className="text-[11px] text-slate-400 italic">
+                  —
+                </span>}
               </p>
             </div>
           </div>
