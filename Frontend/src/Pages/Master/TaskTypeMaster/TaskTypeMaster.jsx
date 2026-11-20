@@ -70,7 +70,7 @@ const TaskTypeMaster = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const userId = user?.userId;
-  const [taskTypes, setTaskTypes] = useState(MOCK_TASK_TYPES);
+  const [taskTypes, setTaskTypes] = useState([]);
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [viewing, setViewing] = useState(null);
   const [deleting, setDeleting] = useState(null);
@@ -80,9 +80,12 @@ const TaskTypeMaster = () => {
     return taskTypes.filter((t) => {
       const matchName =
         !filters.name ||
-        t.name.toLowerCase().includes(filters.name.toLowerCase());
+        t.TASKTYPE_NAME?.toLowerCase().includes(filters.name.toLowerCase());
+
       const matchStatus =
-        !filters.status || (filters.status === "Active" ? t.active : !t.active);
+        !filters.status ||
+        t.TASKTYPE_ISACTIVE === (filters.status === "Active" ? "Y" : "N");
+
       return matchName && matchStatus;
     });
   }, [taskTypes, filters]);

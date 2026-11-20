@@ -56,8 +56,8 @@ const TaskTypeStats = ({ taskTypes }) => {
   const stats = useMemo(
     () => ({
       total: taskTypes.length,
-      active: taskTypes.filter((t) => t.active).length,
-      inactive: taskTypes.filter((t) => !t.active).length,
+      active: taskTypes.filter((t) => t.TASKTYPE_ISACTIVE === "Y").length,
+      inactive: taskTypes.filter((t) => !t.TASKTYPE_ISACTIVE === "N").length,
     }),
     [taskTypes],
   );
