@@ -54,6 +54,8 @@ export const AuthProvider = ({ children }) => {
           prabhagName: localStorage.getItem("prabhagName"),
           prabhagID: localStorage.getItem("prabhagID"),
           corporation: localStorage.getItem("corporation"),
+          opdid: localStorage.getItem("opdid"),
+          opdname: localStorage.getItem("opdname") || "",
           token,
         };
 
@@ -70,6 +72,14 @@ export const AuthProvider = ({ children }) => {
     try {
       const decoded = jwtDecode(token);
       const userId = decoded.userId;
+      const opdid =
+        Array.isArray(userConfig) && userConfig.length > 0
+          ? userConfig[0].NUM_USERCOFIG_OPDID
+          : "";
+      const opdname =
+        Array.isArray(userConfig) && userConfig.length > 0
+          ? userConfig[0].VAR_OPD_NAME
+          : "";
       localStorage.setItem("username", userData.Out_UserName);
       localStorage.setItem("deptid", userData.acccounttype);
       localStorage.setItem("ulbId", userData.out_OrgId);
@@ -81,6 +91,8 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("prabhagID", userData.prabhagID || ""); // Fixed key
       localStorage.setItem("userId", userData.userId);
       localStorage.setItem("corporation", userData.corporation || "");
+      localStorage.setItem("opdid", opdid);
+      localStorage.setItem("opdname", opdname || "");
 
       sessionStorage.setItem("performaceAssessSystemSession", "true");
       localStorage.setItem("performaceAssessSystemSession", "true");
@@ -96,6 +108,8 @@ export const AuthProvider = ({ children }) => {
         prabhagName: userData.prabhagName,
         prabhagID: userData.prabhagID,
         corporation: userData.corporation || "",
+        opdid,
+        opdname,
         token,
       });
     } catch (error) {
@@ -133,6 +147,8 @@ export const AuthProvider = ({ children }) => {
               prabhagName: localStorage.getItem("prabhagName"),
               prabhagID: localStorage.getItem("prabhagID"),
               corporation: localStorage.getItem("corporation"),
+              opdid: localStorage.getItem("opdid"),
+              opdname: localStorage.getItem("opdname") || "",
               token,
             };
             setUser(userData);

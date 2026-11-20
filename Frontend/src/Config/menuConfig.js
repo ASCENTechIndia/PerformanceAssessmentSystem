@@ -142,12 +142,12 @@ export const STATIC_MENU = [
         PAGEPATH: "/master/status-config",
         ICON: Users,
       },
-      // {
-      //   MENUID: 405,
-      //   MENUTITLE: "Hierarchy Mapping",
-      //   PAGEPATH: "/master/HierarchyMapping",
-      //   ICON: GitGraph,
-      // },
+      {
+        MENUID: 405,
+        MENUTITLE: "Hierarchy Mapping",
+        PAGEPATH: "/master/HierarchyMapping",
+        ICON: GitGraph,
+      },
     ],
   },
 

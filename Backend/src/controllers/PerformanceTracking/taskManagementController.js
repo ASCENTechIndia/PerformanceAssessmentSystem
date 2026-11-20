@@ -247,10 +247,44 @@ async function AOPT_TASKSTATUS_INSUPD(req, res) {
   }
 }
 
+async function getTaskList(req, res) {
+  let connection;
+  try {
+    connection = await getConnection();
+
+    const query = `SELECT a.task_id, a.task_title, a.excepcteddays, a.parentid, a.isactive,
+       a.insdt
+  FROM view_task_list a`;
+
+    const result = await connection.execute(
+      query,
+      {},
+      { outFormat: oracledb.OUT_FORMAT_OBJECT },
+    );
+
+    res.json({
+      success: true,
+      data: result.rows || [],
+    });
+  } catch (error) {
+    console.error("getTaskList error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error("Error closing DB connection:", err);
+      }
+    }
+  }
+}
+
 module.exports = {
   getParentTaskDropdown,
   getTaskTypeDropdown,
   AOPT_TASK_INSUPD,
   AOPT_TASKSTATUS_INSUPD,
   getUlbDropdown,
+  getTaskList,
 };

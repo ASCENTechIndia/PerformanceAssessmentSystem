@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { toast } from "sonner";
 import Layout from "../../../Components/Layout";
 import TaskListStats from "./TaskListStats";
@@ -9,142 +9,20 @@ import CreateTaskModal from "./CreateTaskModal";
 import AssignTaskModal from "./AssignTaskModal";
 import { useAuth } from "../../../Context/AuthContext";
 import apiClient from "../../../../apiClient";
+import { useLoader } from "../../../Context/LoaderContext";
 
-/* ---------- Dummy data ---------- */
-const MOCK_TASKS = [
-  {
-    id: "T-001",
-    title: "Safety Inspection – Zone A",
-    taskType: "Inspection",
-    expectedDuration: 7,
-    parent: null,
-    hasSubTask: true,
-    createdAt: "2026-11-01",
-    assignedTo: "Ravi Sharma",
-    active: true,
-  },
-  {
-    id: "T-002",
-    title: "Electrical Panel Check – Zone A",
-    taskType: "Inspection",
-    expectedDuration: 3,
-    parent: "T-001",
-    hasSubTask: false,
-    createdAt: "2026-11-02",
-    assignedTo: "Priya Menon",
-    active: true,
-  },
-  {
-    id: "T-003",
-    title: "Fire Exit Clearance – Zone A",
-    taskType: "Inspection",
-    expectedDuration: 2,
-    parent: "T-001",
-    hasSubTask: false,
-    createdAt: "2026-11-02",
-    assignedTo: null,
-    active: true,
-  },
-  {
-    id: "T-004",
-    title: "Vendor Document Audit",
-    taskType: "Audit",
-    expectedDuration: 10,
-    parent: null,
-    hasSubTask: false,
-    createdAt: "2026-11-03",
-    assignedTo: "Ravi Sharma",
-    active: true,
-  },
-  {
-    id: "T-005",
-    title: "Monthly Attendance Review",
-    taskType: "Review",
-    expectedDuration: 5,
-    parent: null,
-    hasSubTask: false,
-    createdAt: "2026-11-04",
-    assignedTo: "Amit Patel",
-    active: true,
-  },
-  {
-    id: "T-006",
-    title: "Fire Extinguisher Check – Ward 3",
-    taskType: "Inspection",
-    expectedDuration: 3,
-    parent: null,
-    hasSubTask: false,
-    createdAt: "2026-10-25",
-    assignedTo: "Sneha Iyer",
-    active: true,
-  },
-  {
-    id: "T-007",
-    title: "Vendor Compliance Report",
-    taskType: "Report",
-    expectedDuration: 7,
-    parent: null,
-    hasSubTask: false,
-    createdAt: "2026-11-01",
-    assignedTo: null,
-    active: true,
-  },
-  {
-    id: "T-008",
-    title: "Site Visit – Construction Site 12",
-    taskType: "Site Visit",
-    expectedDuration: 3,
-    parent: null,
-    hasSubTask: false,
-    createdAt: "2026-10-30",
-    assignedTo: "Priya Menon",
-    active: true,
-  },
-  {
-    id: "T-009",
-    title: "Quarterly Budget Review",
-    taskType: "Review",
-    expectedDuration: 5,
-    parent: null,
-    hasSubTask: false,
-    createdAt: "2026-11-04",
-    assignedTo: null,
-    active: true,
-  },
-  {
-    id: "T-010",
-    title: "Equipment Maintenance Log",
-    taskType: "Report",
-    expectedDuration: 7,
-    parent: null,
-    hasSubTask: false,
-    createdAt: "2026-10-29",
-    assignedTo: "Ravi Sharma",
-    active: true,
-  },
-  {
-    id: "T-011",
-    title: "Legacy Vendor Audit",
-    taskType: "Audit",
-    expectedDuration: 15,
-    parent: null,
-    hasSubTask: false,
-    createdAt: "2026-09-15",
-    assignedTo: "Anita Desai",
-    active: false,
-  },
-  {
-    id: "T-012",
-    title: "Old Safety Walkthrough",
-    taskType: "Inspection",
-    expectedDuration: 3,
-    parent: null,
-    hasSubTask: false,
-    createdAt: "2026-08-20",
-    assignedTo: null,
-    active: false,
-  },
-];
+const mapApiRow = (row) => ({
+  id: row.TASK_ID || "",
+  rawId: Number(row.TASK_ID),
+  title: row.TASK_TITLE || "",
+  expectedDuration: Number(row.EXCEPCTEDDAYS ?? 0),
+  parent:row.PARENTID || "",
+  createdAt: row.INSDT,
+  active: String(row.ISACTIVE).toUpperCase() === "Y",
+  taskType: null, // not returned by /getTaskList
+  assignedTo: null, // not returned by /getTaskList
+  hasSubTask: false, // computed below after mapping all rows
+});
 
 const EMPTY_FILTERS = {
   search: "",
@@ -153,25 +31,56 @@ const EMPTY_FILTERS = {
   status: "",
 };
 
-/* ---------- Page ---------- */
 const TaskList = () => {
   const { user } = useAuth();
   const userId = user?.userId;
-  const ulbId = user?.ulbId;
-  const [tasks, setTasks] = useState(MOCK_TASKS);
+  const { setLoading } = useLoader();
+
+  const [tasks, setTasks] = useState([]); 
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [activeTab, setActiveTab] = useState("all");
   const [assigningTask, setAssigningTask] = useState(null);
   const [createOpen, setCreateOpen] = useState(false);
 
-  /* Apply filters (before tab logic) */
+  const fetchTasks = async () => {
+    setLoading(true);
+    try {
+      const res = await apiClient.get("/getTaskList");
+
+      if (res?.success && Array.isArray(res.data)) {
+        const mapped = res.data.map(mapApiRow);
+
+        // derive hasSubTask: any task whose parent equals this task's id
+        // const withHasSubTask = mapped.map((t) => ({
+        //   ...t,
+        //   hasSubTask: mapped.some((other) => other.parent === t.id),
+        // }));
+
+        setTasks(mapped);
+      } else {
+        setTasks([]);
+      }
+    } catch (err) {
+      toast.error(
+        err?.response?.data?.message || err?.message || "Failed to load tasks",
+      );
+      setTasks([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
   const filteredByFilters = useMemo(() => {
     const q = filters.search.trim().toLowerCase();
     return tasks.filter((t) => {
       const matchSearch =
         !q ||
-        t.id.toLowerCase().includes(q) ||
-        t.title.toLowerCase().includes(q);
+        String(t.id).toLowerCase().includes(q) ||
+        String(t.title).toLowerCase().includes(q);
       const matchType = !filters.taskType || t.taskType === filters.taskType;
       const matchParent =
         !filters.parentTask || t.parent === filters.parentTask;
@@ -181,7 +90,6 @@ const TaskList = () => {
     });
   }, [tasks, filters]);
 
-  /* Apply tab logic on top of filters */
   const filteredByTab = useMemo(() => {
     switch (activeTab) {
       case "not-assigned":
@@ -196,7 +104,6 @@ const TaskList = () => {
     }
   }, [filteredByFilters, activeTab]);
 
-  /* Tab counts — computed from filter result so counts update live */
   const tabCounts = useMemo(
     () => ({
       all: filteredByFilters.length,
@@ -214,7 +121,6 @@ const TaskList = () => {
 
   const clearFilters = () => setFilters(EMPTY_FILTERS);
 
-  /* Create task handler */
   const handleCreate = async (data) => {
     if (data.hasSubTask && !data.parent) {
       toast.error("Select parent task");
@@ -222,34 +128,37 @@ const TaskList = () => {
     }
 
     const newTask = {
-      "IN_MODE": 1,
-      "IN_TASK_ID": null,
-      "IN_TASKTYPE_ID": Number(data.taskType),
-      "IN_TASK_TITLE": data.title,
-      "IN_TASK_DESCRIPTION": data.description,
-      "IN_TASK_COMPLETIONCRITERIA": data.completionCriteria,
-      "IN_TASK_EXCEPCTEDDAYS": Number(data.expectedDuration),
-      "IN_TASK_PARENTID": data.parent === "" ? 0 : Number(data.parent),
-      "IN_TASK_ISACTIVE": data.active ? "Y" : "N",
-      "IN_USERID": userId
+      IN_MODE: 1,
+      IN_TASK_ID: null,
+      IN_TASKTYPE_ID: Number(data.taskType),
+      IN_TASK_TITLE: data.title,
+      IN_TASK_DESCRIPTION: data.description,
+      IN_TASK_COMPLETIONCRITERIA: data.completionCriteria,
+      IN_TASK_EXCEPCTEDDAYS: Number(data.expectedDuration), 
+      IN_TASK_PARENTID:
+        data.parent === "" || data.parent == null ? 0 : Number(data.parent),
+      IN_TASK_ISACTIVE: data.active ? "Y" : "N",
+      IN_USERID: userId,
+    };
+
+    try {
+      const response = await apiClient.post("/AOPT_TASK_INSUPD", newTask);
+
+      if (response.success && Number(response.errorCode) === 9999) {
+        toast.success(response.errorMessage || "Task created");
+        setCreateOpen(false);
+        fetchTasks(); // ← refresh list
+      } else {
+        toast.error(response.errorMessage || "Failed to create task");
+      }
+    } catch (err) {
+      toast.error(
+        err?.response?.data?.message || err?.message || "Failed to create task",
+      );
     }
-
-    const response = await apiClient.post("/AOPT_TASK_INSUPD", newTask);
-
-    if (response.success && response.errorCode === 9999) {
-      toast.success(response.errorMessage);
-      setCreateOpen(false);
-    } else {
-      toast.error(response.errorMessage);
-    }
-
-    // setAssigningTask(data);
   };
 
-  /* Assign — placeholder */
-  const handleAssign = (task) => {
-    setAssigningTask(task);
-  };
+  const handleAssign = (task) => setAssigningTask(task);
 
   const handleAssignSubmit = (data) => {
     setTasks((prev) =>
@@ -265,9 +174,8 @@ const TaskList = () => {
     setAssigningTask(null);
   };
 
-  /* Dropdown options from data */
   const taskTypeOptions = useMemo(
-    () => [...new Set(tasks.map((t) => t.taskType))].sort(),
+    () => [...new Set(tasks.map((t) => t.taskType).filter(Boolean))].sort(),
     [tasks],
   );
   const parentTaskOptions = useMemo(
@@ -308,7 +216,10 @@ const TaskList = () => {
             onChange={setActiveTab}
           />
 
-          <TaskListTable tasks={filteredByTab} onAssign={handleAssign} />
+          {/* loading vs table */}
+          {tasks?.length > 0 && (
+            <TaskListTable tasks={filteredByTab} onAssign={handleAssign} />
+          )}
         </div>
 
         <p className="text-[11.5px] text-slate-500">
@@ -327,7 +238,6 @@ const TaskList = () => {
         open={createOpen}
         onClose={() => setCreateOpen(false)}
         onSubmit={handleCreate}
-        // parentTaskOptions={parentTaskOptions}
         createdBy="Shri Kumar"
         nextTaskId={`T-${String(tasks.length + 1).padStart(3, "0")}`}
       />
