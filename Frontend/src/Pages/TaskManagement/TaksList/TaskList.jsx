@@ -216,7 +216,6 @@ const TaskList = () => {
 
   /* Create task handler */
   const handleCreate = async (data) => {
-
     if (data.hasSubTask && !data.parent) {
       toast.error("Select parent task");
       return;
@@ -234,7 +233,6 @@ const TaskList = () => {
       "IN_TASK_ISACTIVE": data.active ? "Y" : "N",
       "IN_USERID": userId
     }
-
 
     const response = await apiClient.post("/AOPT_TASK_INSUPD", newTask);
 
