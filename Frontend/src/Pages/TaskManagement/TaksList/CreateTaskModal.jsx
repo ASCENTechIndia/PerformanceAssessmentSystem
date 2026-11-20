@@ -76,14 +76,15 @@ const CreateTaskModal = ({
   }, [open, reset]);
 
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
+  const now = new
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentDateTime(new Date());
-    }, 1000);
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setCurrentDateTime(new Date());
+      }, 1000);
 
-    return () => clearInterval(interval);
-  }, []);
+      return () => clearInterval(interval);
+    }, []);
 
 
   const createdOn = currentDateTime.toLocaleDateString("en-IN", {
@@ -101,8 +102,8 @@ const CreateTaskModal = ({
     await new Promise((r) => setTimeout(r, 400));
     onSubmit({
       ...data,
-      createdBy,
-      createdAt: now.toISOString(),
+      userName,
+      createdAt: currentDateTime.toISOString(),
     });
   };
 
@@ -140,7 +141,7 @@ const CreateTaskModal = ({
       setLoading(true);
 
       const response = await apiClient.get("/getParentTaskDropdown");
-      console.log(response);
+
       if (
         response.success &&
         Array.isArray(response.data) &&
@@ -177,7 +178,6 @@ const CreateTaskModal = ({
 
   if (!open) return null;
 
-  console.log(hasSubTask);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -327,13 +327,29 @@ const CreateTaskModal = ({
                 ))}
               </select> */}
               <input
-                type="date"
+                type="number"
                 id="expectedDuration"
                 className="pas-input"
+                placeholder="Enter expected duration"
+                min="1"
+                step="1"
+                onKeyDown={(e) => {
+                  if (["+", "-", "e", "E", "."].includes(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
                 {...register("expectedDuration", {
                   required: "Expected duration is required",
+                  valueAsNumber: true,
+                  min: {
+                    value: 1,
+                    message: "Expected duration must be greater than 0",
+                  },
+                  validate: (value) =>
+                    Number.isInteger(value) || "Please enter a valid whole number",
                 })}
               />
+
               {errors.expectedDuration && (
                 <p className="pas-error">{errors.expectedDuration.message}</p>
               )}

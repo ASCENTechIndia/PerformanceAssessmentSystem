@@ -7,6 +7,8 @@ import TaskTabs from "./TaskTabs";
 import TaskListTable from "./TaskListTable";
 import CreateTaskModal from "./CreateTaskModal";
 import AssignTaskModal from "./AssignTaskModal";
+import { useAuth } from "../../../Context/AuthContext";
+import apiClient from "../../../../apiClient";
 
 /* ---------- Dummy data ---------- */
 const MOCK_TASKS = [
@@ -153,6 +155,9 @@ const EMPTY_FILTERS = {
 
 /* ---------- Page ---------- */
 const TaskList = () => {
+  const { user } = useAuth();
+  const userId = user?.userId;
+  const ulbId = user?.ulbId;
   const [tasks, setTasks] = useState(MOCK_TASKS);
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [activeTab, setActiveTab] = useState("all");
@@ -210,22 +215,37 @@ const TaskList = () => {
   const clearFilters = () => setFilters(EMPTY_FILTERS);
 
   /* Create task handler */
-  const handleCreate = (data) => {
+  const handleCreate = async (data) => {
+
+    if (data.hasSubTask && !data.parent) {
+      toast.error("Select parent task");
+      return;
+    }
+
     const newTask = {
-      id: `T-${String(tasks.length + 1).padStart(3, "0")}`,
-      title: data.title,
-      taskType: data.taskType,
-      expectedDuration: Number(data.expectedDuration),
-      parent: data.parent || null,
-      hasSubTask: data.hasSubTask,
-      createdAt: data.createdAt.split("T")[0],
-      assignedTo: null,
-      active: data.active,
-    };
-    setTasks((prev) => [newTask, ...prev]);
-    setCreateOpen(false);
-    toast.success(`${data.title} created as ${newTask.id}`);
-    setAssigningTask(data);
+      "IN_MODE": 1,
+      "IN_TASK_ID": null,
+      "IN_TASKTYPE_ID": Number(data.taskType),
+      "IN_TASK_TITLE": data.title,
+      "IN_TASK_DESCRIPTION": data.description,
+      "IN_TASK_COMPLETIONCRITERIA": data.completionCriteria,
+      "IN_TASK_EXCEPCTEDDAYS": Number(data.expectedDuration),
+      "IN_TASK_PARENTID": data.parent === "" ? 0 : Number(data.parent),
+      "IN_TASK_ISACTIVE": data.active ? "Y" : "N",
+      "IN_USERID": userId
+    }
+
+
+    const response = await apiClient.post("/AOPT_TASK_INSUPD", newTask);
+
+    if (response.success && response.errorCode === 9999) {
+      toast.success(response.errorMessage);
+      setCreateOpen(false);
+    } else {
+      toast.error(response.errorMessage);
+    }
+
+    // setAssigningTask(data);
   };
 
   /* Assign — placeholder */
