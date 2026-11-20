@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import {
   X,
@@ -8,6 +8,10 @@ import {
   RotateCcw,
   Lock,
 } from "lucide-react";
+import { useLoader } from "../../../Context/LoaderContext";
+import { toast } from "sonner";
+import apiClient from "../../../../apiClient";
+import { useAuth } from "../../../Context/AuthContext";
 
 const TASK_TYPE_OPTIONS = [
   "Inspection",
@@ -22,15 +26,23 @@ const CreateTaskModal = ({
   open,
   onClose,
   onSubmit,
-  parentTaskOptions,
+  // parentTaskOptions,
   createdBy = "Shri Kumar",
   nextTaskId = "T-NEW",
 }) => {
+  const { setLoading } = useLoader();
+  const { user } = useAuth();
+  const userName = user?.username;
+  const ulbId = user?.ulbId;
+  const [taskTypeOptions, setTaskTypeOptions] = useState([]);
+  const [parentTaskOptions, setParentTaskOptions] = useState([]);
   const {
     register,
     handleSubmit,
     reset,
     control,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
@@ -45,6 +57,8 @@ const CreateTaskModal = ({
     },
     mode: "onBlur",
   });
+
+  const hasSubTask = watch("hasSubTask");
 
   useEffect(() => {
     if (open) {
@@ -61,17 +75,26 @@ const CreateTaskModal = ({
     }
   }, [open, reset]);
 
-  if (!open) return null;
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
-  const now = new Date();
-  const createdOn = now.toLocaleDateString("en-IN", {
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+
+  const createdOn = currentDateTime.toLocaleDateString("en-IN", {
     day: "2-digit",
     month: "short",
     year: "numeric",
   });
-  const createdTime = now.toLocaleTimeString("en-IN", {
+
+  const createdTime = currentDateTime.toLocaleTimeString("en-IN", {
     hour: "2-digit",
-    minute: "2-digit",
+    minute: "2-digit"
   });
 
   const submit = async (data) => {
@@ -82,6 +105,79 @@ const CreateTaskModal = ({
       createdAt: now.toISOString(),
     });
   };
+
+  const fetchTaskTypeDropdown = async () => {
+    try {
+      setLoading(true);
+
+      const response = await apiClient.get("/getTaskTypeDropdown");
+
+      if (
+        response.success &&
+        Array.isArray(response.data) &&
+        response.data.length > 0
+      ) {
+        const formatted = response.data.map((item) => ({
+          label: item.TASKTYPE_NAME,
+          value: String(item.TASKTYPE_ID),
+        }));
+
+        setTaskTypeOptions(formatted);
+      } else {
+        setTaskTypeOptions([]);
+      }
+    } catch (err) {
+      setTaskTypeOptions([]);
+      console.error(err);
+      toast.error(err.message || "Failed to fetch task types");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const fetchParentTaskDropdown = async () => {
+    try {
+      setLoading(true);
+
+      const response = await apiClient.get("/getParentTaskDropdown");
+      console.log(response);
+      if (
+        response.success &&
+        Array.isArray(response.data) &&
+        response.data.length > 0
+      ) {
+        const formatted = response.data.map((item) => ({
+          label: item.TASK_TITLE,
+          value: String(item.TASK_ID),
+        }));
+
+        setParentTaskOptions(formatted);
+      } else {
+        setParentTaskOptions([]);
+      }
+    } catch (err) {
+      setParentTaskOptions([])
+      console.error(err);
+      toast.error(err.message || "Failed to fetch parent tasks");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchTaskTypeDropdown();
+    fetchParentTaskDropdown();
+  }, []);
+
+  useEffect(() => {
+    if (!hasSubTask) {
+      setValue("parent", "");
+    }
+  }, [hasSubTask, setValue]);
+
+  if (!open) return null;
+
+  console.log(hasSubTask);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -200,9 +296,9 @@ const CreateTaskModal = ({
                 {...register("taskType", { required: "Task type is required" })}
               >
                 <option value="">Select task type…</option>
-                {TASK_TYPE_OPTIONS.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
+                {taskTypeOptions.map((t) => (
+                  <option key={t.value} value={t.value}>
+                    {t.label}
                   </option>
                 ))}
               </select>
@@ -247,23 +343,6 @@ const CreateTaskModal = ({
           {/* Row: Parent Task + Has Sub-Task toggle */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="parent" className="pas-label">
-                Parent Task{" "}
-                <span className="text-slate-400 normal-case font-normal">
-                  (optional)
-                </span>
-              </label>
-              <select id="parent" className="pas-input" {...register("parent")}>
-                <option value="">None (top-level)</option>
-                {parentTaskOptions.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.title}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
               <label className="pas-label">
                 Has Sub-Task <span className="text-rose-500">*</span>
               </label>
@@ -277,20 +356,20 @@ const CreateTaskModal = ({
                     className={`w-full flex items-center justify-between gap-3
                       px-3.5 py-2.5 rounded-xl border transition-all duration-150
                       ${field.value
-                        ? "bg-violet-50/60 border-violet-200 hover:bg-violet-50"
+                        ? "bg-blue-50/60 border-blue-200 hover:bg-blue-50"
                         : "bg-white border-slate-200 hover:border-slate-300"
                       }`}
                   >
                     <span
                       className={`text-[13px] font-semibold
-                      ${field.value ? "text-violet-800" : "text-slate-700"}`}
+                      ${field.value ? "text-blue-800" : "text-slate-700"}`}
                     >
                       {field.value ? "Yes — will have sub-tasks" : "No"}
                     </span>
                     <span
                       className={`relative inline-flex h-5 w-9 items-center rounded-full
                       transition-colors duration-150 flex-shrink-0
-                      ${field.value ? "bg-violet-500" : "bg-slate-300"}`}
+                      ${field.value ? "bg-blue-500" : "bg-slate-300"}`}
                     >
                       <span
                         className={`absolute w-3.5 h-3.5 rounded-full bg-white shadow-sm
@@ -301,6 +380,22 @@ const CreateTaskModal = ({
                   </button>
                 )}
               />
+            </div>
+            <div>
+              <label htmlFor="parent" className="pas-label">
+                Parent Task{" "}
+                <span className="text-slate-400 normal-case font-normal">
+                  (optional)
+                </span>
+              </label>
+              <select id="parent" className={`pas-input ${hasSubTask ? "" : "cursor-not-allowed"}`} {...register("parent")} disabled={!hasSubTask}>
+                <option value="">None (top-level)</option>
+                {parentTaskOptions.map((p) => (
+                  <option key={p.value} value={p.value}>
+                    {p.label}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
@@ -336,7 +431,7 @@ const CreateTaskModal = ({
                 </p>
               </div>
               <p className="text-[12.5px] font-semibold text-slate-800">
-                {createdBy}
+                {userName}
               </p>
             </div>
             <div>

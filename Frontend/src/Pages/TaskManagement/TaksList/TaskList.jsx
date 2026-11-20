@@ -309,7 +309,7 @@ const TaskList = () => {
         open={createOpen}
         onClose={() => setCreateOpen(false)}
         onSubmit={handleCreate}
-        parentTaskOptions={parentTaskOptions}
+        // parentTaskOptions={parentTaskOptions}
         createdBy="Shri Kumar"
         nextTaskId={`T-${String(tasks.length + 1).padStart(3, "0")}`}
       />
