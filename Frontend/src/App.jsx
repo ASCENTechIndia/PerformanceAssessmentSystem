@@ -20,6 +20,7 @@ import FrmAddTaskType from "./Pages/Master/TaskTypeMaster/FrmAddTaskType.jsx";
 import TaskList from "./Pages/TaskManagement/TaksList/TaskList.jsx";
 import MyTasks from "./Pages/MyTask/MyTask/MyTasks.jsx";
 import TaskStatus from "./Pages/MyTask/TaskStatus/TaskStatus.jsx";
+import FrmStatusConfig from "./Pages/Master/TaskStatusConfig/FrmStatusConfig.jsx";
 
 function App() {
   const hostname = window.location.hostname;
@@ -42,6 +43,7 @@ function App() {
                   <Route path="/Master/add-task-type" element={<FrmAddTaskType/>}/>
                   <Route path="/master/employees" element={<EmployeeMaster />} />
                   <Route path="/master/add-employee" element={<AddEmployee />} />
+                  <Route path="/master/status-config" element={<FrmStatusConfig />} />
                   <Route path="/master/HierarchyMapping" element={<HierarchyMapping />} />
                   <Route path="/master/DepartmentMaster"  element={<DepartmentMaster />} />
                   <Route path="/master/DesignationMaster" element={<DesignationMaster />} />

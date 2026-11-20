@@ -136,6 +136,12 @@ export const STATIC_MENU = [
         PAGEPATH: "/master/employees",
         ICON: Users,
       },
+      {
+        MENUID: 406,
+        MENUTITLE: "Status Config",
+        PAGEPATH: "/master/status-config",
+        ICON: Users,
+      },
       // {
       //   MENUID: 405,
       //   MENUTITLE: "Hierarchy Mapping",
