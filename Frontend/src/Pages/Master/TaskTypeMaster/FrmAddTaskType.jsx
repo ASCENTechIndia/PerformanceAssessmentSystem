@@ -8,13 +8,10 @@ import { useAuth } from "../../../Context/AuthContext";
 import { useLoader } from "../../../Context/LoaderContext";
 import { useEffect, useState } from "react";
 
-
-
 const FrmAddTaskType = () => {
   const navigate = useNavigate();
   const { setLoading } = useLoader();
   const { user } = useAuth();
-  console.log(user);
   const userId = user?.userId;
   // const { id } = useParams();
   const location = useLocation();
@@ -33,17 +30,21 @@ const FrmAddTaskType = () => {
   } = useForm({
     defaultValues: {
       name: taskType?.TASKTYPE_NAME || "",
-      active: taskType?.TASKTYPE_ISACTIVE === "Y" ? true : taskType?.TASKTYPE_ISACTIVE === "N" ? false : true,
+      active: taskType?.TASKTYPE_ISACTIVE === "Y"
+        ? true
+        : taskType?.TASKTYPE_ISACTIVE === "N"
+          ? false
+          : true,
       description: taskType?.TASKTYPE_DESC || "",
-      ulb: taskType?.ulbId || ""
-    },
-    mode: "onBlur",
+      ulb: taskType?.ULBID != null
+        ? String(taskType.ULBID)
+        : "",
+    }
   });
 
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      // await apiService[isEdit ? "put" : "post"](`/master/task-type${isEdit ? `/${id}` : ""}`, data);
 
       const payload = {
         "IN_MODE": isEdit ? 2 : 1,
@@ -64,10 +65,10 @@ const FrmAddTaskType = () => {
       } else {
         toast.error(response.errorMessage)
       }
-     
+
     } catch (err) {
       console.error(err);
-      toast.error(err?.response?.data?.message || "Failed to save task type");
+      isEdit ? toast.error(err.message || "Failed to update task type") : toast.error(err.message || "Failed to save task type");
     } finally {
       setLoading(false);
     }
@@ -78,29 +79,42 @@ const FrmAddTaskType = () => {
       setLoading(true);
 
       const response = await apiClient.get("/getUlbDropdown");
-    
-      if (response.success && Array.isArray(response.data) && response.data.length > 0) {
-        const formatted = response.data.map(item => ({
+
+      if (
+        response.success &&
+        Array.isArray(response.data) &&
+        response.data.length > 0
+      ) {
+        const formatted = response.data.map((item) => ({
           label: item.ULB_NAME,
-          value: item.ULBID
+          value: String(item.ULBID),
         }));
+
         setUlbOptions(formatted);
       } else {
         setUlbOptions([]);
       }
-
     } catch (error) {
       console.error(error);
-      toast(error.message || "Failed to fetch ULB Dropdown");
+      toast.error(error.message || "Failed to fetch ULB Dropdown");
       setUlbOptions([]);
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     fetchULBDropdown();
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    if (taskType && ulbOptions.length > 0) {
+      setValue("ulb", String(taskType.ULBID), {
+        shouldDirty: false,
+        shouldValidate: true,
+      });
+    }
+  }, [taskType, ulbOptions, setValue]);
 
   return (
     <Layout
@@ -173,23 +187,32 @@ const FrmAddTaskType = () => {
               <label htmlFor="ulbName" className="pas-label">
                 ULB Name <span className="text-rose-500">*</span>
               </label>
-              <select
-                id="ulbName"
-                className="pas-input"
-                aria-invalid={!!errors.ulb}
-                {...register("ulb", {
-                  required: "ULB is required"
-                })}
-              >
-                <option value={""}>
-                  -- SELECT --
-                </option>
-                {ulbOptions.map(item => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
+
+              <Controller
+                name="ulb"
+                control={control}
+                rules={{
+                  required: "ULB is required",
+                }}
+                render={({ field }) => (
+                  <select
+                    id="ulbName"
+                    className="pas-input"
+                    aria-invalid={!!errors.ulb}
+                    {...field}
+                    value={field.value ?? ""}
+                  >
+                    <option value="">-- SELECT --</option>
+
+                    {ulbOptions.map((item) => (
+                      <option key={item.value} value={item.value}>
+                        {item.label}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              />
+
               {errors.ulb && (
                 <p className="pas-error">{errors.ulb.message}</p>
               )}
