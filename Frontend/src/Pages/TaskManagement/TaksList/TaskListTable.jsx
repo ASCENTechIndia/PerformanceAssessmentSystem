@@ -30,9 +30,9 @@ const TaskListTable = ({ tasks, onAssign }) => {
             <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
               Created
             </th>
-            <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+            {/* <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
               Assigned To
-            </th>
+            </th> */}
             <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
               Status
             </th>
@@ -107,7 +107,7 @@ const TaskListTable = ({ tasks, onAssign }) => {
                 </td>
 
                 {/* Assigned To */}
-                <td className="px-3 py-3 text-[12px] text-slate-600 whitespace-nowrap">
+                {/* <td className="px-3 py-3 text-[12px] text-slate-600 whitespace-nowrap">
                   {task.assignedTo ? (
                     <span className="font-medium text-slate-800">
                       {task.assignedTo}
@@ -117,7 +117,7 @@ const TaskListTable = ({ tasks, onAssign }) => {
                       Unassigned
                     </span>
                   )}
-                </td>
+                </td> */}
 
                 {/* Status */}
                 <td className="px-3 py-3">

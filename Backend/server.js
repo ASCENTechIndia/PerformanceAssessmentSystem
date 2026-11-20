@@ -8,6 +8,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const fs = require("fs");
 const path = require("path");
+const oracledb = require('oracledb');
 
 const app = express();
 const NODE_ENV = process.env.NODE_ENV || "development";
@@ -27,6 +28,7 @@ app.use(
   cors({
     origin: [
       /\.nagarkaryavalinewuat\.com$/,
+      "http://taskmanagement.nagarkaryavalinewuat.com",
       "http://localhost:5173",
     ],
     credentials: true,
@@ -55,6 +57,33 @@ logger.info("Session middleware initialized");
 // 🔗 Routes
 app.use("/proxy", proxyRouter);
 app.use("/", routes);
+
+app.get("/health", async(req, res) => {
+  let connection;
+  try {
+    connection = await oracledb.getConnection();
+
+    const result = await connection.execute(`SELECT 1 FROM dual`);
+
+    res.status(200).json({
+      status: 'OK',
+      message: 'Server & DB are healthy',
+      db: result.rows ? 'Connected' : 'Unknown',
+      uptime: process.uptime(),
+      timestamp: new Date()
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        success: false,
+        status: "ERROR",
+        message: "Health check failed",
+        db: "Disconnected",
+        error: error.message,
+      });
+  }
+});
 logger.info("Routes loaded");
 
 // 🔌 Initialize DB Connection
