@@ -13,6 +13,9 @@ import apiClient from "../../../../apiClient";
 
 const HierarchyMapping = () => {
     const { setLoading } = useLoader();
+    const { user } = useAuth();
+    const ulbId = user?.ulbId;
+    const userId = user?.userId;
 
     const [departmentOptions, setDepartmentOptions] = useState([]);
     const [employeeOptions, setEmployeeOptions] = useState([]);
@@ -25,12 +28,14 @@ const HierarchyMapping = () => {
         getValues,
         handleSubmit,
         reset,
+        control,
         formState: { errors }
     } = useForm({
         defaultValues: {
             department: "",
             employee: "",
-            reportingOfficer: ""
+            reportingOfficer: "",
+            active: true
         }
     });
 
@@ -43,8 +48,40 @@ const HierarchyMapping = () => {
 
             const response = await apiClient.get("/getDepartmentDropdown");
 
-            console.log(response);
+            if (response.success && Array.isArray(response.data) && response.data.length > 0) {
+                const formatted = response.data.map(item => ({
+                    label: item.DEPT_NAME,
+                    value: item.DEPT_ID
+                }));
+                setDepartmentOptions(formatted);
+            } else {
+                setDepartmentOptions([]);
+            }
         } catch (err) {
+            setDepartmentOptions([]);
+            console.error(err);
+            toast.error(err.message || "Failed to fetch departments");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const fetchEmployeeDropdown = async () => {
+        try {
+            setLoading(true);
+            const response = await apiClient.get(`/getEmployeeDropdown?deptId=${encodeURIComponent(watchDepartment)}&ulbId=${ulbId}`);
+
+            if (response.success && Array.isArray(response.data) && response.data.length > 0) {
+                const formatted = response.data.map(item => ({
+                    label: item.EMPLOYEE_NAME,
+                    value: item.EMPID
+                }));
+                setEmployeeOptions(formatted);
+            } else {
+                setEmployeeOptions([]);
+            }
+        } catch (err) {
+            setEmployeeOptions([]);
             console.error(err);
             toast.error(err.message || "Failed to fetch departments");
         } finally {
@@ -55,8 +92,25 @@ const HierarchyMapping = () => {
     const onHierarchyMapSubmit = async (data) => {
         try {
             setLoading(true);
-            console.log(data);
-            toast.success("Mapping Data submitted successfully");
+
+            const mappingPayload = {
+                "IN_MODE": 1,
+                "IN_ULBID": Number(ulbId),
+                "IN_EMPLOYEE_ID": Number(data.employee),
+                "IN_REPORTINGTO": Number(data.reportingOfficer),
+                "IN_ISACTIVE": data.active ? "Y" : "N",
+                "IN_USERID": userId
+            }
+
+            const response = await apiClient.post("/aopt_employee_mapping_insupd", mappingPayload);
+
+            if (response.success && response.errorCode === 9999) {
+                toast.success(response.errorMessage);
+                reset();
+            } else {
+                toast.error(response.errorMessage);
+            }
+
         } catch (error) {
             console.error(error);
             toast.error(error.message || "Failed to submit mapping data.");
@@ -67,7 +121,20 @@ const HierarchyMapping = () => {
 
     useEffect(() => {
         fetchDepartmentDropdown();
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if (ulbId && watchDepartment) {
+            fetchEmployeeDropdown();
+        }
+    }, [ulbId, watchDepartment]);
+
+    useEffect(() => {
+        if (watchEmployee && employeeOptions.length) {
+            const officers = employeeOptions.filter(item => String(item.value) !== String(encodeURIComponent(watchEmployee)));
+            setOfficerOptions(officers);
+        }
+    }, [watchEmployee, employeeOptions]);
 
     return (
         <Layout
@@ -92,7 +159,7 @@ const HierarchyMapping = () => {
                             {...register("department", { required: "Department is required" })}
                         >
                             <option value="">Select Department…</option>
-                            {[].map((p) => (
+                            {departmentOptions.map((p) => (
                                 <option key={p.value} value={p.value}>
                                     {p.label}
                                 </option>
@@ -112,12 +179,13 @@ const HierarchyMapping = () => {
 
                         <select
                             id="employee"
-                            className="pas-input"
+                            className={`pas-input ${watchDepartment ? "" : "cursor-not-allowed"}`}
+                            disabled={!watchDepartment}
                             aria-invalid={!!errors.employee}
                             {...register("employee", { required: "Employee is required" })}
                         >
                             <option value="">Select Employee…</option>
-                            {[].map((p) => (
+                            {employeeOptions.map((p) => (
                                 <option key={p.value} value={p.value}>
                                     {p.label}
                                 </option>
@@ -137,12 +205,13 @@ const HierarchyMapping = () => {
 
                         <select
                             id="reportingOfficer"
-                            className="pas-input"
+                            className={`pas-input ${watchEmployee ? "" : "cursor-not-allowed"}`}
+                            disabled={!watchEmployee}
                             aria-invalid={!!errors.reportingOfficer}
                             {...register("reportingOfficer", { required: "Reporting Officer is required" })}
                         >
                             <option value="">Select Officer…</option>
-                            {[].map((p) => (
+                            {officerOptions.map((p) => (
                                 <option key={p.value} value={p.value}>
                                     {p.label}
                                 </option>
@@ -151,6 +220,45 @@ const HierarchyMapping = () => {
                         {errors.reportingOfficer && (
                             <p className="pas-error">{errors.reportingOfficer.message}</p>
                         )}
+                    </div>
+                    <div>
+                        <label className="pas-label">
+                            Status <span className="text-rose-500">*</span>
+                        </label>
+                        <Controller
+                            name="active"
+                            control={control}
+                            render={({ field }) => (
+                                <button
+                                    type="button"
+                                    onClick={() => field.onChange(!field.value)}
+                                    className={`w-full flex items-center justify-between gap-3
+                      px-3.5 py-2.5 rounded-xl border transition-all duration-150
+                      ${field.value
+                                            ? "bg-blue-50/60 border-blue-200 hover:bg-blue-50"
+                                            : "bg-white border-slate-200 hover:border-slate-300"
+                                        }`}
+                                >
+                                    <span
+                                        className={`text-[13px] font-semibold
+                      ${field.value ? "text-blue-800" : "text-slate-700"}`}
+                                    >
+                                        {field.value ? "Active" : "Inactive"}
+                                    </span>
+                                    <span
+                                        className={`relative inline-flex h-5 w-9 items-center rounded-full
+                      transition-colors duration-150
+                      ${field.value ? "bg-blue-500" : "bg-slate-300"}`}
+                                    >
+                                        <span
+                                            className={`absolute w-3.5 h-3.5 rounded-full bg-white shadow-sm
+                        transition-transform duration-200
+                        ${field.value ? "translate-x-[19px]" : "translate-x-[3px]"}`}
+                                        />
+                                    </span>
+                                </button>
+                            )}
+                        />
                     </div>
                 </div>
                 <div className="flex items-center justify-end gap-2 pt-4 border-t border-slate-100">
