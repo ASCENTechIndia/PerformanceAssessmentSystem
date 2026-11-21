@@ -16,6 +16,7 @@ import {
   Menu,
   ListTodo,
   UsersRound,
+  BadgeInfo
 } from "lucide-react";
 
 export const HOME_ITEM = {
@@ -140,7 +141,7 @@ export const STATIC_MENU = [
         MENUID: 406,
         MENUTITLE: "Status Config",
         PAGEPATH: "/master/status-config",
-        ICON: Users,
+        ICON: BadgeInfo,
       },
       {
         MENUID: 405,
