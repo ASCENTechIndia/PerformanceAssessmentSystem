@@ -88,15 +88,7 @@ const FrmStatusConfig = () => {
     >
       <div className="space-y-5">
         {/* ===== Header ===== */}
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h1 className="text-xl font-semibold text-slate-900">
-              Status Configuration
-            </h1>
-            <p className="mt-0.5 text-sm text-slate-500">
-              Manage all task statuses used across the system.
-            </p>
-          </div>
+        <div className="flex flex-wrap items-center justify-end gap-3">
           <button type="button" onClick={handleAdd} className="submit-btn">
             <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
               <path

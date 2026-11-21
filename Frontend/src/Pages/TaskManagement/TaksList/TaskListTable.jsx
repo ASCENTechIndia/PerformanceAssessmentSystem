@@ -94,10 +94,10 @@ const TaskListTable = ({ tasks, onAssign }) => {
                       className="inline-flex items-center px-1.5 py-0.5 text-[10.5px] font-mono
                       bg-violet-50 text-violet-700 rounded"
                     >
-                      {task.parent}
+                      No
                     </span>
                   ) : (
-                    <span className="text-[11px] text-slate-400 italic">—</span>
+                    <span className="text-[11px] text-slate-400 italic">Yes</span>
                   )}
                 </td>
 

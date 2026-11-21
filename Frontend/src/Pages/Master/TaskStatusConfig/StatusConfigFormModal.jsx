@@ -43,7 +43,7 @@ const StatusConfigFormModal = ({ open, editing, onClose, onSaved }) => {
         IN_TASKSTATUS_BGCOLOR: editing.BGCOLOR || "",
         IN_TASKSTATUS_FORECOLOR: editing.FORECOLOR || "",
         IN_DISPLAYORDER: Number(editing.DISPLAYORDER),
-        IN_FINALSTATUS: Number(editing.FINALSTATUS),
+        IN_FINALSTATUS: Number(editing.FINALSTATUS) === 1 ? true : false,
         IN_ISACTIVE: Number(editing.ISACTIVE),
       });
     } else {
@@ -78,7 +78,6 @@ const StatusConfigFormModal = ({ open, editing, onClose, onSaved }) => {
           res?.errorMessage || (isEdit ? "Status updated" : "Status created"),
         );
         onSaved?.();
-        navigate("/master/HierarchyMapping");
       } else {
         toast.error(res?.errorMessage || res?.message || "Operation failed");
       }
