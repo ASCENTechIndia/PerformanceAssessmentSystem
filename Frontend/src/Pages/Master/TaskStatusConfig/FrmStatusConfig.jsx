@@ -22,7 +22,7 @@ const FrmStatusConfig = () => {
   const fetchStatuses = async () => {
     setLoading(true);
     try {
-      const res = await apiClient.get("/getTaskStatusList");
+      const res = await apiClient.get("/getStatusConfigList");
       if (res?.success && Array.isArray(res.data)) {
         setStatuses(res.data);
       } else {
@@ -40,19 +40,20 @@ const FrmStatusConfig = () => {
     }
   };
 
-//   useEffect(() => {
-//     fetchStatuses();
-//   }, []);
+  // Fetch on page load
+  useEffect(() => {
+    fetchStatuses();
+  }, []);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return statuses;
     return statuses.filter(
       (s) =>
-        String(s.TASKSTATUS_CODE ?? "")
+        String(s.STATUSCODE ?? "")
           .toLowerCase()
           .includes(q) ||
-        String(s.TASKSTATUS_NAME ?? "")
+        String(s.STATUSNAME ?? "")
           .toLowerCase()
           .includes(q),
     );
@@ -61,10 +62,8 @@ const FrmStatusConfig = () => {
   const stats = useMemo(
     () => ({
       total: statuses.length,
-      active: statuses.filter((s) => Number(s.TASKSTATUS_ISACTIVE ?? 0) === 1)
-        .length,
-      final: statuses.filter((s) => Number(s.TASKSTATUS_FINALSTATUS ?? 0) === 1)
-        .length,
+      active: statuses.filter((s) => Number(s.ISACTIVE ?? 0) === 1).length,
+      final: statuses.filter((s) => Number(s.FINALSTATUS ?? 0) === 1).length,
     }),
     [statuses],
   );
@@ -80,27 +79,29 @@ const FrmStatusConfig = () => {
   };
 
   const handleSaved = () => {
-    // fetch update list and close popup
     setFormOpen(false);
     setEditing(null);
-    // fetchStatuses();
+    fetchStatuses(); // Refresh the list after saving
   };
 
   const handleConfirmDelete = async (s) => {
     try {
       setSubmittingDelete(true);
+      // Note: Assuming the delete payload keys remain the same as your previous code,
+      // just passing the values from the new object structure.
       const payload = {
         IN_MODE: "3",
-        IN_TASKSTATUS_ID: Number(s.TASKSTATUS_ID),
-        IN_TASKSTATUS_CODE: s.TASKSTATUS_CODE,
-        IN_TASKSTATUS_NAME: s.TASKSTATUS_NAME,
-        IN_TASKSTATUS_BGCOLOR: s.TASKSTATUS_BGCOLOR || null,
-        IN_TASKSTATUS_FORECOLOR: s.TASKSTATUS_FORECOLOR || null,
-        IN_DISPLAYORDER: Number(s.TASKSTATUS_DISPLAYORDER ?? 0),
-        IN_FINALSTATUS: Number(s.TASKSTATUS_FINALSTATUS ?? 0),
+        IN_TASKSTATUS_ID: Number(s.STATUSID),
+        IN_TASKSTATUS_CODE: s.STATUSCODE,
+        IN_TASKSTATUS_NAME: s.STATUSNAME,
+        IN_TASKSTATUS_BGCOLOR: s.BGCOLOR || null,
+        IN_TASKSTATUS_FORECOLOR: s.FORECOLOR || null,
+        IN_DISPLAYORDER: Number(s.DISPLAYORDER ?? 0),
+        IN_FINALSTATUS: Number(s.FINALSTATUS ?? 0),
         IN_ISACTIVE: 0,
         IN_USERID: userId,
       };
+
       const res = await apiClient.post("/AOPT_TASKSTATUS_INSUPD", payload);
       const ok =
         res?.success === true &&
@@ -111,7 +112,7 @@ const FrmStatusConfig = () => {
       if (ok) {
         toast.success("Status deleted");
         setDeletingId(null);
-        // fetchStatuses();
+        fetchStatuses(); // Refresh list
       } else {
         toast.error(res?.errorMessage || res?.message || "Delete failed");
       }
@@ -267,32 +268,31 @@ const FrmStatusConfig = () => {
                   </tr>
                 ) : (
                   filtered.map((s) => {
-                    const isActive = Number(s.TASKSTATUS_ISACTIVE ?? 0) === 1;
-                    const isFinal = Number(s.TASKSTATUS_FINALSTATUS ?? 0) === 1;
-                    const isDeleting = deletingId === s.TASKSTATUS_ID;
+                    const isActive = Number(s.ISACTIVE ?? 0) === 1;
+                    const isFinal = Number(s.FINALSTATUS ?? 0) === 1;
+                    const isDeleting = deletingId === s.STATUSID;
 
                     return (
-                      <tr key={s.TASKSTATUS_ID} className="hover:bg-slate-50">
+                      <tr key={s.STATUSID} className="hover:bg-slate-50">
                         <td className="px-4 py-3">
                           <span
                             className="inline-block rounded-md px-2.5 py-1 text-xs font-semibold shadow-sm"
                             style={{
-                              backgroundColor:
-                                s.TASKSTATUS_BGCOLOR || "#e2e8f0",
-                              color: s.TASKSTATUS_FORECOLOR || "#334155",
+                              backgroundColor: s.BGCOLOR || "#e2e8f0",
+                              color: s.FORECOLOR || "#334155",
                             }}
                           >
-                            {s.TASKSTATUS_NAME || "—"}
+                            {s.STATUSNAME || "—"}
                           </span>
                         </td>
                         <td className="px-4 py-3 font-mono text-xs text-slate-700">
-                          {s.TASKSTATUS_CODE || "—"}
+                          {s.STATUSCODE || "—"}
                         </td>
                         <td className="px-4 py-3 text-slate-800">
-                          {s.TASKSTATUS_NAME || "—"}
+                          {s.STATUSNAME || "—"}
                         </td>
                         <td className="px-4 py-3 text-slate-600">
-                          {s.TASKSTATUS_DISPLAYORDER ?? "—"}
+                          {s.DISPLAYORDER ?? "—"}
                         </td>
                         <td className="px-4 py-3">
                           {isFinal ? (
@@ -348,13 +348,6 @@ const FrmStatusConfig = () => {
                                   className="rounded-md border border-slate-300 px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-100"
                                 >
                                   Edit
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => setDeletingId(s.TASKSTATUS_ID)}
-                                  className="rounded-md border border-red-200 px-2.5 py-1 text-xs font-medium text-red-600 hover:bg-red-50"
-                                >
-                                  Delete
                                 </button>
                               </>
                             )}

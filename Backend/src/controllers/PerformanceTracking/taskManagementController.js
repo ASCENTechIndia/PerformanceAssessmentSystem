@@ -280,6 +280,42 @@ async function getTaskList(req, res) {
   }
 }
 
+async function getStatusConfigList(req, res) {
+  let connection;
+  try {
+    connection = await getConnection();
+
+    const query = `
+      SELECT a.statusid, a.statuscode, a.statusname, a.bgcolor, a.forecolor,
+             a.displayorder, a.finalstatus, a.isactive, a.insdt, a.insby
+      FROM view_taskstatus_list a
+      ORDER BY a.displayorder ASC
+    `;
+
+    const result = await connection.execute(
+      query,
+      {},
+      { outFormat: oracledb.OUT_FORMAT_OBJECT },
+    );
+
+    res.json({
+      success: true,
+      data: result.rows || [],
+    });
+  } catch (error) {
+    console.error("getStatusConfigList error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error("Error closing DB connection:", err);
+      }
+    }
+  }
+}
+
 module.exports = {
   getParentTaskDropdown,
   getTaskTypeDropdown,
@@ -287,4 +323,5 @@ module.exports = {
   AOPT_TASKSTATUS_INSUPD,
   getUlbDropdown,
   getTaskList,
+  getStatusConfigList,
 };

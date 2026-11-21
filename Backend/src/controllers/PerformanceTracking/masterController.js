@@ -166,9 +166,68 @@ async function getEmployeeDropdown(req, res) {
   }
 }
 
+async function AOPT_EMPLOYEE_MAPPING_INSUPD(req, res) {
+  let connection;
+  try {
+    const payload = req.body;
+    connection = await getConnection();
+
+    const query = `BEGIN
+      aopt_employee_mapping_insupd
+        (
+            :IN_MODE,               
+            :IN_ULBID,        
+            :IN_EMPLOYEE_ID,  
+            :IN_REPORTINGTO,     
+            :IN_ISACTIVE,      
+            :IN_USERID,  
+            :out_ErrorCode,         
+            :out_ErrorMsg
+        );
+      END;`;
+
+    const bind = {
+      IN_MODE: Number(payload.IN_MODE),
+      IN_ULBID: Number(payload.IN_ULBID),
+      IN_EMPLOYEE_ID: Number(payload.IN_EMPLOYEE_ID),
+
+      IN_REPORTINGTO: Number(payload.IN_REPORTINGTO),
+
+      IN_ISACTIVE: payload.IN_ISACTIVE,
+      IN_USERID: payload.IN_USERID,
+      out_ErrorCode: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
+      out_ErrorMsg: {
+        dir: oracledb.BIND_OUT,
+        type: oracledb.STRING,
+        maxSize: 4000,
+      },
+    };
+
+    const result = await connection.execute(query, bind, { autoCommit: true });
+
+    res.json({
+      success: true,
+      errorCode: result.outBinds.out_ErrorCode,
+      errorMessage: result.outBinds.out_ErrorMsg,
+    });
+  } catch (error) {
+    console.error("AOPT_EMPLOYEE_MAPPING_INSUPD error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error("Error closing DB connection:", err);
+      }
+    }
+  }
+}
+
 module.exports = {
   AOPT_TASKTYPE_INSUPD,
   getTaskTypeList,
   getDepartmentDropdown,
   getEmployeeDropdown,
+  AOPT_EMPLOYEE_MAPPING_INSUPD,
 };
