@@ -3,6 +3,7 @@ const { validate } = require("../../validators/validate");
 const {
   AOPT_TASKTYPE_INSUPD,
   getTaskTypeList,
+  getDepartmentDropdown,
 } = require("../../controllers/PerformanceTracking/masterController");
 const {
   aoptTaskTypeInsUpdSchema,
@@ -17,5 +18,8 @@ router.post(
   AOPT_TASKTYPE_INSUPD,
 );
 router.get("/getTaskTypeList", getTaskTypeList);
+
+// Hierarchy mapping
+router.get("/getDepartmentDropdown", getDepartmentDropdown)
 
 module.exports = router;

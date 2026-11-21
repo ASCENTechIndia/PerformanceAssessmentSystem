@@ -2,7 +2,7 @@ require("dotenv").config();
 const oracledb = require("oracledb");
 
 // DB1_NAME=ancldb
-// DB1_USER=inward   
+// DB1_USER=inward
 // DB1_PASSWORD=inward
 // DB1_HOST=203.193.184.82
 // DB1_PORT=1523
@@ -14,6 +14,7 @@ const dbConfig = {
   password: process.env.DB1_PASSWORD,
   connectString: process.env.DB1_CONNECT_STRING,
   poolAlias: "dbPool",
+  transportConnectTimeout: 30,
 };
 
 async function initialize() {
