@@ -11,11 +11,13 @@ import Button from "../../../Components/Button";
 import { toast } from "sonner";
 import apiClient from "../../../../apiClient";
 
+
 const HierarchyMapping = () => {
     const { setLoading } = useLoader();
     const { user } = useAuth();
     const ulbId = user?.ulbId;
     const userId = user?.userId;
+    const navigate = useNavigate();
 
     const [departmentOptions, setDepartmentOptions] = useState([]);
     const [employeeOptions, setEmployeeOptions] = useState([]);
@@ -107,6 +109,9 @@ const HierarchyMapping = () => {
             if (response.success && response.errorCode === 9999) {
                 toast.success(response.errorMessage);
                 reset();
+                navigate("/master/HierarchyMapping", {
+                    replace: true
+                });
             } else {
                 toast.error(response.errorMessage);
             }
