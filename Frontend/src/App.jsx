@@ -21,6 +21,7 @@ import TaskList from "./Pages/TaskManagement/TaksList/TaskList.jsx";
 import MyTasks from "./Pages/MyTask/MyTask/MyTasks.jsx";
 import TaskStatus from "./Pages/MyTask/TaskStatus/TaskStatus.jsx";
 import FrmStatusConfig from "./Pages/Master/TaskStatusConfig/FrmStatusConfig.jsx";
+import EmployeeMappingList from "./Pages/Master/HierarchyMapping/EmployeeMappingList.jsx";
 
 function App() {
   const hostname = window.location.hostname;
@@ -44,7 +45,8 @@ function App() {
                   <Route path="/master/employees" element={<EmployeeMaster />} />
                   <Route path="/master/add-employee" element={<AddEmployee />} />
                   <Route path="/master/status-config" element={<FrmStatusConfig />} />
-                  <Route path="/master/HierarchyMapping" element={<HierarchyMapping />} />
+                  <Route path="/master/HierarchyMapping" element={<EmployeeMappingList />} />
+                  <Route path="/master/Employee-mapping-form" element={<HierarchyMapping />} />
                   <Route path="/master/DepartmentMaster"  element={<DepartmentMaster />} />
                   <Route path="/master/DesignationMaster" element={<DesignationMaster />} />
 

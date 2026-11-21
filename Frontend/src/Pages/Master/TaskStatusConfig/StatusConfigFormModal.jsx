@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import apiClient from "../../../../apiClient";
 import { useAuth } from "../../../Context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const DEFAULTS = {
   IN_TASKSTATUS_CODE: "",
@@ -16,6 +17,7 @@ const DEFAULTS = {
 
 const StatusConfigFormModal = ({ open, editing, onClose, onSaved }) => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const userId = user?.userId || "SYSTEM";
 
   const {
@@ -33,8 +35,7 @@ const StatusConfigFormModal = ({ open, editing, onClose, onSaved }) => {
   useEffect(() => {
     if (!open) return;
     if (editing) {
-
-      console.log("editing :", editing)
+      console.log("editing :", editing);
       // fill the form for editing
       reset({
         IN_TASKSTATUS_CODE: editing.STATUSCODE || "",
@@ -55,7 +56,6 @@ const StatusConfigFormModal = ({ open, editing, onClose, onSaved }) => {
 
     const payload = {
       IN_MODE: isEdit ? "2" : "1",
-      // UPDATED: Using editing.STATUSID instead of editing.TASKSTATUS_ID
       IN_TASKSTATUS_ID: isEdit ? Number(editing.STATUSID) : null,
       IN_TASKSTATUS_CODE: data.IN_TASKSTATUS_CODE.trim(),
       IN_TASKSTATUS_NAME: data.IN_TASKSTATUS_NAME.trim(),
@@ -78,6 +78,7 @@ const StatusConfigFormModal = ({ open, editing, onClose, onSaved }) => {
           res?.errorMessage || (isEdit ? "Status updated" : "Status created"),
         );
         onSaved?.();
+        navigate("/master/HierarchyMapping");
       } else {
         toast.error(res?.errorMessage || res?.message || "Operation failed");
       }

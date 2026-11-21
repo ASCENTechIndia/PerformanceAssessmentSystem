@@ -7,6 +7,7 @@ const {
   getUlbDropdown,
   getTaskList,
   getStatusConfigList,
+  getEmployeeMappingList,
 } = require("../../controllers/PerformanceTracking/taskManagementController");
 const {
   aoptTaskInsUpdSchema,
@@ -28,5 +29,6 @@ router.get("/getUlbDropdown", getUlbDropdown);
 router.post("/AOPT_TASKSTATUS_INSUPD", validate(aoptTaskStatusInsUpdSchema), AOPT_TASKSTATUS_INSUPD);
 router.get("/getTaskList", getTaskList);
 router.get("/getStatusConfigList", getStatusConfigList)
+router.get("/getEmployeeMappingList", getEmployeeMappingList)
 
 module.exports = router;
