@@ -8,9 +8,15 @@ import apiService from "../../../../apiService";
 import { useAuth } from "../../../Context/AuthContext";
 import { useLoader } from "../../../Context/LoaderContext";
 import Button from "../../../Components/Button";
+import { toast } from "sonner";
+import apiClient from "../../../../apiClient";
 
 const HierarchyMapping = () => {
     const { setLoading } = useLoader();
+
+    const [departmentOptions, setDepartmentOptions] = useState([]);
+    const [employeeOptions, setEmployeeOptions] = useState([]);
+    const [officerOptions, setOfficerOptions] = useState([]);
 
     const {
         register,
@@ -22,10 +28,29 @@ const HierarchyMapping = () => {
         formState: { errors }
     } = useForm({
         defaultValues: {
-            designationLevel: "",
+            department: "",
+            employee: "",
             reportingOfficer: ""
         }
     });
+
+    const watchDepartment = watch("department");
+    const watchEmployee = watch("employee");
+
+    const fetchDepartmentDropdown = async () => {
+        try {
+            setLoading(true);
+
+            const response = await apiClient.get("/getDepartmentDropdown");
+
+            console.log(response);
+        } catch (err) {
+            console.error(err);
+            toast.error(err.message || "Failed to fetch departments");
+        } finally {
+            setLoading(false);
+        }
+    }
 
     const onHierarchyMapSubmit = async (data) => {
         try {
@@ -40,6 +65,10 @@ const HierarchyMapping = () => {
         }
     }
 
+    useEffect(() => {
+        fetchDepartmentDropdown();
+    }, [])
+
     return (
         <Layout
             title={"Hierarchy Mapping"}
@@ -52,41 +81,67 @@ const HierarchyMapping = () => {
             <form className="w-full space-y-6" onSubmit={handleSubmit(onHierarchyMapSubmit)}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <div>
-                        <Label 
-                            text={"Designation Level"}
-                            required
-                        />
+                        <label className="pas-label" htmlFor="department">
+                            Department <span className="text-rose-500">*</span>
+                        </label>
 
                         <select
-                            id="designation"
+                            id="department"
                             className="pas-input"
-                            aria-invalid={!!errors.designationLevel}
-                            {...register("designationLevel", { required: "Designation Level is required" })}
+                            aria-invalid={!!errors.department}
+                            {...register("department", { required: "Department is required" })}
                         >
-                            <option value="">Select designation…</option>
+                            <option value="">Select Department…</option>
                             {[].map((p) => (
                                 <option key={p.value} value={p.value}>
                                     {p.label}
                                 </option>
                             ))}
                         </select>
-                        {errors.designationLevel && (
-                            <p className="pas-error">{errors.designationLevel.message}</p>
+                        {errors.department && (
+                            <p className="pas-error">{errors.department.message}</p>
                         )}
                     </div>
                     <div>
-                        <Label 
-                            text={"Hierarchy Level"}
-                            required
-                        />
+                        <label
+                            className="pas-label"
+                            htmlFor="employee"
+                        >
+                            Employee <span className="text-rose-500">*</span>
+                        </label>
 
                         <select
-                            id="HierarchyLevel"
+                            id="employee"
+                            className="pas-input"
+                            aria-invalid={!!errors.employee}
+                            {...register("employee", { required: "Employee is required" })}
+                        >
+                            <option value="">Select Employee…</option>
+                            {[].map((p) => (
+                                <option key={p.value} value={p.value}>
+                                    {p.label}
+                                </option>
+                            ))}
+                        </select>
+                        {errors.employee && (
+                            <p className="pas-error">{errors.employee.message}</p>
+                        )}
+                    </div>
+                    <div>
+                        <label
+                            className="pas-label"
+                            htmlFor="reportingOfficer"
+                        >
+                            Reporting Officer <span className="text-rose-500">*</span>
+                        </label>
+
+                        <select
+                            id="reportingOfficer"
                             className="pas-input"
                             aria-invalid={!!errors.reportingOfficer}
                             {...register("reportingOfficer", { required: "Reporting Officer is required" })}
                         >
-                            <option value="">Select officer…</option>
+                            <option value="">Select Officer…</option>
                             {[].map((p) => (
                                 <option key={p.value} value={p.value}>
                                     {p.label}
