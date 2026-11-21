@@ -64,7 +64,7 @@ const Navbar = ({
             className={`flex flex-col leading-tight min-w-0 overflow-hidden transition-all duration-200
               ${isCollapsed ? "md:opacity-0 md:w-0" : "opacity-100"}`}
           >
-            <span className="text-[12.5px] font-semibold text-slate-800 tracking-tight leading-snug">
+            <span className="text-[15px] font-semibold text-slate-800 tracking-tight leading-snug">
               {title}
             </span>
             <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-blue-600/80 mt-1">
