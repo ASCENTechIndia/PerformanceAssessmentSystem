@@ -94,7 +94,7 @@ const ViewTaskTypeModal = ({ open, taskType, onClose }) => {
             <div>
               <p className="pas-label">Created By</p>
               <p className="text-[12.5px] font-medium text-slate-800">
-                {taskType.TASKTYPE_UPBY ?? <span className="text-[11px] text-slate-400 italic">
+                {taskType.TASKTYPE_INSBY ?? <span className="text-[11px] text-slate-400 italic">
                   —
                 </span>}
               </p>
@@ -102,7 +102,7 @@ const ViewTaskTypeModal = ({ open, taskType, onClose }) => {
             <div>
               <p className="pas-label">Created Date</p>
               <p className="text-[12.5px] font-medium text-slate-800">
-                {taskType.TASKTYPE_UPDT ? formatDate(taskType.TASKTYPE_UPDT) : <span className="text-[11px] text-slate-400 italic">
+                {taskType.TASKTYPE_INSDT ? formatDate(taskType.TASKTYPE_INSDT) : <span className="text-[11px] text-slate-400 italic">
                   —
                 </span>}
               </p>

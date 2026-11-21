@@ -100,7 +100,7 @@ const TaskTypeTable = ({ taskTypes, onView, onEdit, onDelete }) => {
                   </td>
 
                   <td className="px-3 py-3 text-[12px] text-slate-600 whitespace-nowrap">
-                    {t.TASKTYPE_UPBY ||
+                    {t.TASKTYPE_INSBY ||
                       <span className="text-[11px] text-slate-400 italic">
                         —
                       </span>
@@ -108,7 +108,7 @@ const TaskTypeTable = ({ taskTypes, onView, onEdit, onDelete }) => {
                   </td>
 
                   <td className="px-3 py-3 text-[12px] text-slate-600 whitespace-nowrap">
-                    {formatDate(t.TASKTYPE_UPDT) ||
+                    {formatDate(t.TASKTYPE_INSDT) ||
                       <span className="text-[11px] text-slate-400 italic">
                         —
                       </span>
