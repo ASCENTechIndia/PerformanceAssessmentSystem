@@ -33,15 +33,17 @@ const StatusConfigFormModal = ({ open, editing, onClose, onSaved }) => {
   useEffect(() => {
     if (!open) return;
     if (editing) {
+
+      console.log("editing :", editing)
       // fill the form for editing
       reset({
         IN_TASKSTATUS_CODE: editing.STATUSCODE || "",
         IN_TASKSTATUS_NAME: editing.STATUSNAME || "",
         IN_TASKSTATUS_BGCOLOR: editing.BGCOLOR || "",
         IN_TASKSTATUS_FORECOLOR: editing.FORECOLOR || "",
-        IN_DISPLAYORDER: Number(editing.DISPLAYORDER) || "",
-        IN_FINALSTATUS: Number(editing.FINALSTATUS) || "",
-        IN_ISACTIVE: Number(editing.ISACTIVE) || 1,
+        IN_DISPLAYORDER: Number(editing.DISPLAYORDER),
+        IN_FINALSTATUS: Number(editing.FINALSTATUS),
+        IN_ISACTIVE: Number(editing.ISACTIVE),
       });
     } else {
       reset(DEFAULTS);

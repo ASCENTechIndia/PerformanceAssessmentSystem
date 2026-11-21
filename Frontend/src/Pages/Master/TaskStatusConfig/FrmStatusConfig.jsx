@@ -3,21 +3,14 @@ import { toast } from "sonner";
 import Layout from "../../../Components/Layout";
 import StatusConfigFormModal from "./StatusConfigFormModal";
 import apiClient from "../../../../apiClient";
-import { useAuth } from "../../../Context/AuthContext";
 
 const FrmStatusConfig = () => {
-  const { user } = useAuth();
-  const userId = user?.userId || "";
-
   const [statuses, setStatuses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
 
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState(null);
-
-  const [deletingId, setDeletingId] = useState(null);
-  const [submittingDelete, setSubmittingDelete] = useState(false);
 
   const fetchStatuses = async () => {
     setLoading(true);
@@ -82,47 +75,6 @@ const FrmStatusConfig = () => {
     setFormOpen(false);
     setEditing(null);
     fetchStatuses(); // Refresh the list after saving
-  };
-
-  const handleConfirmDelete = async (s) => {
-    try {
-      setSubmittingDelete(true);
-      // Note: Assuming the delete payload keys remain the same as your previous code,
-      // just passing the values from the new object structure.
-      const payload = {
-        IN_MODE: "3",
-        IN_TASKSTATUS_ID: Number(s.STATUSID),
-        IN_TASKSTATUS_CODE: s.STATUSCODE,
-        IN_TASKSTATUS_NAME: s.STATUSNAME,
-        IN_TASKSTATUS_BGCOLOR: s.BGCOLOR || null,
-        IN_TASKSTATUS_FORECOLOR: s.FORECOLOR || null,
-        IN_DISPLAYORDER: Number(s.DISPLAYORDER ?? 0),
-        IN_FINALSTATUS: Number(s.FINALSTATUS ?? 0),
-        IN_ISACTIVE: 0,
-        IN_USERID: userId,
-      };
-
-      const res = await apiClient.post("/AOPT_TASKSTATUS_INSUPD", payload);
-      const ok =
-        res?.success === true &&
-        (res.errorCode === 0 ||
-          res.errorCode === null ||
-          res.errorCode === undefined);
-
-      if (ok) {
-        toast.success("Status deleted");
-        setDeletingId(null);
-        fetchStatuses(); // Refresh list
-      } else {
-        toast.error(res?.errorMessage || res?.message || "Delete failed");
-      }
-    } catch (err) {
-      toast.error(
-        err?.response?.data?.message || err?.message || "Delete failed",
-      );
-    } finally {
-      setSubmittingDelete(false);
-    }
   };
 
   return (
@@ -270,7 +222,6 @@ const FrmStatusConfig = () => {
                   filtered.map((s) => {
                     const isActive = Number(s.ISACTIVE ?? 0) === 1;
                     const isFinal = Number(s.FINALSTATUS ?? 0) === 1;
-                    const isDeleting = deletingId === s.STATUSID;
 
                     return (
                       <tr key={s.STATUSID} className="hover:bg-slate-50">
@@ -318,39 +269,13 @@ const FrmStatusConfig = () => {
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex items-center justify-end gap-2">
-                            {isDeleting ? (
-                              <>
-                                <span className="text-xs text-slate-500">
-                                  Delete?
-                                </span>
-                                <button
-                                  type="button"
-                                  onClick={() => handleConfirmDelete(s)}
-                                  disabled={submittingDelete}
-                                  className="rounded-md bg-red-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-red-700 disabled:opacity-60"
-                                >
-                                  {submittingDelete ? "..." : "Yes"}
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => setDeletingId(null)}
-                                  disabled={submittingDelete}
-                                  className="rounded-md border border-slate-300 px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-100"
-                                >
-                                  No
-                                </button>
-                              </>
-                            ) : (
-                              <>
-                                <button
-                                  type="button"
-                                  onClick={() => handleEdit(s)}
-                                  className="rounded-md border border-slate-300 px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-100"
-                                >
-                                  Edit
-                                </button>
-                              </>
-                            )}
+                            <button
+                              type="button"
+                              onClick={() => handleEdit(s)}
+                              className="rounded-md border border-slate-300 px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-100"
+                            >
+                              Edit
+                            </button>
                           </div>
                         </td>
                       </tr>
