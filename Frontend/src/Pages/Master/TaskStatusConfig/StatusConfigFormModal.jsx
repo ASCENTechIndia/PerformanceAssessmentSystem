@@ -33,14 +33,15 @@ const StatusConfigFormModal = ({ open, editing, onClose, onSaved }) => {
   useEffect(() => {
     if (!open) return;
     if (editing) {
+      // fill the form for editing
       reset({
-        IN_TASKSTATUS_CODE: editing.TASKSTATUS_CODE || "",
-        IN_TASKSTATUS_NAME: editing.TASKSTATUS_NAME || "",
-        IN_TASKSTATUS_BGCOLOR: editing.TASKSTATUS_BGCOLOR || "#E0F2FE",
-        IN_TASKSTATUS_FORECOLOR: editing.TASKSTATUS_FORECOLOR || "#0369A1",
-        IN_DISPLAYORDER: Number(editing.TASKSTATUS_DISPLAYORDER ?? 1),
-        IN_FINALSTATUS: Number(editing.TASKSTATUS_FINALSTATUS ?? 0) === 1,
-        IN_ISACTIVE: Number(editing.TASKSTATUS_ISACTIVE ?? 0) === 1,
+        IN_TASKSTATUS_CODE: editing.STATUSCODE || "",
+        IN_TASKSTATUS_NAME: editing.STATUSNAME || "",
+        IN_TASKSTATUS_BGCOLOR: editing.BGCOLOR || "",
+        IN_TASKSTATUS_FORECOLOR: editing.FORECOLOR || "",
+        IN_DISPLAYORDER: Number(editing.DISPLAYORDER) || "",
+        IN_FINALSTATUS: Number(editing.FINALSTATUS) || "",
+        IN_ISACTIVE: Number(editing.ISACTIVE) || 1,
       });
     } else {
       reset(DEFAULTS);
@@ -52,7 +53,8 @@ const StatusConfigFormModal = ({ open, editing, onClose, onSaved }) => {
 
     const payload = {
       IN_MODE: isEdit ? "2" : "1",
-      IN_TASKSTATUS_ID: isEdit ? Number(editing.TASKSTATUS_ID) : null,
+      // UPDATED: Using editing.STATUSID instead of editing.TASKSTATUS_ID
+      IN_TASKSTATUS_ID: isEdit ? Number(editing.STATUSID) : null,
       IN_TASKSTATUS_CODE: data.IN_TASKSTATUS_CODE.trim(),
       IN_TASKSTATUS_NAME: data.IN_TASKSTATUS_NAME.trim(),
       IN_TASKSTATUS_BGCOLOR: data.IN_TASKSTATUS_BGCOLOR || null,
