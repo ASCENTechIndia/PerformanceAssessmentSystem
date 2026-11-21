@@ -93,10 +93,82 @@ async function getTaskTypeList(req, res) {
   }
 }
 
+async function getDepartmentDropdown(req, res) {
+  let connection;
+  try {
+    connection = await getConnection();
 
+    const query = `SELECT a.dept_id, a.dept_name FROM view_dept_list a`;
+
+    const result = await connection.execute(
+      query,
+      {},
+      { outFormat: oracledb.OUT_FORMAT_OBJECT },
+    );
+
+    res.json({
+      success: true,
+      data: result.rows || [],
+    });
+  } catch (error) {
+    console.error("getDepartmentDropdown error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error("Error closing DB connection:", err);
+      }
+    }
+  }
+}
+
+async function getEmployeeDropdown(req, res) {
+  let connection;
+  try {
+    connection = await getConnection();
+
+    const { ulbId, deptId } = req.query;
+    if (!ulbId) {
+      return res.json({ success: false, errorMessage: "UlbId is required" });
+    }
+    if (!deptId) {
+      return res.json({ success: false, errorMessage: "Dept Id is required" });
+    }
+
+    const query = `SELECT * FROM view_employee_list WHERE ulbid = :ulbId AND deptid = :deptId`;
+
+    const bind = {
+      ulbId: Number(ulbId),
+      deptId: Number(deptId),
+    };
+
+    const result = await connection.execute(query, bind, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+    });
+
+    res.json({
+      success: true,
+      data: result.rows || [],
+    });
+  } catch (error) {
+    console.error("getEmployeeDropdown error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error("Error closing DB connection:", err);
+      }
+    }
+  }
+}
 
 module.exports = {
   AOPT_TASKTYPE_INSUPD,
   getTaskTypeList,
-
+  getDepartmentDropdown,
+  getEmployeeDropdown,
 };
