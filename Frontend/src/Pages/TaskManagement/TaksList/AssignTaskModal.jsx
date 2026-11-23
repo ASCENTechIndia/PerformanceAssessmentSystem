@@ -118,6 +118,18 @@ const AssignTaskModal = ({
   const fetchDepartmentDropdown = async () => {
     try {
       setLoading(true);
+
+      const response = await apiClient.get("");
+
+      if (response.success && Array.isArray(response.data) && response.data.length > 0) {
+        const formatted = response.data.map(item => ({
+          label: item.DEPTNAME,
+          value: item.DEPTID
+        }));
+        setDepartmentOptions(formatted);
+      } else {
+        setDepartmentOptions([]);
+      }
     } catch (err) {
       setDepartmentOptions([]);
       console.error(err);
@@ -130,6 +142,18 @@ const AssignTaskModal = ({
   const fetchAssignedByDropdown = async () => {
     try {
       setLoading(true);
+
+      const response = await apiClient.get("");
+
+      if (response.success && Array.isArray(response.data) && response.data.length > 0) {
+        const formatted = response.data.map(item => ({
+          label: item.ASSIGNEDBY,
+          value: item.ASSIGN_EMPID
+        }));
+        setAssignedByOptions(formatted);
+      } else {
+        setAssignedByOptions([]);
+      }
     } catch (err) {
       setAssignedByOptions([]);
       console.error(err);
@@ -142,6 +166,19 @@ const AssignTaskModal = ({
   const fetchAssignedToDropdown = async () => {
     try {
       setLoading(true);
+
+      const response = await apiClient.get("");
+
+      if (response.success && Array.isArray(response.data) && response.data.length > 0) {
+        const formatted = response.data.map(item => ({
+          label: item.EMPNAME,
+          value: item.EMPID
+        }));
+
+        setAssignedToOptions(formatted);
+      } else {
+        setAssignedToOptions([]);
+      }
     } catch (err) {
       setAssignedToOptions([]);
       console.error(err);
@@ -154,6 +191,12 @@ const AssignTaskModal = ({
   const fetchStatusDropdown = async () => {
     try {
       setLoading(true);
+
+      const response = await apiClient.get("");
+
+      if (response.success && Array.isArray(response.data) && response.data.length > 0) {
+        
+      }
     } catch (err) {
       setStatusOptions([]);
       console.error(err);
@@ -162,8 +205,6 @@ const AssignTaskModal = ({
       setLoading(false);
     }
   }
-
-  
 
   const submit = async (data) => {
     try {
