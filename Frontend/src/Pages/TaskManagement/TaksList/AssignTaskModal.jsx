@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { CheckCircle2, X, Check, CalendarDays, Flag, User } from "lucide-react";
 import apiClient from "../../../../apiClient";
@@ -67,6 +67,12 @@ const AssignTaskModal = ({
   const selectedEmployeeId = watch("assignedTo");
   const expectedStart = watch("expectedStart");
 
+  const [assignedByOptions, setAssignedByOptions] = useState([]);
+  const [assignedToOptions, setAssignedToOptions] = useState([]);
+  const [departmentOptions, setDepartmentOptions] = useState([]);
+  const [statusOptions, setStatusOptions] = useState([]);
+  const [priorityOptions, setPriorityOptions] = useState([]);
+
   /* Filter employees based on selected department */
   const filteredEmployees = useMemo(
     () =>
@@ -108,6 +114,56 @@ const AssignTaskModal = ({
   if (!open || !task) return null;
 
   const today = new Date().toISOString().split("T")[0];
+
+  const fetchDepartmentDropdown = async () => {
+    try {
+      setLoading(true);
+    } catch (err) {
+      setDepartmentOptions([]);
+      console.error(err);
+      toast.error(err.message || "Failed to fetch Department dropdown");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const fetchAssignedByDropdown = async () => {
+    try {
+      setLoading(true);
+    } catch (err) {
+      setAssignedByOptions([]);
+      console.error(err);
+      toast.error(err.message || "Failed to fetch Assigned By employee dropdown");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const fetchAssignedToDropdown = async () => {
+    try {
+      setLoading(true);
+    } catch (err) {
+      setAssignedToOptions([]);
+      console.error(err);
+      toast.error(err.message || "Failed to fetch Assigned To employee dropdown");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const fetchStatusDropdown = async () => {
+    try {
+      setLoading(true);
+    } catch (err) {
+      setStatusOptions([]);
+      console.error(err);
+      toast.error(err.message || "Failed to fetch Status dropdown options");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  
 
   const submit = async (data) => {
     try {
