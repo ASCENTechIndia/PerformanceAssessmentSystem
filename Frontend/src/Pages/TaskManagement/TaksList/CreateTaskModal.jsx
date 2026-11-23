@@ -276,6 +276,7 @@ const CreateTaskModal = ({
               {...register("description", {
                 required: "Description is required",
                 minLength: { value: 20, message: "At least 20 characters" },
+                maxLength: { value: 1000, message: "Description should be of 1000 characters"}
               })}
             />
             {errors.description && (
@@ -309,7 +310,7 @@ const CreateTaskModal = ({
 
             <div>
               <label htmlFor="expectedDuration" className="pas-label">
-                Expected Duration <span className="text-rose-500">*</span>
+                Expected Duration (in Days)<span className="text-rose-500">*</span>
               </label>
               {/* <select
                 id="expectedDuration"
