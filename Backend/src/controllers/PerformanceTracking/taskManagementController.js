@@ -441,6 +441,55 @@ async function AOPT_TASKASSIGNMENT_INSUPD(req, res) {
   }
 }
 
+async function getEmpDropdown(req, res) {
+  let connection;
+  try {
+    connection = await getConnection();
+
+    const { reportingId, deptId, ulbId } = req.query;
+    if (!reportingId || !deptId || !ulbId) {
+      return res.json({
+        success: false,
+        errorMessage: "Reporting Id or Dept Id or UlbId is missing",
+      });
+    }
+
+    const query = `
+      SELECT employee_id, employee_name 
+      FROM view_employee_assignto_list 
+      WHERE reportingto_id = :reportingId
+      AND deptid = :deptId 
+      AND ulbid = :ulbId
+    `;
+
+    const bind = {
+      reportingId: Number(reportingId),
+      deptId: Number(deptId),
+      ulbId: Number(ulbId),
+    };
+
+    const result = await connection.execute(query, bind, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+    });
+
+    res.json({
+      success: true,
+      data: result.rows || [],
+    });
+  } catch (error) {
+    console.error("getEmpDropdown error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error("Error closing DB connection:", err);
+      }
+    }
+  }
+}
+
 module.exports = {
   getParentTaskDropdown,
   getTaskTypeDropdown,
@@ -451,4 +500,5 @@ module.exports = {
   getStatusConfigList,
   getEmployeeMappingList,
   AOPT_TASKASSIGNMENT_INSUPD,
+  getEmpDropdown,
 };
