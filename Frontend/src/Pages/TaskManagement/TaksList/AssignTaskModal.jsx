@@ -386,14 +386,9 @@ const AssignTaskModal = ({
                 </div>
 
                 {/* 3. Assigned By */}
-                <div>
+                {/* <div>
                   <label className="pas-label">Assigned By</label>
-                  {/* <input
-                    type="text"
-                    className="pas-input bg-slate-50 text-slate-500"
-                    value={createdBy}
-                    readOnly
-                  /> */}
+                  
                   <select
                     className="pas-input"
                     {...register("assignedBy", { required: "Required" })}
@@ -412,12 +407,12 @@ const AssignTaskModal = ({
                       Your juniors in the selected department
                     </p>
                   )}
-                </div>
+                </div> */}
 
                 {/* 2. Assigned To */}
                 <div>
                   <label className="pas-label">
-                    Assigned To <span className="text-rose-500">*</span>
+                    Assign To <span className="text-rose-500">*</span>
                   </label>
                   <select
                     className="pas-input"
@@ -441,7 +436,7 @@ const AssignTaskModal = ({
 
 
                 {/* 4. Assigned Date */}
-                <div>
+                {/* <div>
                   <label className="pas-label">Assigned Date</label>
                   <input
                     type="text"
@@ -449,7 +444,7 @@ const AssignTaskModal = ({
                     value={today}
                     readOnly
                   />
-                </div>
+                </div> */}
 
                 {/* 5. Expected Start */}
                 <div>
