@@ -111,68 +111,66 @@ const AssignTaskModal = ({
     }
   }, [expectedStart, task?.expectedDuration, setValue]);
 
-  if (!open || !task) return null;
-
   const today = new Date().toISOString().split("T")[0];
 
-  const fetchDepartmentDropdown = async () => {
-    try {
-      setLoading(true);
+  // const fetchDepartmentDropdown = async () => {
+  //   try {
+  //     setLoading(true);
 
-      const response = await apiClient.get("");
+  //     const response = await apiClient.get("");
 
-      if (response.success && Array.isArray(response.data) && response.data.length > 0) {
-        const formatted = response.data.map(item => ({
-          label: item.DEPTNAME,
-          value: item.DEPTID
-        }));
-        setDepartmentOptions(formatted);
-      } else {
-        setDepartmentOptions([]);
-      }
-    } catch (err) {
-      setDepartmentOptions([]);
-      console.error(err);
-      toast.error(err.message || "Failed to fetch Department dropdown");
-    } finally {
-      setLoading(false);
-    }
-  }
+  //     if (response.success && Array.isArray(response.data) && response.data.length > 0) {
+  //       const formatted = response.data.map(item => ({
+  //         label: item.DEPTNAME,
+  //         value: item.DEPTID
+  //       }));
+  //       setDepartmentOptions(formatted);
+  //     } else {
+  //       setDepartmentOptions([]);
+  //     }
+  //   } catch (err) {
+  //     setDepartmentOptions([]);
+  //     console.error(err);
+  //     toast.error(err.message || "Failed to fetch Department dropdown");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
 
-  const fetchAssignedByDropdown = async () => {
-    try {
-      setLoading(true);
+  // const fetchAssignedByDropdown = async () => {
+  //   try {
+  //     setLoading(true);
 
-      const response = await apiClient.get("");
+  //     const response = await apiClient.get("");
 
-      if (response.success && Array.isArray(response.data) && response.data.length > 0) {
-        const formatted = response.data.map(item => ({
-          label: item.ASSIGNEDBY,
-          value: item.ASSIGN_EMPID
-        }));
-        setAssignedByOptions(formatted);
-      } else {
-        setAssignedByOptions([]);
-      }
-    } catch (err) {
-      setAssignedByOptions([]);
-      console.error(err);
-      toast.error(err.message || "Failed to fetch Assigned By employee dropdown");
-    } finally {
-      setLoading(false);
-    }
-  }
+  //     if (response.success && Array.isArray(response.data) && response.data.length > 0) {
+  //       const formatted = response.data.map(item => ({
+  //         label: item.ASSIGNEDBY,
+  //         value: item.ASSIGN_EMPID
+  //       }));
+  //       setAssignedByOptions(formatted);
+  //     } else {
+  //       setAssignedByOptions([]);
+  //     }
+  //   } catch (err) {
+  //     setAssignedByOptions([]);
+  //     console.error(err);
+  //     toast.error(err.message || "Failed to fetch Assigned By employee dropdown");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
 
   const fetchAssignedToDropdown = async () => {
     try {
       setLoading(true);
 
-      const response = await apiClient.get("");
+      const response = await apiClient.get("/getEmpDropdown?reportingId=90043&ulbId=2&deptId=287");
 
       if (response.success && Array.isArray(response.data) && response.data.length > 0) {
         const formatted = response.data.map(item => ({
-          label: item.EMPNAME,
-          value: item.EMPID
+          label: item.EMPLOYEE_NAME,
+          value: item.EMPLOYEE_ID
         }));
 
         setAssignedToOptions(formatted);
@@ -188,23 +186,23 @@ const AssignTaskModal = ({
     }
   }
 
-  const fetchStatusDropdown = async () => {
-    try {
-      setLoading(true);
+  // const fetchStatusDropdown = async () => {
+  //   try {
+  //     setLoading(true);
 
-      const response = await apiClient.get("");
+  //     const response = await apiClient.get("");
 
-      if (response.success && Array.isArray(response.data) && response.data.length > 0) {
+  //     if (response.success && Array.isArray(response.data) && response.data.length > 0) {
         
-      }
-    } catch (err) {
-      setStatusOptions([]);
-      console.error(err);
-      toast.error(err.message || "Failed to fetch Status dropdown options");
-    } finally {
-      setLoading(false);
-    }
-  }
+  //     }
+  //   } catch (err) {
+  //     setStatusOptions([]);
+  //     console.error(err);
+  //     toast.error(err.message || "Failed to fetch Status dropdown options");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
 
   const submit = async (data) => {
     try {
@@ -253,6 +251,14 @@ const AssignTaskModal = ({
     //   assignedToName: emp?.name || data.assignedTo,
     // });
   };
+
+  useEffect(() => {
+    if (user) {
+      fetchAssignedToDropdown();
+    }
+  }, [user]);
+
+  if (!open || !task) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
