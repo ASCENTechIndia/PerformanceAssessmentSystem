@@ -365,7 +365,7 @@ const AssignTaskModal = ({
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* 1. Department */}
-                <div>
+                {/* <div>
                   <label className="pas-label">
                     Department <span className="text-rose-500">*</span>
                   </label>
@@ -383,7 +383,7 @@ const AssignTaskModal = ({
                   {errors.department && (
                     <p className="pas-error">{errors.department.message}</p>
                   )}
-                </div>
+                </div> */}
 
                 {/* 3. Assigned By */}
                 {/* <div>
@@ -449,7 +449,7 @@ const AssignTaskModal = ({
                 {/* 5. Expected Start */}
                 <div>
                   <label className="pas-label">
-                    Expected Start <span className="text-rose-500">*</span>
+                    Task Start Date <span className="text-rose-500">*</span>
                   </label>
                   <input
                     type="date"
@@ -464,7 +464,7 @@ const AssignTaskModal = ({
                 {/* 6. Expected Completion */}
                 <div>
                   <label className="pas-label">
-                    Expected Completion <span className="text-rose-500">*</span>
+                    Task End Date <span className="text-rose-500">*</span>
                   </label>
                   <input
                     type="date"
