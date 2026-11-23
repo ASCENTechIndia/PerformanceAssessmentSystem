@@ -352,6 +352,95 @@ async function getEmployeeMappingList(req, res) {
   }
 }
 
+async function AOPT_TASKASSIGNMENT_INSUPD(req, res) {
+  let connection;
+  try {
+    const payload = req.body;
+    connection = await getConnection();
+
+    const query = `BEGIN
+      AOPT_TASKASSIGNMENT_INSUPD
+        (
+            :IN_MODE,              
+            :IN_TASKASSIGNMENT_ID, 
+            :IN_TASKID,            
+            :IN_DEPTID,            
+            :IN_ASSIGNEDBY,        
+            :IN_ASSIGNEDTO,        
+            :IN_ASSIGNEDDATE,      
+            :IN_STARTDATE,         
+            :IN_DUEDATE,           
+            :IN_STATUSID,          
+            :IN_PRIORITY,          
+            :IN_FINISHEDDATE,      
+            :IN_COMPLETEDDATE,     
+            :IN_ISACTIVE,          
+            :IN_ACTIONREMARK,      
+            :IN_USERID,            
+            :OUT_ERRORCODE,        
+            :OUT_ERRORMSG
+        );
+      END;`;
+
+    const bind = {
+      IN_MODE: Number(payload.IN_MODE),
+
+      // Handles null or number
+      IN_TASKASSIGNMENT_ID:
+        payload.IN_TASKASSIGNMENT_ID === null ||
+        payload.IN_TASKASSIGNMENT_ID === undefined ||
+        payload.IN_TASKASSIGNMENT_ID === ""
+          ? null
+          : Number(payload.IN_TASKASSIGNMENT_ID),
+
+      IN_TASKID: Number(payload.IN_TASKID),
+      IN_DEPTID: Number(payload.IN_DEPTID),
+      IN_ASSIGNEDBY: Number(payload.IN_ASSIGNEDBY),
+      IN_ASSIGNEDTO: Number(payload.IN_ASSIGNEDTO),
+
+      IN_ASSIGNEDDATE: payload.IN_ASSIGNEDDATE,
+      IN_STARTDATE: payload.IN_STARTDATE,
+      IN_DUEDATE: payload.IN_DUEDATE,
+
+      IN_STATUSID: Number(payload.IN_STATUSID),
+      IN_PRIORITY: payload.IN_PRIORITY,
+
+      IN_FINISHEDDATE: payload.IN_FINISHEDDATE || null,
+      IN_COMPLETEDDATE: payload.IN_COMPLETEDDATE || null,
+
+      IN_ISACTIVE: payload.IN_ISACTIVE,
+      IN_ACTIONREMARK: payload.IN_ACTIONREMARK,
+      IN_USERID: payload.IN_USERID,
+
+      OUT_ERRORCODE: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
+      OUT_ERRORMSG: {
+        dir: oracledb.BIND_OUT,
+        type: oracledb.STRING,
+        maxSize: 4000,
+      },
+    };
+
+    const result = await connection.execute(query, bind, { autoCommit: true });
+
+    res.json({
+      success: true,
+      errorCode: result.outBinds.OUT_ERRORCODE,
+      errorMessage: result.outBinds.OUT_ERRORMSG,
+    });
+  } catch (error) {
+    console.error("AOPT_TASKASSIGNMENT_INSUPD error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error("Error closing DB connection:", err);
+      }
+    }
+  }
+}
+
 module.exports = {
   getParentTaskDropdown,
   getTaskTypeDropdown,
@@ -361,4 +450,5 @@ module.exports = {
   getTaskList,
   getStatusConfigList,
   getEmployeeMappingList,
+  AOPT_TASKASSIGNMENT_INSUPD,
 };
