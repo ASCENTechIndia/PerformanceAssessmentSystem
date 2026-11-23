@@ -1,6 +1,10 @@
 import { useEffect, useMemo } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { CheckCircle2, X, Check, CalendarDays, Flag, User } from "lucide-react";
+import apiClient from "../../../../apiClient";
+import { toast } from "sonner";
+import { useAuth } from "../../../Context/AuthContext";
+import { useLoader } from "../../../Context/LoaderContext";
 
 /* ---------- Dummy options (replace with API data) ---------- */
 const DEPARTMENTS = [
@@ -17,6 +21,11 @@ const EMPLOYEES = [
   { id: "e4", name: "Amit Patel", department: "accounts" },
 ];
 
+const STATUS = [
+  { value: "A", label: "Assigned" },
+  { value: "NA", label: "Not Assigned" }
+]
+
 const PRIORITIES = ["Low", "Medium", "High", "Critical"];
 
 const AssignTaskModal = ({
@@ -26,6 +35,11 @@ const AssignTaskModal = ({
   onAssign,
   createdBy = "Rajesh Kulkarni",
 }) => {
+  const { user } = useAuth();
+  const { setLoading } = useLoader();
+  const userId = user?.userId;
+  const ulbId = user?.ulbId;
+
   const {
     register,
     handleSubmit,
@@ -38,8 +52,10 @@ const AssignTaskModal = ({
     defaultValues: {
       department: "",
       assignedTo: "",
+      assignedBy: "",
       expectedStart: "",
       expectedCompletion: "",
+      status: "",
       priority: task?.priority || "Medium",
       active: true,
       meetingReference: "",
@@ -94,12 +110,51 @@ const AssignTaskModal = ({
   const today = new Date().toISOString().split("T")[0];
 
   const submit = async (data) => {
-    await new Promise((r) => setTimeout(r, 400));
-    const emp = EMPLOYEES.find((e) => e.id === data.assignedTo);
-    onAssign({
-      ...data,
-      assignedToName: emp?.name || data.assignedTo,
-    });
+    try {
+      setLoading(true);
+      console.log(data);
+
+      const payload = {
+        "IN_MODE": 1,
+        "IN_TASKASSIGNMENT_ID": null,
+        "IN_TASKID": 10,
+        "IN_DEPTID": 5,
+        "IN_ASSIGNEDBY": 12,
+        "IN_ASSIGNEDTO": 45,
+        "IN_ASSIGNEDDATE": "23-Nov-2026",
+        "IN_STARTDATE": "23-Nov-2026",
+        "IN_DUEDATE": "23-Nov-2026",
+        "IN_STATUSID": 11,
+        "IN_PRIORITY": "High",
+        "IN_FINISHEDDATE": null,
+        "IN_COMPLETEDDATE": null,
+        "IN_ISACTIVE": "Y",
+        "IN_ACTIONREMARK": "Assigning this task to complete the drainage inspection.",
+        "IN_USERID": "AMCDT"
+      }
+
+      const response = await apiClient.post("/AOPT_TASKASSIGNMENT_INSUPD", payload);
+
+      if (response.success && response.errorCode === 9999) {
+        toast.success(response.errorMessage);
+        onClose();
+      } else {
+        toast.error(response.errorMessage);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message || "Failed to assign task");
+    } finally {
+      setLoading(false);
+    }
+
+
+    // await new Promise((r) => setTimeout(r, 400));
+    // const emp = EMPLOYEES.find((e) => e.id === data.assignedTo);
+    // onAssign({
+    //   ...data,
+    //   assignedToName: emp?.name || data.assignedTo,
+    // });
   };
 
   return (
@@ -233,6 +288,35 @@ const AssignTaskModal = ({
                   )}
                 </div>
 
+                {/* 3. Assigned By */}
+                <div>
+                  <label className="pas-label">Assigned By</label>
+                  {/* <input
+                    type="text"
+                    className="pas-input bg-slate-50 text-slate-500"
+                    value={createdBy}
+                    readOnly
+                  /> */}
+                  <select
+                    className="pas-input"
+                    {...register("assignedBy", { required: "Required" })}
+                  >
+                    <option value="">Select employee</option>
+                    {filteredEmployees.map((e) => (
+                      <option key={e.id} value={e.id}>
+                        {e.name}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.assignedBy ? (
+                    <p className="pas-error">{errors.assignedBy.message}</p>
+                  ) : (
+                    <p className="pas-help">
+                      Your juniors in the selected department
+                    </p>
+                  )}
+                </div>
+
                 {/* 2. Assigned To */}
                 <div>
                   <label className="pas-label">
@@ -258,16 +342,6 @@ const AssignTaskModal = ({
                   )}
                 </div>
 
-                {/* 3. Assigned By */}
-                <div>
-                  <label className="pas-label">Assigned By</label>
-                  <input
-                    type="text"
-                    className="pas-input bg-slate-50 text-slate-500"
-                    value={createdBy}
-                    readOnly
-                  />
-                </div>
 
                 {/* 4. Assigned Date */}
                 <div>
@@ -322,12 +396,27 @@ const AssignTaskModal = ({
                 {/* 7. Status */}
                 <div>
                   <label className="pas-label">Status</label>
-                  <input
+                  {/* <input
                     type="text"
                     className="pas-input bg-slate-50 text-slate-500"
                     value="Assigned"
                     readOnly
-                  />
+                  /> */}
+                  <select
+                    className="pas-input"
+                    {...register("status", { required: "Required" })}
+                  >
+                    <option value="">Select status</option>
+                    {STATUS.map((d) => (
+                      <option key={d.value} value={d.value}>
+                        {d.label}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.status && (
+                    <p className="pas-error">{errors.status.message}</p>
+                  )}
+
                 </div>
 
                 {/* 8. Active Toggle */}
