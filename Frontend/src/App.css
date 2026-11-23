@@ -17,6 +17,30 @@ body {
   width: 100%;
 }
 
+a{
+  font-size: 14px;
+}
+
+th{
+  font-size: 14px;
+}
+
+button{
+  font-size: 15px;
+}
+
+label{
+  font-size: 15px;
+}
+
+td, span{
+  font-size: 15px;
+}
+
+p{
+  font-size: 15px;
+}
+
 .date-container {
   z-index: 999;
 }
@@ -100,13 +124,13 @@ body {
 
 /* ============ Inputs ============ */
 .pas-label {
-  @apply block text-[12px] font-semibold text-slate-600 mb-1.5;
+  @apply block text-[15px] font-semibold text-slate-600 mb-1.5;
 }
 
 .pas-input {
   @apply w-full rounded-xl bg-white
          border border-slate-200
-         px-3.5 py-2.5 text-[13.5px] text-slate-800
+         px-3.5 py-2.5 text-[15px] text-slate-800
          placeholder:text-slate-400
          shadow-[inset_0_1px_2px_rgba(15,23,42,0.03)]
          transition-colors duration-150
@@ -115,18 +139,18 @@ body {
 }
 
 .pas-error {
-  @apply mt-1 text-[11.5px] font-medium text-rose-600;
+  @apply mt-1 text-[13px] font-medium text-rose-600;
 }
 
 .pas-help {
-  @apply mt-1 text-[11px] text-slate-400;
+  @apply mt-1 text-[13px] text-slate-400;
 }
 
 /* ============ Buttons ============ */
 .submit-btn {
   @apply inline-flex items-center justify-center gap-2
          px-5 py-2 rounded-xl
-         text-[13px] font-semibold text-white
+         text-[15px] font-semibold text-white
          bg-gradient-to-r from-blue-500 to-sky-400
          shadow-[0_8px_20px_-8px_rgba(59,130,246,0.6)]
          hover:from-blue-600 hover:to-sky-500
@@ -138,7 +162,7 @@ body {
 .reset-btn {
   @apply inline-flex items-center justify-center gap-2
          px-4 py-2 rounded-xl
-         text-[13px] font-semibold text-slate-600
+         text-[15px] font-semibold text-slate-600
          bg-white border border-slate-200
          hover:bg-slate-50 hover:border-slate-300
          active:scale-[0.99]
@@ -149,7 +173,7 @@ body {
 .delete-btn {
   @apply inline-flex items-center justify-center gap-2
          px-4 py-2 rounded-xl
-         text-[13px] font-semibold text-white
+         text-[15px] font-semibold text-white
          bg-rose-500 hover:bg-rose-600
          active:scale-[0.99]
          transition-colors duration-150

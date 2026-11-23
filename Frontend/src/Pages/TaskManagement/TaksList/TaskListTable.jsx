@@ -142,7 +142,7 @@ const TaskListTable = ({ tasks, onAssign }) => {
                   <button
                     onClick={() => onAssign(task)}
                     className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg
-                      text-[11.5px] font-semibold text-white bg-blue-500
+                      text-[13px] font-semibold text-white bg-blue-500
                       hover:bg-blue-600 active:scale-[0.97]
                       transition-all duration-150"
                   >

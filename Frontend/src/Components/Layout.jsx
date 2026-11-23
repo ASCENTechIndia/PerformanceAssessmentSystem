@@ -73,7 +73,7 @@ const Layout = ({ title, breadcrumb, children }) => {
                         </h1>
                       )}
                       {breadcrumb && (
-                        <nav className="flex items-center gap-1.5 text-xs text-slate-500 mt-0.5">
+                        <nav className="flex items-center gap-1.5 text-md text-slate-500 mt-0.5">
                           <Link
                             to={breadcrumb.homeLink || "/dashboard"}
                             className="inline-flex items-center gap-1 hover:text-blue-600 transition-colors"
