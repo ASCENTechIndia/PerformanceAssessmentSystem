@@ -47,7 +47,7 @@ const StatCard = ({ label, value, color, icon: Icon }) => {
         >
           {label}
         </p>
-        <p className={`text-[22px] font-bold leading-none mt-0.5 ${p.text}`}>
+        <p className={`font-bold leading-none mt-0.5 ${p.text}`} style={{fontSize: "23px"}}>
           {value}
         </p>
       </div>

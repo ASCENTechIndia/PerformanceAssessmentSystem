@@ -53,7 +53,7 @@ const StatCard = ({ label, value, color, icon: Icon }) => {
           {label}
         </p>
       </div>
-      <p className={`text-[24px] font-bold leading-none ${p.text}`}>{value}</p>
+      <p className={` font-bold leading-none ${p.text}`} style={{fontSize: "23px"}}>{value}</p>
       <div
         className={`absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r ${p.grad} opacity-60`}
       />
