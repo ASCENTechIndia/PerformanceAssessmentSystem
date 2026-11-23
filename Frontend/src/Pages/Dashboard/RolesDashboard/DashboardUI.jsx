@@ -59,7 +59,7 @@ export const StatCard = ({
       </div>
     </div>
     <div className="flex items-center justify-between gap-2 mt-3">
-      <p className="text-[10.5px] text-slate-500">{subtitle}</p>
+      <p className=" text-slate-500" style={{fontSize: "23px"}}>{subtitle}</p>
       {trend && (
         <span className={`text-[10px] font-semibold flex items-center gap-1 ${
           trend.direction === "down" ? "text-rose-600" : "text-emerald-600"

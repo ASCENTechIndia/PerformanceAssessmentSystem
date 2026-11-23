@@ -306,7 +306,7 @@ const StatCard = ({ label, value, tone }) => {
         tones[tone] || tones.slate
       }`}
     >
-      <div className="text-[11px] font-semibold uppercase tracking-wide opacity-70">
+      <div className="text-[13px] font-semibold uppercase tracking-wide opacity-70">
         {label}
       </div>
       <div className="mt-1 text-2xl font-bold">{value}</div>

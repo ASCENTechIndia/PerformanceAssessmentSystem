@@ -50,7 +50,7 @@ const StatCard = ({
 
                             <span
                                 className="fw-bold"
-                                style={{ fontSize: "15px", color: "#fff" }}
+                                style={{ fontSize: "23px", color: "#fff" }}
                             >
                                 {item.count}
                             </span>

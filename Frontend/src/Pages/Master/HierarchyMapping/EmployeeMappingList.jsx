@@ -275,7 +275,7 @@ const StatCard = ({ label, value, tone, icon: Icon }) => {
         <p className="text-[10.5px] font-semibold uppercase tracking-wider opacity-80">
           {label}
         </p>
-        <p className="text-[22px] font-bold leading-none mt-0.5">{value}</p>
+        <p className="font-bold leading-none mt-0.5" style={{fontSize: "23px"}}>{value}</p>
       </div>
     </div>
   );
