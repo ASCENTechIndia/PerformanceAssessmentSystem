@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { ListTodo, CheckCircle2, UserX, GitBranch } from "lucide-react";
+import { ListTodo, CheckCircle2, UserX, GitBranch, CirclePlay } from "lucide-react";
 
 const StatCard = ({ label, value, color, icon: Icon }) => {
   const palette = {
@@ -26,6 +26,18 @@ const StatCard = ({ label, value, color, icon: Icon }) => {
       text: "text-violet-700",
       ring: "ring-violet-200",
       grad: "from-violet-400 to-purple-500",
+    },
+    red: {
+      soft: "bg-red-50",
+      text: "text-red-700",
+      ring: "ring-red-200",
+      grad: "from-red-400 to-rose-500",
+    },
+    orange: {
+      soft: "bg-orange-50",
+      text: "text-orange-700",
+      ring: "ring-orange-200",
+      grad: "from-orange-400 to-amber-300",
     },
   };
   const p = palette[color];
@@ -80,20 +92,20 @@ const TaskListStats = ({ tasks }) => {
       <StatCard
         label="Active"
         value={stats.active}
-        color="emerald"
-        icon={CheckCircle2}
+        color="orange"
+        icon={CirclePlay}
       />
       <StatCard
         label="Not Yet Assigned"
         value={stats.notAssigned}
-        color="amber"
+        color="red"
         icon={UserX}
       />
       <StatCard
-        label="Parent Tasks"
+        label="Completed Tasks"
         value={stats.parentTasks}
-        color="violet"
-        icon={GitBranch}
+        color="emerald"
+        icon={CheckCircle2}
       />
     </div>
   );
