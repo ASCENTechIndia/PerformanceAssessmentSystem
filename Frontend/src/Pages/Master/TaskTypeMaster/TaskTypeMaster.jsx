@@ -123,7 +123,6 @@ const TaskTypeMaster = () => {
 
       const response = await apiClient.get("/getTaskTypeList");
 
-      console.log(response);
       if (response.success && Array.isArray(response.data) && response.data.length > 0) {
         setTaskTypes(response.data);
       }

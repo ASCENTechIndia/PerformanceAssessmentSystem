@@ -13,6 +13,7 @@ const FrmAddTaskType = () => {
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const userId = user?.userId;
+  const ulbId = user?.ulbId;
   // const { id } = useParams();
   const location = useLocation();
   const taskType = location.state?.taskType; // present on edit, absent on add
@@ -38,7 +39,7 @@ const FrmAddTaskType = () => {
       description: taskType?.TASKTYPE_DESC || "",
       ulb: taskType?.ULBID != null
         ? String(taskType.ULBID)
-        : "",
+        : String(ulbId),
     }
   });
 
@@ -197,7 +198,8 @@ const FrmAddTaskType = () => {
                 render={({ field }) => (
                   <select
                     id="ulbName"
-                    className="pas-input"
+                    className="pas-input cursor-not-allowed"
+                    disabled
                     aria-invalid={!!errors.ulb}
                     {...field}
                     value={field.value ?? ""}
