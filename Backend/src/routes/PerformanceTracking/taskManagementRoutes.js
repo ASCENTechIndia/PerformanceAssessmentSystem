@@ -8,10 +8,12 @@ const {
   getTaskList,
   getStatusConfigList,
   getEmployeeMappingList,
+  AOPT_TASKASSIGNMENT_INSUPD,
 } = require("../../controllers/PerformanceTracking/taskManagementController");
 const {
   aoptTaskInsUpdSchema,
   aoptTaskStatusInsUpdSchema,
+  aoptTaskAssignmentInsUpdSchema,
 } = require("../../validators/schemas/taskManagementSchema");
 const { validate } = require("../../validators/validate");
 
@@ -30,5 +32,10 @@ router.post("/AOPT_TASKSTATUS_INSUPD", validate(aoptTaskStatusInsUpdSchema), AOP
 router.get("/getTaskList", getTaskList);
 router.get("/getStatusConfigList", getStatusConfigList)
 router.get("/getEmployeeMappingList", getEmployeeMappingList)
+router.post(
+  "/AOPT_TASKASSIGNMENT_INSUPD",
+  validate(aoptTaskAssignmentInsUpdSchema),
+  AOPT_TASKASSIGNMENT_INSUPD
+);
 
 module.exports = router;
