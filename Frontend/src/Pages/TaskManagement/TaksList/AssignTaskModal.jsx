@@ -167,6 +167,8 @@ const AssignTaskModal = ({
 
       const response = await apiClient.get("/getEmpDropdown?reportingId=90043&ulbId=2&deptId=287");
 
+      console.log(response);
+
       if (response.success && Array.isArray(response.data) && response.data.length > 0) {
         const formatted = response.data.map(item => ({
           label: item.EMPLOYEE_NAME,
@@ -425,9 +427,9 @@ const AssignTaskModal = ({
                     {...register("assignedTo", { required: "Required" })}
                   >
                     <option value="">Select employee</option>
-                    {filteredEmployees.map((e) => (
-                      <option key={e.id} value={e.id}>
-                        {e.name}
+                    {assignedToOptions.map((e) => (
+                      <option key={e.value} value={e.value}>
+                        {e.label}
                       </option>
                     ))}
                   </select>
