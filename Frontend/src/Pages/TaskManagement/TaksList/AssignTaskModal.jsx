@@ -197,7 +197,7 @@ const AssignTaskModal = ({
         "IN_TASKASSIGNMENT_ID": null,
         "IN_TASKID": Number(task.id),
         "IN_DEPTID": Number(deptId),
-        "IN_ASSIGNEDBY": 12,
+        "IN_ASSIGNEDBY": 90043,
         "IN_ASSIGNEDTO": Number(data.assignedTo),
         "IN_ASSIGNEDDATE": formatDateToAPI(today),
         "IN_STARTDATE": formatDateToAPI(data.expectedStart),
@@ -212,11 +212,8 @@ const AssignTaskModal = ({
         "IN_USERID": userId
       }
 
-      console.log(payload);
-      return;
 
       const response = await apiClient.post("/AOPT_TASKASSIGNMENT_INSUPD", payload);
-
       if (response.success && response.errorCode === 9999) {
         toast.success(response.errorMessage);
         reset();
