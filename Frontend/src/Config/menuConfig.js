@@ -75,12 +75,12 @@ export const STATIC_MENU = [
         PAGEPATH: "/Task/MyTask",
         ICON: Menu,
       },
-      {
-        MENUID: 202,
-        MENUTITLE: "Task Status",
-        PAGEPATH: "/Task/task-status",
-        ICON: Menu,
-      },
+      // {
+      //   MENUID: 202,
+      //   MENUTITLE: "Task Status",
+      //   PAGEPATH: "/Task/task-status",
+      //   ICON: Menu,
+      // },
     ],
   },
 
