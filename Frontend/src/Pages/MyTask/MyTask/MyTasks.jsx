@@ -144,20 +144,20 @@ const MyTasks = () => {
   /* Tab Logic */
   const filteredByTab = useMemo(() => {
     switch (activeTab) {
-      case "open":
-        return filteredByFilters.filter((t) =>
-          ["New", "In Progress", "Rework"].includes(t.status),
-        );
-      case "new":
-        return filteredByFilters.filter((t) => t.status === "New");
-      case "in-progress":
-        return filteredByFilters.filter((t) => t.status === "In Progress");
-      case "rework":
-        return filteredByFilters.filter((t) => t.status === "Rework");
-      case "submitted":
-        return filteredByFilters.filter((t) => t.status === "Submitted");
-      case "completed":
-        return filteredByFilters.filter((t) => t.status === "Completed");
+      // case "open":
+      //   return filteredByFilters.filter((t) =>
+      //     ["New", "In Progress", "Rework"].includes(t.status),
+      //   );
+      // case "new":
+      //   return filteredByFilters.filter((t) => t.status === "New");
+      // case "in-progress":
+      //   return filteredByFilters.filter((t) => t.status === "In Progress");
+      // case "rework":
+      //   return filteredByFilters.filter((t) => t.status === "Rework");
+      // case "submitted":
+      //   return filteredByFilters.filter((t) => t.status === "Submitted");
+      // case "completed":
+      //   return filteredByFilters.filter((t) => t.status === "Completed");
       default:
         return filteredByFilters;
     }
@@ -167,16 +167,16 @@ const MyTasks = () => {
   const tabCounts = useMemo(
     () => ({
       open: filteredByFilters.filter((t) =>
-        ["New", "In Progress", "Rework"].includes(t.status),
+        ["New", "In Progress", "Rework", "Submitted", "Completed"].includes(t.status),
       ).length,
-      new: filteredByFilters.filter((t) => t.status === "New").length,
-      "in-progress": filteredByFilters.filter((t) => t.status === "In Progress")
-        .length,
-      rework: filteredByFilters.filter((t) => t.status === "Rework").length,
-      submitted: filteredByFilters.filter((t) => t.status === "Submitted")
-        .length,
-      completed: filteredByFilters.filter((t) => t.status === "Completed")
-        .length,
+      // new: filteredByFilters.filter((t) => t.status === "New").length,
+      // "in-progress": filteredByFilters.filter((t) => t.status === "In Progress")
+      //   .length,
+      // rework: filteredByFilters.filter((t) => t.status === "Rework").length,
+      // submitted: filteredByFilters.filter((t) => t.status === "Submitted")
+      //   .length,
+      // completed: filteredByFilters.filter((t) => t.status === "Completed")
+      //   .length,
     }),
     [filteredByFilters],
   );
