@@ -15,6 +15,7 @@ import apiClient from "../../../../apiClient";
 const HierarchyMapping = () => {
     const { setLoading } = useLoader();
     const { user } = useAuth();
+    console.log(user);
     const ulbId = user?.ulbId;
     const userId = user?.userId;
     const navigate = useNavigate();
@@ -72,10 +73,9 @@ const HierarchyMapping = () => {
         try {
             setLoading(true);
             const response = await apiClient.get(`/getEmployeeDropdown?deptId=${encodeURIComponent(watchDepartment)}&ulbId=${ulbId}`);
-
             if (response.success && Array.isArray(response.data) && response.data.length > 0) {
                 const formatted = response.data.map(item => ({
-                    label: item.EMPLOYEE_NAME,
+                    label: `${item.EMPLOYEE_NAME} - ${item.DESI_NAME}`,
                     value: item.EMPID
                 }));
                 setEmployeeOptions(formatted);
