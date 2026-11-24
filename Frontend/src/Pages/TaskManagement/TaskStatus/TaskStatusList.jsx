@@ -126,13 +126,13 @@ const TaskStatusList = () => {
                     >
                       {/* Progress ID */}
                       <td className="px-4 py-3 font-mono text-[12px] font-semibold text-slate-600">
-                        PRG-{item.TASKPROGRESS_ID}
+                        {item.TASKPROGRESS_ID}
                       </td>
 
                       {/* Task Assign ID */}
                       <td className="px-4 py-3">
                         <span className="font-mono text-[12px] text-slate-800">
-                          ASG-{item.TASKASSIGNID}
+                          {item.TASKASSIGNID}
                         </span>
                       </td>
 
