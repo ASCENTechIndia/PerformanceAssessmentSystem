@@ -16,12 +16,12 @@ const mapApiRow = (row) => ({
   rawId: Number(row.TASK_ID),
   title: row.TASK_TITLE || "",
   expectedDuration: Number(row.EXCEPCTEDDAYS ?? 0),
-  parent: row.PARENTID || "",
+  parent: row.PARENTID || "", 
   createdAt: row.INSDT,
   active: String(row.ISACTIVE).toUpperCase() === "Y",
-  taskType: null, // not returned by /getTaskList
-  assignedTo: null, // not returned by /getTaskList
-  hasSubTask: false, // computed below after mapping all rows
+  taskType: null,
+  assignedTo: null,
+  hasSubTask: false,
 });
 
 const EMPTY_FILTERS = {
@@ -33,9 +33,7 @@ const EMPTY_FILTERS = {
 
 function formatDateToAPI(dateString) {
   if (!dateString) return;
-
   const [year, month, day] = dateString.split("-");
-
   const monthMap = {
     "01": "Jan",
     "02": "Feb",
@@ -46,11 +44,10 @@ function formatDateToAPI(dateString) {
     "07": "Jul",
     "08": "Aug",
     "09": "Sep",
-    "10": "Oct",
-    "11": "Nov",
-    "12": "Dec"
+    10: "Oct",
+    11: "Nov",
+    12: "Dec",
   };
-
   return `${day}-${monthMap[month]}-${year}`;
 }
 
@@ -76,13 +73,6 @@ const TaskList = () => {
 
       if (res?.success && Array.isArray(res.data)) {
         const mapped = res.data.map(mapApiRow);
-
-        // derive hasSubTask: any task whose parent equals this task's id
-        // const withHasSubTask = mapped.map((t) => ({
-        //   ...t,
-        //   hasSubTask: mapped.some((other) => other.parent === t.id),
-        // }));
-
         setTasks(mapped);
       } else {
         setTasks([]);
@@ -119,13 +109,15 @@ const TaskList = () => {
 
   const filteredByTab = useMemo(() => {
     switch (activeTab) {
-      case "not-assigned":
-        return filteredByFilters.filter((t) => t.active && !t.assignedTo);
-      case "assigned":
-        return filteredByFilters.filter((t) => t.active && t.assignedTo);
-      case "inactive":
-        return filteredByFilters.filter((t) => !t.active);
-      case "all":
+      case "my-task":
+        
+        return filteredByFilters.filter(
+          (t) => !t.parent || t.parent === "0" || t.parent === 0,
+        );
+      case "assigned-by-me":
+        return filteredByFilters.filter(
+          (t) => t.parent && t.parent !== "0" && t.parent !== 0,
+        );
       default:
         return filteredByFilters;
     }
@@ -133,12 +125,12 @@ const TaskList = () => {
 
   const tabCounts = useMemo(
     () => ({
-      all: filteredByFilters.length,
-      "not-assigned": filteredByFilters.filter((t) => t.active && !t.assignedTo)
-        .length,
-      assigned: filteredByFilters.filter((t) => t.active && t.assignedTo)
-        .length,
-      inactive: filteredByFilters.filter((t) => !t.active).length,
+      "my-task": filteredByFilters.filter(
+        (t) => !t.parent || t.parent === "0" || t.parent === 0,
+      ).length,
+      "assigned-by-me": filteredByFilters.filter(
+        (t) => t.parent && t.parent !== "0" && t.parent !== 0,
+      ).length,
     }),
     [filteredByFilters],
   );
@@ -174,7 +166,7 @@ const TaskList = () => {
       if (response.success && Number(response.errorCode) === 9999) {
         toast.success(response.errorMessage || "Task created");
         setCreateOpen(false);
-        fetchTasks(); // ← refresh list
+        fetchTasks();
       } else {
         toast.error(response.errorMessage || "Failed to create task");
       }
@@ -188,53 +180,45 @@ const TaskList = () => {
   const handleAssign = (task) => setAssigningTask(task);
 
   const handleAssignSubmit = async (data) => {
-    // try {
-    //   setLoading(true);
-    //   const payload = {
-    //     "IN_MODE": 1,
-    //     "IN_TASKASSIGNMENT_ID": null,
-    //     "IN_TASKID": Number(assigningTask.id),
-    //     "IN_DEPTID": Number(deptId),
-    //     "IN_ASSIGNEDBY": 12,
-    //     "IN_ASSIGNEDTO": Number(data.assignedTo),
-    //     "IN_ASSIGNEDDATE": formatDateToAPI(today),
-    //     "IN_STARTDATE": formatDateToAPI(data.expectedStart),
-    //     "IN_DUEDATE": formatDateToAPI(data.expectedCompletion),
-    //     "IN_STATUSID": Number(data.status),
-    //     "IN_PRIORITY": data.priority,
-    //     "IN_FINISHEDDATE": null,
-    //     "IN_COMPLETEDDATE": null,
-    //     "IN_ISACTIVE": data.active ? "Y" : "N",
-    //     "IN_ACTIONREMARK": data.actionRemark,
-    //     "IN_USERID": userId
-    //   }
+    try {
+      setLoading(true);
+      const payload = {
+        IN_MODE: 1,
+        IN_TASKASSIGNMENT_ID: null,
+        IN_TASKID: Number(assigningTask.id),
+        IN_DEPTID: Number(deptId),
+        IN_ASSIGNEDBY: Number(userId),
+        IN_ASSIGNEDTO: Number(data.assignedTo),
+        IN_ASSIGNEDDATE: formatDateToAPI(today),
+        IN_STARTDATE: formatDateToAPI(data.expectedStart),
+        IN_DUEDATE: formatDateToAPI(data.expectedCompletion),
+        IN_STATUSID: Number(data.status),
+        IN_PRIORITY: data.priority,
+        IN_FINISHEDDATE: null,
+        IN_COMPLETEDDATE: null,
+        IN_ISACTIVE: data.active ? "Y" : "N",
+        IN_ACTIONREMARK: data.actionRemark || "",
+        IN_USERID: userId,
+      };
 
-    //   const response = await apiClient.post("/AOPT_TASKASSIGNMENT_INSUPD", payload);
+      const response = await apiClient.post(
+        "/AOPT_TASKASSIGNMENT_INSUPD",
+        payload,
+      );
 
-    //   if (response.success && response.errorCode === 9999) {
-    //     toast.success(response.errorMessage);
-    //     setAssigningTask(null);
-    //   } else {
-    //     toast.error(response.errorMessage);
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    //   toast.error(error.message || "Failed to assign task");
-    // } finally {
-    //   setLoading(false);
-    // }
-
-    // setTasks((prev) =>
-    //   prev.map((t) =>
-    //     t.id === assigningTask.id
-    //       ? { ...t, assignedTo: data.assignedToName }
-    //       : t,
-    //   ),
-    // );
-    // toast.success(
-    //   `Task ${assigningTask.id} assigned to ${data.assignedToName}`,
-    // );
-    // setAssigningTask(null);
+      if (response.success && response.errorCode === 9999) {
+        toast.success(response.errorMessage || "Task assigned");
+        setAssigningTask(null);
+        fetchTasks(); // Refresh list
+      } else {
+        toast.error(response.errorMessage || "Failed to assign task");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message || "Failed to assign task");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const taskTypeOptions = useMemo(
@@ -279,7 +263,6 @@ const TaskList = () => {
             onChange={setActiveTab}
           />
 
-          {/* loading vs table */}
           {tasks?.length > 0 && (
             <TaskListTable tasks={filteredByTab} onAssign={handleAssign} />
           )}
@@ -308,7 +291,7 @@ const TaskList = () => {
         open={!!assigningTask}
         onClose={() => setAssigningTask(null)}
         task={assigningTask}
-        // onAssign={handleAssignSubmit}
+        onAssign={handleAssignSubmit} // Uncommented and attached
       />
     </Layout>
   );
