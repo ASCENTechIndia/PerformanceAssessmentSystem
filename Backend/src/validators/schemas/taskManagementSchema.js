@@ -262,8 +262,8 @@ export const aoptTaskAssignmentInsUpdSchema = z.object({
       required_error: "Metting reference is required",
       invalid_type_error: "Metting reference must be string",
     })
-    .trim()
-    .min(1, "Metting reference is required"),
+    .nullable()
+    .optional(),
 
   IN_USERID: z
     .string({
