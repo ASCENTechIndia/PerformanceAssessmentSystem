@@ -571,6 +571,73 @@ async function getMyTaskList(req, res) {
   }
 }
 
+async function AOPT_TASK_PROGRESS_upd(req, res) {
+  let connection;
+  try {
+    const payload = req.body;
+    connection = await getConnection();
+
+    const query = `BEGIN
+      AOPT_TASK_PROGRESS_upd
+        (
+            :IN_TASKASSIGNID,       
+            :IN_STATUSID,           
+            :IN_ACTIONBY,               
+            :IN_userid,             
+            :IN_COMMENT,            
+            :IN_FILENAME,           
+            :IN_FILEDOC,            
+            :IN_FILETYPE,           
+            :OUT_PROGRESSID,        
+            :OUT_ERRORCODE,         
+            :OUT_ERRORMSG
+        );
+      END;`;
+
+    const bind = {
+      IN_TASKASSIGNID: Number(payload.IN_TASKASSIGNID),
+      IN_STATUSID: Number(payload.IN_STATUSID),
+      IN_ACTIONBY: Number(payload.IN_ACTIONBY),
+      IN_userid: payload.IN_userid,
+      IN_COMMENT: payload.IN_COMMENT,
+
+      // Optional Attachment fields
+      IN_FILENAME: payload.IN_FILENAME || null,
+      IN_FILEDOC: payload.IN_FILEDOC || null, // Passing base64 string directly to CLOB
+      IN_FILETYPE: payload.IN_FILETYPE || null,
+
+      // Output parameters
+      OUT_PROGRESSID: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
+      OUT_ERRORCODE: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
+      OUT_ERRORMSG: {
+        dir: oracledb.BIND_OUT,
+        type: oracledb.STRING,
+        maxSize: 4000,
+      },
+    };
+
+    const result = await connection.execute(query, bind, { autoCommit: true });
+
+    res.json({
+      success: true,
+      progressId: result.outBinds.OUT_PROGRESSID,
+      errorCode: result.outBinds.OUT_ERRORCODE,
+      errorMessage: result.outBinds.OUT_ERRORMSG,
+    });
+  } catch (error) {
+    console.error("AOPT_TASK_PROGRESS_upd error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error("Error closing DB connection:", err);
+      }
+    }
+  }
+}
+
 module.exports = {
   getParentTaskDropdown,
   getTaskTypeDropdown,
@@ -584,4 +651,5 @@ module.exports = {
   getEmpDropdown,
   getStatusDropdown,
   getMyTaskList,
+  AOPT_TASK_PROGRESS_upd,
 };

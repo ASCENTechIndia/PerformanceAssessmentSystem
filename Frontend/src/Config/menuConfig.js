@@ -177,6 +177,12 @@ export const STATIC_MENU = [
         PAGEPATH: "/task-management/tasks",
         ICON: ListTodo,
       },
+      {
+        MENUID: 602,
+        MENUTITLE: "Task Status",
+        PAGEPATH: "/task-management/task-status",
+        ICON: ListTodo,
+      },
     ],
   },
 ];
