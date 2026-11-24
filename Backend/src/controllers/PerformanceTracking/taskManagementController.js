@@ -527,6 +527,50 @@ async function getStatusDropdown(req, res) {
   }
 }
 
+async function getMyTaskList(req, res) {
+  let connection;
+  try {
+    connection = await getConnection();
+
+    const { empId } = req.query;
+    if (!empId) {
+      return res.json({
+        success: false,
+        errorMessage: "Employee Id is required",
+      });
+    }
+
+    const query = `
+      SELECT * FROM view_mytask_list 
+      WHERE assignedto = :empId
+    `;
+
+    const bind = {
+      empId: Number(empId),
+    };
+
+    const result = await connection.execute(query, bind, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+    });
+
+    res.json({
+      success: true,
+      data: result.rows || [],
+    });
+  } catch (error) {
+    console.error("getMyTaskList error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error("Error closing DB connection:", err);
+      }
+    }
+  }
+}
+
 module.exports = {
   getParentTaskDropdown,
   getTaskTypeDropdown,
@@ -539,4 +583,5 @@ module.exports = {
   AOPT_TASKASSIGNMENT_INSUPD,
   getEmpDropdown,
   getStatusDropdown,
+  getMyTaskList,
 };
