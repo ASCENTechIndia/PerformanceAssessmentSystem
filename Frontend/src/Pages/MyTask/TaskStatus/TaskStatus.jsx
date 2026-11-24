@@ -67,25 +67,21 @@ const TaskStatus = () => {
         IN_FILEDOC: fileBase64,
         IN_FILETYPE: fileType,
       };
-      console.log(payload);
 
       const response = await apiClient.post(
         "/AOPT_TASK_PROGRESS_upd",
         payload
       );
 
-      console.log(response);
 
       if (response.success && response.errorCode === 0) {
-        toast.success(response.message || "Task updated successfully");
+        toast.success(response.errorMessage);
 
-        // Reset all form fields and selected attachments
         resetForm();
 
-        // Navigate after resetting
-        navigate("/task-management/pending-approvals");
+        navigate("/Task/MyTask");
       } else {
-        toast.error(response.message || "Failed to update task");
+        toast.error(response.errorMessage);
       }
     } catch (error) {
       console.error("Task Progress Error:", error);

@@ -166,7 +166,6 @@ const MyTasks = () => {
     }
 
     if (actionType === "Edit") {
-      console.log("Edit task:", task);
       navigate("/Task/task-status", {
         state: {
           task
