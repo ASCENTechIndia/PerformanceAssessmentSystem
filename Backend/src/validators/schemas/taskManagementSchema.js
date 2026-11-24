@@ -257,6 +257,14 @@ export const aoptTaskAssignmentInsUpdSchema = z.object({
     .trim()
     .min(1, "Action Remark is required"),
 
+  IN_meetingreference: z
+    .string({
+      required_error: "Metting reference is required",
+      invalid_type_error: "Metting reference must be string",
+    })
+    .trim()
+    .min(1, "Metting reference is required"),
+
   IN_USERID: z
     .string({
       required_error: "UserId is required",

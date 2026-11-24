@@ -10,6 +10,7 @@ const {
   getEmployeeMappingList,
   AOPT_TASKASSIGNMENT_INSUPD,
   getEmpDropdown,
+  getStatusDropdown,
 } = require("../../controllers/PerformanceTracking/taskManagementController");
 const {
   aoptTaskInsUpdSchema,
@@ -39,4 +40,5 @@ router.post(
   AOPT_TASKASSIGNMENT_INSUPD
 );
 router.get("/getEmpDropdown", getEmpDropdown)
+router.get("/getStatusDropdown", getStatusDropdown);
 module.exports = router;

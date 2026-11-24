@@ -376,6 +376,7 @@ async function AOPT_TASKASSIGNMENT_INSUPD(req, res) {
             :IN_COMPLETEDDATE,     
             :IN_ISACTIVE,          
             :IN_ACTIONREMARK,      
+            :IN_meetingreference,
             :IN_USERID,            
             :OUT_ERRORCODE,        
             :OUT_ERRORMSG
@@ -410,6 +411,7 @@ async function AOPT_TASKASSIGNMENT_INSUPD(req, res) {
 
       IN_ISACTIVE: payload.IN_ISACTIVE,
       IN_ACTIONREMARK: payload.IN_ACTIONREMARK,
+      IN_meetingreference: payload.IN_meetingreference,
       IN_USERID: payload.IN_USERID,
 
       OUT_ERRORCODE: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
@@ -490,6 +492,41 @@ async function getEmpDropdown(req, res) {
   }
 }
 
+async function getStatusDropdown(req, res) {
+  let connection;
+  try {
+    connection = await getConnection();
+
+    const query = `
+      SELECT statusid, statuscode, statusname 
+      FROM view_taskstatus_list
+      ORDER BY statusid ASC
+    `;
+
+    const result = await connection.execute(
+      query,
+      {},
+      { outFormat: oracledb.OUT_FORMAT_OBJECT },
+    );
+
+    res.json({
+      success: true,
+      data: result.rows || [],
+    });
+  } catch (error) {
+    console.error("getStatusDropdown error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error("Error closing DB connection:", err);
+      }
+    }
+  }
+}
+
 module.exports = {
   getParentTaskDropdown,
   getTaskTypeDropdown,
@@ -501,4 +538,5 @@ module.exports = {
   getEmployeeMappingList,
   AOPT_TASKASSIGNMENT_INSUPD,
   getEmpDropdown,
+  getStatusDropdown,
 };
