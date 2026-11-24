@@ -28,6 +28,29 @@ const STATUS = [
 
 const PRIORITIES = ["Low", "Medium", "High", "Critical"];
 
+function formatDateToAPI(dateString) {
+  if (!dateString) return;
+
+  const [year, month, day] = dateString.split("-");
+
+  const monthMap = {
+    "01": "Jan",
+    "02": "Feb",
+    "03": "Mar",
+    "04": "Apr",
+    "05": "May",
+    "06": "Jun",
+    "07": "Jul",
+    "08": "Aug",
+    "09": "Sep",
+    "10": "Oct",
+    "11": "Nov",
+    "12": "Dec"
+  };
+
+  return `${day}-${monthMap[month]}-${year}`;
+} 
+
 const AssignTaskModal = ({
   open,
   onClose,
@@ -39,6 +62,7 @@ const AssignTaskModal = ({
   const { setLoading } = useLoader();
   const userId = user?.userId;
   const ulbId = user?.ulbId;
+  const deptId = user?.deptId;
 
   const {
     register,
@@ -58,6 +82,7 @@ const AssignTaskModal = ({
       status: "",
       priority: task?.priority || "Medium",
       active: true,
+      actionRemark: "",
       meetingReference: "",
     },
     mode: "onBlur",
@@ -113,61 +138,11 @@ const AssignTaskModal = ({
 
   const today = new Date().toISOString().split("T")[0];
 
-  // const fetchDepartmentDropdown = async () => {
-  //   try {
-  //     setLoading(true);
-
-  //     const response = await apiClient.get("");
-
-  //     if (response.success && Array.isArray(response.data) && response.data.length > 0) {
-  //       const formatted = response.data.map(item => ({
-  //         label: item.DEPTNAME,
-  //         value: item.DEPTID
-  //       }));
-  //       setDepartmentOptions(formatted);
-  //     } else {
-  //       setDepartmentOptions([]);
-  //     }
-  //   } catch (err) {
-  //     setDepartmentOptions([]);
-  //     console.error(err);
-  //     toast.error(err.message || "Failed to fetch Department dropdown");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }
-
-  // const fetchAssignedByDropdown = async () => {
-  //   try {
-  //     setLoading(true);
-
-  //     const response = await apiClient.get("");
-
-  //     if (response.success && Array.isArray(response.data) && response.data.length > 0) {
-  //       const formatted = response.data.map(item => ({
-  //         label: item.ASSIGNEDBY,
-  //         value: item.ASSIGN_EMPID
-  //       }));
-  //       setAssignedByOptions(formatted);
-  //     } else {
-  //       setAssignedByOptions([]);
-  //     }
-  //   } catch (err) {
-  //     setAssignedByOptions([]);
-  //     console.error(err);
-  //     toast.error(err.message || "Failed to fetch Assigned By employee dropdown");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }
-
   const fetchAssignedToDropdown = async () => {
     try {
       setLoading(true);
 
       const response = await apiClient.get("/getEmpDropdown?reportingId=90043&ulbId=2&deptId=287");
-
-      console.log(response);
 
       if (response.success && Array.isArray(response.data) && response.data.length > 0) {
         const formatted = response.data.map(item => ({
@@ -188,52 +163,63 @@ const AssignTaskModal = ({
     }
   }
 
-  // const fetchStatusDropdown = async () => {
-  //   try {
-  //     setLoading(true);
+  const fetchStatusDropdown = async () => {
+    try {
+      setLoading(true);
 
-  //     const response = await apiClient.get("");
+      const response = await apiClient.get("/getStatusDropdown");
 
-  //     if (response.success && Array.isArray(response.data) && response.data.length > 0) {
-        
-  //     }
-  //   } catch (err) {
-  //     setStatusOptions([]);
-  //     console.error(err);
-  //     toast.error(err.message || "Failed to fetch Status dropdown options");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }
+      if (response.success && Array.isArray(response.data) && response.data.length > 0) {
+        const formatted = response.data.map(item => ({
+          ...item,
+          label: item.STATUSNAME,
+          value: item.STATUSID
+        }));
+
+        setStatusOptions(formatted);
+      }
+    } catch (err) {
+      setStatusOptions([]);
+      console.error(err);
+      toast.error(err.message || "Failed to fetch Status dropdown options");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const submit = async (data) => {
     try {
       setLoading(true);
-      console.log(data);
+
 
       const payload = {
         "IN_MODE": 1,
         "IN_TASKASSIGNMENT_ID": null,
-        "IN_TASKID": 10,
-        "IN_DEPTID": 5,
+        "IN_TASKID": Number(task.id),
+        "IN_DEPTID": Number(deptId),
         "IN_ASSIGNEDBY": 12,
-        "IN_ASSIGNEDTO": 45,
-        "IN_ASSIGNEDDATE": "23-Nov-2026",
-        "IN_STARTDATE": "23-Nov-2026",
-        "IN_DUEDATE": "23-Nov-2026",
-        "IN_STATUSID": 11,
-        "IN_PRIORITY": "High",
+        "IN_ASSIGNEDTO": Number(data.assignedTo),
+        "IN_ASSIGNEDDATE": formatDateToAPI(today),
+        "IN_STARTDATE": formatDateToAPI(data.expectedStart),
+        "IN_DUEDATE": formatDateToAPI(data.expectedCompletion),
+        "IN_STATUSID": Number(data.status),
+        "IN_PRIORITY": data.priority,
         "IN_FINISHEDDATE": null,
         "IN_COMPLETEDDATE": null,
-        "IN_ISACTIVE": "Y",
-        "IN_ACTIONREMARK": "Assigning this task to complete the drainage inspection.",
-        "IN_USERID": "AMCDT"
+        "IN_ISACTIVE": data.active ? "Y" : "N",
+        "IN_ACTIONREMARK": data.actionRemark,
+        "IN_meetingreference": data.meetingReference,
+        "IN_USERID": userId
       }
+
+      console.log(payload);
+      return;
 
       const response = await apiClient.post("/AOPT_TASKASSIGNMENT_INSUPD", payload);
 
       if (response.success && response.errorCode === 9999) {
         toast.success(response.errorMessage);
+        reset();
         onClose();
       } else {
         toast.error(response.errorMessage);
@@ -257,8 +243,10 @@ const AssignTaskModal = ({
   useEffect(() => {
     if (user) {
       fetchAssignedToDropdown();
+      fetchStatusDropdown();
     }
   }, [user]);
+
 
   if (!open || !task) return null;
 
@@ -283,10 +271,16 @@ const AssignTaskModal = ({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <p className="text-[15px] font-semibold text-slate-800">
+                <p className="font-semibold text-slate-800" style={{
+                  fontSize: "20px",
+                }}>
                   Assign Task
                 </p>
-                <span className="text-[11px] font-medium text-slate-400">
+                <span className="font-medium text-slate-400" style={{
+                  fontSize: "16px",
+                  alignSelf: "center",
+                  marginTop: 2
+                }}>
                   Step 2 of 2 · Assign to team
                 </span>
               </div>
@@ -507,7 +501,7 @@ const AssignTaskModal = ({
                     {...register("status", { required: "Required" })}
                   >
                     <option value="">Select status</option>
-                    {STATUS.map((d) => (
+                    {statusOptions.map((d) => (
                       <option key={d.value} value={d.value}>
                         {d.label}
                       </option>
@@ -571,6 +565,21 @@ const AssignTaskModal = ({
                   )}
                 </div>
               </div>
+            </div>
+
+            <div>
+              <label className="pas-label">
+                Remark{" "}
+                <span className="text-rose-500">
+                  *
+                </span>
+              </label>
+              <input
+                type="text"
+                placeholder="Enter Remark"
+                className="pas-input"
+                {...register("actionRemark")}
+              />
             </div>
 
             {/* ────────── Meeting Reference ────────── */}

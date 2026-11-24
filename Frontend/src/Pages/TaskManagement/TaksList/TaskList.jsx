@@ -16,7 +16,7 @@ const mapApiRow = (row) => ({
   rawId: Number(row.TASK_ID),
   title: row.TASK_TITLE || "",
   expectedDuration: Number(row.EXCEPCTEDDAYS ?? 0),
-  parent:row.PARENTID || "",
+  parent: row.PARENTID || "",
   createdAt: row.INSDT,
   active: String(row.ISACTIVE).toUpperCase() === "Y",
   taskType: null, // not returned by /getTaskList
@@ -31,16 +31,43 @@ const EMPTY_FILTERS = {
   status: "",
 };
 
+function formatDateToAPI(dateString) {
+  if (!dateString) return;
+
+  const [year, month, day] = dateString.split("-");
+
+  const monthMap = {
+    "01": "Jan",
+    "02": "Feb",
+    "03": "Mar",
+    "04": "Apr",
+    "05": "May",
+    "06": "Jun",
+    "07": "Jul",
+    "08": "Aug",
+    "09": "Sep",
+    "10": "Oct",
+    "11": "Nov",
+    "12": "Dec"
+  };
+
+  return `${day}-${monthMap[month]}-${year}`;
+}
+
 const TaskList = () => {
   const { user } = useAuth();
   const userId = user?.userId;
+  const ulbId = user?.ulbId;
+  const deptId = user?.deptId;
   const { setLoading } = useLoader();
 
-  const [tasks, setTasks] = useState([]); 
+  const [tasks, setTasks] = useState([]);
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [activeTab, setActiveTab] = useState("all");
   const [assigningTask, setAssigningTask] = useState(null);
   const [createOpen, setCreateOpen] = useState(false);
+
+  const today = new Date().toISOString().split("T")[0];
 
   const fetchTasks = async () => {
     setLoading(true);
@@ -134,7 +161,7 @@ const TaskList = () => {
       IN_TASK_TITLE: data.title,
       IN_TASK_DESCRIPTION: data.description,
       IN_TASK_COMPLETIONCRITERIA: data.completionCriteria,
-      IN_TASK_EXCEPCTEDDAYS: Number(data.expectedDuration), 
+      IN_TASK_EXCEPCTEDDAYS: Number(data.expectedDuration),
       IN_TASK_PARENTID:
         data.parent === "" || data.parent == null ? 0 : Number(data.parent),
       IN_TASK_ISACTIVE: data.active ? "Y" : "N",
@@ -160,18 +187,54 @@ const TaskList = () => {
 
   const handleAssign = (task) => setAssigningTask(task);
 
-  const handleAssignSubmit = (data) => {
-    setTasks((prev) =>
-      prev.map((t) =>
-        t.id === assigningTask.id
-          ? { ...t, assignedTo: data.assignedToName }
-          : t,
-      ),
-    );
-    toast.success(
-      `Task ${assigningTask.id} assigned to ${data.assignedToName}`,
-    );
-    setAssigningTask(null);
+  const handleAssignSubmit = async (data) => {
+    // try {
+    //   setLoading(true);
+    //   const payload = {
+    //     "IN_MODE": 1,
+    //     "IN_TASKASSIGNMENT_ID": null,
+    //     "IN_TASKID": Number(assigningTask.id),
+    //     "IN_DEPTID": Number(deptId),
+    //     "IN_ASSIGNEDBY": 12,
+    //     "IN_ASSIGNEDTO": Number(data.assignedTo),
+    //     "IN_ASSIGNEDDATE": formatDateToAPI(today),
+    //     "IN_STARTDATE": formatDateToAPI(data.expectedStart),
+    //     "IN_DUEDATE": formatDateToAPI(data.expectedCompletion),
+    //     "IN_STATUSID": Number(data.status),
+    //     "IN_PRIORITY": data.priority,
+    //     "IN_FINISHEDDATE": null,
+    //     "IN_COMPLETEDDATE": null,
+    //     "IN_ISACTIVE": data.active ? "Y" : "N",
+    //     "IN_ACTIONREMARK": data.actionRemark,
+    //     "IN_USERID": userId
+    //   }
+
+    //   const response = await apiClient.post("/AOPT_TASKASSIGNMENT_INSUPD", payload);
+
+    //   if (response.success && response.errorCode === 9999) {
+    //     toast.success(response.errorMessage);
+    //     setAssigningTask(null);
+    //   } else {
+    //     toast.error(response.errorMessage);
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    //   toast.error(error.message || "Failed to assign task");
+    // } finally {
+    //   setLoading(false);
+    // }
+
+    // setTasks((prev) =>
+    //   prev.map((t) =>
+    //     t.id === assigningTask.id
+    //       ? { ...t, assignedTo: data.assignedToName }
+    //       : t,
+    //   ),
+    // );
+    // toast.success(
+    //   `Task ${assigningTask.id} assigned to ${data.assignedToName}`,
+    // );
+    // setAssigningTask(null);
   };
 
   const taskTypeOptions = useMemo(
@@ -245,7 +308,7 @@ const TaskList = () => {
         open={!!assigningTask}
         onClose={() => setAssigningTask(null)}
         task={assigningTask}
-        onAssign={handleAssignSubmit}
+        // onAssign={handleAssignSubmit}
       />
     </Layout>
   );
