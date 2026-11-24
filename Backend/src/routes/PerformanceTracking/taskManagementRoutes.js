@@ -13,6 +13,8 @@ const {
   getStatusDropdown,
   getMyTaskList,
   AOPT_TASK_PROGRESS_upd,
+  getTaskStatusList,
+  getAttachmentDetails,
 } = require("../../controllers/PerformanceTracking/taskManagementController");
 const {
   aoptTaskInsUpdSchema,
@@ -52,6 +54,8 @@ router.get("/getMyTaskList", getMyTaskList);
 router.post(
   "/AOPT_TASK_PROGRESS_upd",
   validate(aoptTaskProgressUpdSchema),
-  AOPT_TASK_PROGRESS_upd
+  AOPT_TASK_PROGRESS_upd,
 );
+router.get("/getTaskStatusList", getTaskStatusList);
+router.get("/getAttachmentDetails", getAttachmentDetails);
 module.exports = router;

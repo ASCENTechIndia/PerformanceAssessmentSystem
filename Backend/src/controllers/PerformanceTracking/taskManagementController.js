@@ -603,7 +603,9 @@ async function AOPT_TASK_PROGRESS_upd(req, res) {
 
       // Optional Attachment fields
       IN_FILENAME: payload.IN_FILENAME || null,
-      IN_FILEDOC: payload.IN_FILEDOC || null, // Passing base64 string directly to CLOB
+      IN_FILEDOC: payload.IN_FILEDOC
+        ? payload.IN_FILEDOC.replace(/^data:.*?;base64,/, "").replace(/\s/g, "")
+        : null, // Passing base64 string directly to CLOB
       IN_FILETYPE: payload.IN_FILETYPE || null,
 
       // Output parameters
@@ -638,6 +640,127 @@ async function AOPT_TASK_PROGRESS_upd(req, res) {
   }
 }
 
+async function getTaskStatusList(req, res) {
+  let connection;
+  try {
+    connection = await getConnection();
+
+    const { taskAssignedId } = req.query;
+    if (!taskAssignedId) {
+      return res.json({
+        success: false,
+        errorMessage: "Task assigned Id is missing",
+      });
+    }
+
+    const query = `
+      SELECT * FROM view_task_progress_list 
+      WHERE taskassignid = :taskAssignedId
+    `;
+
+    const bind = {
+      taskAssignedId: Number(taskAssignedId),
+    };
+
+    const result = await connection.execute(query, bind, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+    });
+
+    res.json({
+      success: true,
+      data: result.rows || [],
+    });
+  } catch (error) {
+    console.error("getTaskStatusList error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error("Error closing DB connection:", err);
+      }
+    }
+  }
+}
+
+async function lobToBase64(lob) {
+  if (!lob) return null;
+
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    const isClob = lob.type === oracledb.CLOB;
+
+    if (isClob) lob.setEncoding("utf8"); // CLOB -> string chunks
+
+    lob.on("data", (chunk) => chunks.push(chunk));
+
+    lob.on("end", () => {
+      const text = isClob
+        ? chunks.join("")
+        : Buffer.concat(chunks).toString("utf8"); // BLOB holding base64 text
+
+      resolve(text.replace(/\s/g, "")); // remove any line breaks
+    });
+
+    lob.on("error", reject);
+  });
+}
+
+async function getAttachmentDetails(req, res) {
+  let connection;
+  try {
+    connection = await getConnection();
+
+    const { attachmentId, progressId } = req.query;
+    if (!attachmentId || !progressId) {
+      return res.json({
+        success: false,
+        errorMessage: "Attachment Id or progress Id is missing",
+      });
+    }
+
+    const query = `
+      SELECT * FROM view_taskattachment 
+      WHERE attachment_id = :attachmentId 
+      AND progressid = :progressId
+    `;
+
+    const bind = {
+      attachmentId: Number(attachmentId),
+      progressId: Number(progressId),
+    };
+
+    const result = await connection.execute(query, bind, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+    });
+
+    const rows = result.rows || [];
+
+    for (const row of rows) {
+      row.IMG = await lobToBase64(row.ATTACHMENT_DOC);
+
+      delete row.ATTACHMENT_DOC;
+    }
+
+    res.json({
+      success: true,
+      data: rows,
+    });
+  } catch (error) {
+    console.error("getAttachmentDetails error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error("Error closing DB connection:", err);
+      }
+    }
+  }
+}
+
 module.exports = {
   getParentTaskDropdown,
   getTaskTypeDropdown,
@@ -652,4 +775,6 @@ module.exports = {
   getStatusDropdown,
   getMyTaskList,
   AOPT_TASK_PROGRESS_upd,
+  getTaskStatusList,
+  getAttachmentDetails,
 };
