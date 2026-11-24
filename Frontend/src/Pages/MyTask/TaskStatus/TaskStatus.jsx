@@ -1,65 +1,156 @@
-import { useNavigate, useParams } from "react-router-dom";
+
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import Layout from "../../../Components/Layout";
 import TaskSubmissionCard from "./TaskSubmissionCard";
 import TakeActionForm from "./TakeActionForm";
-
-/* Dummy data — replace with API fetch using useParams */
-const MOCK_TASK_DETAILS = {
-  id: "ASG-20231",
-  title: "Inspect drainage line, Ward 14 (Virar East)",
-};
+import { useAuth } from "../../../Context/AuthContext";
+import { useLoader } from "../../../Context/LoaderContext";
+import apiClient from "../../../../apiClient";
 
 const TaskStatus = () => {
   const navigate = useNavigate();
-  const { id } = useParams(); // Use this when wiring to API
+  const { id } = useParams();
+  const location = useLocation();
 
-  const handleActionSubmit = async (data) => {
+  const { user } = useAuth();
+  const { setLoading } = useLoader();
+
+  const task = location.state?.task;
+
+  // Convert uploaded file to Base64
+  const convertFileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+        const base64String = reader.result.split(",")[1];
+        resolve(base64String);
+      };
+
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+
+  const handleActionSubmit = async (data, resetForm) => {
     try {
-      // await apiService.post(`/tasks/${MOCK_TASK_DETAILS.id}/action`, data);
-      console.log("Action submitted →", data);
-      toast.success(`Task ${MOCK_TASK_DETAILS.id} updated to ${data.status}`);
-      navigate("/task-management/pending-approvals"); // Redirect back
-    } catch (err) {
-      toast.error("Failed to submit action");
+      setLoading(true);
+
+      const file = data.attachments?.[0];
+
+      let fileBase64 = "";
+      let fileName = "";
+      let fileType = "";
+
+      if (file) {
+        // Additional safety validation before conversion
+        if (file.size > 5 * 1024 * 1024) {
+          toast.error("File size must be less than or equal to 5 MB");
+          return;
+        }
+
+        fileBase64 = await convertFileToBase64(file);
+        fileName = file.name;
+        fileType = `.${file.name.split(".").pop().toLowerCase()}`;
+      }
+
+      const payload = {
+        IN_TASKASSIGNID: task.TASKASSIGNMENT_ID,
+        IN_STATUSID: Number(data.status),
+        IN_ACTIONBY: 12,
+        IN_userid: user?.userId,
+        IN_COMMENT: data.remarks,
+        IN_FILENAME: fileName,
+        IN_FILEDOC: fileBase64,
+        IN_FILETYPE: fileType,
+      };
+      console.log(payload);
+
+      const response = await apiClient.post(
+        "/AOPT_TASK_PROGRESS_upd",
+        payload
+      );
+
+      console.log(response);
+
+      if (response.success && response.errorCode === 0) {
+        toast.success(response.message || "Task updated successfully");
+
+        // Reset all form fields and selected attachments
+        resetForm();
+
+        // Navigate after resetting
+        navigate("/task-management/pending-approvals");
+      } else {
+        toast.error(response.message || "Failed to update task");
+      }
+    } catch (error) {
+      console.error("Task Progress Error:", error);
+      toast.error(error.message || "Failed to submit task progress");
+    } finally {
+      setLoading(false);
     }
   };
 
+
+  if (!task) {
+    return (
+      <Layout title="Task Progress">
+        <div className="bg-white rounded-xl p-6 text-center">
+          <p className="text-sm text-slate-600">
+            Task information not found.
+          </p>
+
+          <button
+            onClick={() => navigate(-1)}
+            className="mt-3 text-blue-600 text-sm font-semibold"
+          >
+            Go Back
+          </button>
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout
-      title="Task Status"
+      title="Task Progress"
       breadcrumb={{
-        homeLink: "/dashboard",
-        homeText: "Task Status",
-        current: "Pending Approvals",
-        // If you need a 3rd level, you might need to adjust the Layout component
-        // to accept breadcrumb.parent
+        homeLink: "/Task/MyTask",
+        homeText: "My Task",
+        current: "Task Progress",
       }}
     >
       <div className="space-y-4 mx-auto">
-        {/* Top Context Bar (Custom Breadcrumb matching screenshot) */}
         <div className="flex items-center gap-1.5 text-[11.5px] font-medium text-slate-500">
-          <span>Task Status</span>
+          <span>Task Progress</span>
           <span className="text-slate-300">/</span>
+
           <span
             className="hover:text-blue-600 cursor-pointer transition-colors"
             onClick={() => navigate(-1)}
           >
-            Pending Approvals
+            My Tasks
           </span>
+
           <span className="text-slate-300">/</span>
+
           <span className="text-slate-800 font-semibold">
-            {MOCK_TASK_DETAILS.id}
+            {task.TASK_ID}
           </span>
         </div>
 
         <TaskSubmissionCard
-          taskId={MOCK_TASK_DETAILS.id}
-          taskTitle={MOCK_TASK_DETAILS.title}
+          taskId={task.TASK_ID}
+          taskTitle={task.TASK_TITLE}
         />
 
         <TakeActionForm
-          actionBy="Rajesh Kulkarni (you)"
+          actionBy={user?.username || "—"}
+          taskStatus={task.STATUSNAME}
           onSubmitAction={handleActionSubmit}
         />
       </div>

@@ -34,13 +34,13 @@ const TaskSubmissionCard = ({ taskId, taskTitle }) => {
       </div>
 
       <button
-        // onClick={() => navigate(-1)}
+        onClick={() => navigate(-1)}
         className="inline-flex items-center gap-2 px-3 py-2 rounded-lg
           text-[12px] font-semibold text-slate-600 bg-white border border-slate-200
           hover:bg-slate-50 hover:border-slate-300 transition-colors flex-shrink-0"
       >
         <ArrowLeft className="w-3.5 h-3.5" strokeWidth={2.2} />
-        Back to Pending Approvals
+        Back to My Tasks
       </button>
     </div>
   );

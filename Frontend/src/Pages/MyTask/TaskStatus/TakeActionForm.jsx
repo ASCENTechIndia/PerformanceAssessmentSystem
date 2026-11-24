@@ -1,6 +1,9 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Upload, X, FileText, Check } from "lucide-react";
+import { useLoader } from "../../../Context/LoaderContext";
+import { toast } from "sonner";
+import apiClient from "../../../../apiClient";
 
 const STATUS_OPTIONS = [
   "New",
@@ -12,6 +15,7 @@ const STATUS_OPTIONS = [
 
 const TakeActionForm = ({
   actionBy = "Rajesh Kulkarni (you)",
+  taskStatus,
   actionDate = new Date().toLocaleDateString("en-GB", {
     day: "2-digit",
     month: "short",
@@ -21,33 +25,120 @@ const TakeActionForm = ({
 }) => {
   const [files, setFiles] = useState([]);
   const fileInputRef = useRef(null);
+  const { setLoading } = useLoader();
+
 
   const {
     register,
     handleSubmit,
+    reset,
+    setValue,
     formState: { errors, isSubmitting },
-  } = useForm({
-    defaultValues: {
-      status: "In Progress",
+  } = useForm
+      ({
+        defaultValues: {
+          status: "",
+          remarks: "",
+        },
+        mode: "onBlur",
+      });
+
+  const [statusOptions, setStatusOptions] = useState([]);
+
+  const fetchStatusDropdown = async () => {
+    try {
+      setLoading(true);
+
+      const response = await apiClient.get("/getStatusDropdown");
+
+      if (response.success && Array.isArray(response.data)) {
+        const formatted = response.data.map((item) => ({
+          label: item.STATUSNAME,
+          value: item.STATUSID,
+        }));
+
+        setStatusOptions(formatted);
+      }
+    } catch (err) {
+      setStatusOptions([]);
+      console.error(err);
+      toast.error(
+        err.message || "Failed to fetch Status dropdown options"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchStatusDropdown();
+  }, []);
+
+
+  const resetForm = () => {
+    reset({
+      status: "",
       remarks: "",
-    },
-    mode: "onBlur",
-  });
+    });
+
+    setFiles([]);
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+
+
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 
   const handleFileChange = (e) => {
-    const selected = Array.from(e.target.files || []);
-    setFiles((prev) => [...prev, ...selected]);
-    if (fileInputRef.current) fileInputRef.current.value = "";
+    const selected = e.target.files?.[0];
+
+    if (!selected) return;
+
+    if (selected.size > MAX_FILE_SIZE) {
+      toast.error("File size must be less than or equal to 5 MB");
+      e.target.value = "";
+      return;
+    }
+
+    setFiles([selected]);
+
+    // Allow selecting the same file again
+    e.target.value = "";
   };
+
 
   const removeFile = (index) => {
     setFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
+
   const submit = async (data) => {
-    await new Promise((r) => setTimeout(r, 500));
-    onSubmitAction({ ...data, attachments: files });
+    await onSubmitAction(
+      {
+        ...data,
+        attachments: files,
+      },
+      resetForm
+    );
   };
+
+  useEffect(() => {
+    if (statusOptions.length) {
+      const obj = statusOptions.find(opt => opt.label === taskStatus);
+
+      const taskValue = obj.value;
+
+      setValue("status", taskValue, {
+        shouldDirty: true,
+        shouldValidate: true
+      })
+
+    }
+  }, [statusOptions, setValue]);
+
 
   return (
     <div className="bg-white rounded-xl ring-1 ring-blue-200 overflow-hidden">
@@ -58,7 +149,7 @@ const TakeActionForm = ({
 
       <form onSubmit={handleSubmit(submit)} className="p-5 space-y-5">
         {/* Top Row: Action By, Date, Status */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="pas-label">Action By</label>
             <input
@@ -69,7 +160,7 @@ const TakeActionForm = ({
             />
           </div>
 
-          <div>
+          {/* <div>
             <label className="pas-label">Action Date</label>
             <input
               type="text"
@@ -77,27 +168,34 @@ const TakeActionForm = ({
               value={actionDate}
               className="pas-input bg-slate-50 text-slate-500 cursor-not-allowed"
             />
-          </div>
+          </div> */}
 
           <div>
             <label htmlFor="status" className="pas-label">
               Current Status <span className="text-rose-500">*</span>
             </label>
+
             <select
               id="status"
               className="pas-input"
               aria-invalid={!!errors.status}
-              {...register("status", { required: "Status is required" })}
+              {...register("status", {
+                required: "Status is required",
+              })}
             >
-              {STATUS_OPTIONS.map((opt) => (
-                <option key={opt} value={opt}>
-                  {opt}
+              <option value="">Select Status</option>
+
+              {statusOptions.map((opt) => (
+                <option key={opt.value} value={String(opt.value)}>
+                  {opt.label}
                 </option>
               ))}
             </select>
+
             {errors.status && (
               <p className="pas-error">{errors.status.message}</p>
             )}
+
           </div>
         </div>
 
@@ -140,7 +238,7 @@ const TakeActionForm = ({
               or <span className="text-blue-600 font-semibold">browse</span>
             </p>
             <p className="text-[10px] text-slate-400 ml-2">
-              PDF, JPG, PNG, XLSX up to 10 MB each
+              PDF, JPG, PNG, XLSX up to 5 MB each
             </p>
           </div>
 
