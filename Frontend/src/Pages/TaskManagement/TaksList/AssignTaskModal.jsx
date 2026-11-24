@@ -127,14 +127,14 @@ const AssignTaskModal = ({
   }, [open, task, reset]);
 
   /* Auto-calculate Expected Completion when Expected Start changes */
-  useEffect(() => {
-    if (expectedStart && task?.expectedDuration) {
-      const start = new Date(expectedStart);
-      const end = new Date(start);
-      end.setDate(end.getDate() + Number(task.expectedDuration));
-      setValue("expectedCompletion", end.toISOString().split("T")[0]);
-    }
-  }, [expectedStart, task?.expectedDuration, setValue]);
+  // useEffect(() => {
+  //   if (expectedStart && task?.expectedDuration) {
+  //     const start = new Date(expectedStart);
+  //     const end = new Date(start);
+  //     end.setDate(end.getDate() + Number(task.expectedDuration));
+  //     setValue("expectedCompletion", end.toISOString().split("T")[0]);
+  //   }
+  // }, [expectedStart, task?.expectedDuration, setValue]);
 
   const today = new Date().toISOString().split("T")[0];
 
