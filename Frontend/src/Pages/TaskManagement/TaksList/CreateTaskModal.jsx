@@ -199,9 +199,14 @@ const CreateTaskModal = ({
               <ClipboardList className="w-5 h-5" strokeWidth={2.2} />
             </div>
             <div>
-              <p className="text-[14.5px] font-bold text-slate-800">
-                Create task{" "}
-                <span className="text-[11px] font-medium text-slate-400">
+              <p className="font-bold text-slate-800" style={{
+                fontSize: "20px"
+              }}>
+                Create Task{" "}
+                <span className="font-medium text-slate-400" style={{
+                  fontSize: "15px",
+                  marginLeft: 2
+                }}>
                   Step 1 of 2 · Create task
                 </span>
               </p>
@@ -276,7 +281,7 @@ const CreateTaskModal = ({
               {...register("description", {
                 required: "Description is required",
                 minLength: { value: 20, message: "At least 20 characters" },
-                maxLength: { value: 1000, message: "Description should be of 1000 characters"}
+                maxLength: { value: 1000, message: "Description should be of 1000 characters" }
               })}
             />
             {errors.description && (
