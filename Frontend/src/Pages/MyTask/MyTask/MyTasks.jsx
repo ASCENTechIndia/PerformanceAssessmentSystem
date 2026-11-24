@@ -1,195 +1,187 @@
-import { useState, useMemo } from "react";
+
+import { useState, useMemo, useEffect } from "react";
 import { toast } from "sonner";
 import Layout from "../../../Components/Layout";
 import MyTaskStats from "./MyTaskStats";
 import MyTaskFilters from "./MyTaskFilters";
 import MyTaskTabs from "./MyTaskTabs";
 import MyTaskTable from "./MyTaskTable";
-
-/* ---------- Dummy data ---------- */
-const MOCK_TASKS = [
-  {
-    id: "AST-001",
-    title: "Inspect drainage line, Ward 14",
-    assignedBy: "Rajesh Kulkarni",
-    assignedOn: "2026-11-12",
-    dueDate: "2026-11-15",
-    taskType: "Inspection",
-    priority: "High",
-    status: "New",
-  },
-  {
-    id: "AST-002",
-    title: "Verify vendor compliance docs",
-    assignedBy: "Shri Kumar",
-    assignedOn: "2026-11-10",
-    dueDate: "2026-11-20",
-    taskType: "Audit",
-    priority: "Medium",
-    status: "In Progress",
-  },
-  {
-    id: "AST-003",
-    title: "Update safety checklist",
-    assignedBy: "Sneha Iyer",
-    assignedOn: "2026-11-08",
-    dueDate: "2026-11-13",
-    taskType: "Review",
-    priority: "Critical",
-    status: "Rework",
-  },
-  {
-    id: "AST-004",
-    title: "Fire extinguisher inspection",
-    assignedBy: "Rajesh Kulkarni",
-    assignedOn: "2026-11-01",
-    dueDate: "2026-11-10",
-    taskType: "Inspection",
-    priority: "High",
-    status: "Submitted",
-  },
-  {
-    id: "AST-005",
-    title: "Monthly attendance report",
-    assignedBy: "Shri Kumar",
-    assignedOn: "2026-10-25",
-    dueDate: "2026-11-01",
-    taskType: "Report",
-    priority: "Low",
-    status: "Completed",
-  },
-  {
-    id: "AST-006",
-    title: "Water pump maintenance check",
-    assignedBy: "Sneha Iyer",
-    assignedOn: "2026-11-11",
-    dueDate: "2026-11-18",
-    taskType: "Inspection",
-    priority: "Medium",
-    status: "New",
-  },
-  {
-    id: "AST-007",
-    title: "Draft quarterly budget",
-    assignedBy: "Rajesh Kulkarni",
-    assignedOn: "2026-11-05",
-    dueDate: "2026-11-25",
-    taskType: "Report",
-    priority: "High",
-    status: "In Progress",
-  },
-  {
-    id: "AST-008",
-    title: "Site visit - Construction Site 12",
-    assignedBy: "Shri Kumar",
-    assignedOn: "2026-11-09",
-    dueDate: "2026-11-12",
-    taskType: "Inspection",
-    priority: "Critical",
-    status: "Rework",
-  },
-  {
-    id: "AST-009",
-    title: "Audit HR onboarding process",
-    assignedBy: "Sneha Iyer",
-    assignedOn: "2026-10-30",
-    dueDate: "2026-11-06",
-    taskType: "Audit",
-    priority: "Medium",
-    status: "Completed",
-  },
-  {
-    id: "AST-010",
-    title: "Review vendor contracts",
-    assignedBy: "Rajesh Kulkarni",
-    assignedOn: "2026-11-12",
-    dueDate: "2026-11-19",
-    taskType: "Review",
-    priority: "Low",
-    status: "Submitted",
-  },
-];
+import { useAuth } from "../../../Context/AuthContext";
+import { useLoader } from "../../../Context/LoaderContext";
+import apiClient from "../../../../apiClient";
+import ViewTaskModal from "./ViewTaskModal";
+import { useNavigate } from "react-router-dom";
 
 const EMPTY_FILTERS = {
   search: "",
-  taskType: "",
+  status: "",
   priority: "",
-  dueDate: "",
 };
 
 const MyTasks = () => {
-  const [tasks] = useState(MOCK_TASKS);
+  const { user } = useAuth();
+  const { setLoading } = useLoader();
+  const navigate = useNavigate();
+
+  const ulbId = user?.ulbId;
+  const userId = user?.userId;
+  const deptId = user?.deptId;
+
+  const [tasks, setTasks] = useState([]);
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [activeTab, setActiveTab] = useState("open");
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [showViewModal, setShowViewModal] = useState(false);
 
-  /* Filter Logic */
+  // Fetch tasks
+  const fetchMyTasks = async () => {
+    try {
+      setLoading(true);
+
+      const response = await apiClient.get(
+        `/getMyTaskList?empId=90033`
+      );
+
+      if (response.success && Array.isArray(response.data)) {
+        setTasks(response.data);
+      } else {
+        setTasks([]);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message || "Failed to fetch tasks");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Filter Logic
   const filteredByFilters = useMemo(() => {
     const q = filters.search.trim().toLowerCase();
-    return tasks.filter((t) => {
+
+    return tasks.filter((task) => {
       const matchSearch =
         !q ||
-        t.id.toLowerCase().includes(q) ||
-        t.title.toLowerCase().includes(q);
-      const matchType = !filters.taskType || t.taskType === filters.taskType;
+        String(task.TASKASSIGNMENT_ID ?? "").toLowerCase().includes(q) ||
+        String(task.TASK_TITLE ?? "").toLowerCase().includes(q);
+
+      const matchStatus =
+        !filters.status ||
+        String(task.STATUSNAME) === String(filters.status);
+
       const matchPriority =
-        !filters.priority || t.priority === filters.priority;
+        !filters.priority ||
+        String(task.PRIORITY ?? "").toLowerCase() ===
+        filters.priority.toLowerCase();
 
-      // Basic Due Date mock logic
-      const matchDueDate = !filters.dueDate || true;
-
-      return matchSearch && matchType && matchPriority && matchDueDate;
+      return matchSearch && matchStatus && matchPriority;
     });
   }, [tasks, filters]);
 
-  /* Tab Logic */
+  // Tab Logic
   const filteredByTab = useMemo(() => {
     switch (activeTab) {
       case "open":
-        return filteredByFilters.filter((t) =>
-          ["New", "In Progress", "Rework"].includes(t.status),
+        return filteredByFilters.filter((task) =>
+          ["New", "In Progress", "Rework", "Assigned"].includes(
+            task.STATUSNAME
+          )
         );
+
       case "new":
-        return filteredByFilters.filter((t) => t.status === "New");
+        return filteredByFilters.filter(
+          (task) => task.STATUSNAME === "New"
+        );
+
       case "in-progress":
-        return filteredByFilters.filter((t) => t.status === "In Progress");
+        return filteredByFilters.filter(
+          (task) => task.STATUSNAME === "In Progress"
+        );
+
       case "rework":
-        return filteredByFilters.filter((t) => t.status === "Rework");
+        return filteredByFilters.filter(
+          (task) => task.STATUSNAME === "Rework"
+        );
+
       case "submitted":
-        return filteredByFilters.filter((t) => t.status === "Submitted");
+        return filteredByFilters.filter(
+          (task) => task.STATUSNAME === "Submitted"
+        );
+
       case "completed":
-        return filteredByFilters.filter((t) => t.status === "Completed");
+        return filteredByFilters.filter(
+          (task) => task.STATUSNAME === "Completed"
+        );
+
       default:
         return filteredByFilters;
     }
   }, [filteredByFilters, activeTab]);
 
-  /* Counts for Tabs (Based on filters) */
+  // Counts for Tabs
   const tabCounts = useMemo(
     () => ({
-      open: filteredByFilters.filter((t) =>
-        ["New", "In Progress", "Rework"].includes(t.status),
+      open: filteredByFilters.filter((task) =>
+        ["New", "In Progress", "Rework", "Assigned"].includes(
+          task.STATUSNAME
+        )
       ).length,
-      new: filteredByFilters.filter((t) => t.status === "New").length,
-      "in-progress": filteredByFilters.filter((t) => t.status === "In Progress")
-        .length,
-      rework: filteredByFilters.filter((t) => t.status === "Rework").length,
-      submitted: filteredByFilters.filter((t) => t.status === "Submitted")
-        .length,
-      completed: filteredByFilters.filter((t) => t.status === "Completed")
-        .length,
+
+      new: filteredByFilters.filter(
+        (task) => task.STATUSNAME === "New"
+      ).length,
+
+      "in-progress": filteredByFilters.filter(
+        (task) => task.STATUSNAME === "In Progress"
+      ).length,
+
+      rework: filteredByFilters.filter(
+        (task) => task.STATUSNAME === "Rework"
+      ).length,
+
+      submitted: filteredByFilters.filter(
+        (task) => task.STATUSNAME === "Submitted"
+      ).length,
+
+      completed: filteredByFilters.filter(
+        (task) => task.STATUSNAME === "Completed"
+      ).length,
     }),
-    [filteredByFilters],
+    [filteredByFilters]
   );
 
-  const setFilter = (key, value) =>
-    setFilters((prev) => ({ ...prev, [key]: value }));
+  const setFilter = (key, value) => {
+    setFilters((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
   const clearFilters = () => setFilters(EMPTY_FILTERS);
 
   const handleAction = (actionType, task) => {
-    toast.info(`${actionType} action triggered for ${task.id}`);
+    if (actionType === "View") {
+      setSelectedTask(task);
+      setShowViewModal(true);
+    }
+
+    if (actionType === "Edit") {
+      navigate("/Task/task-status", {
+        state: {
+          task
+        }
+      })
+
+    }
   };
 
-  const hasActiveFilters = Object.values(filters).some((v) => v !== "");
+  const hasActiveFilters = Object.values(filters).some(
+    (value) => value !== ""
+  );
+
+  useEffect(() => {
+    fetchMyTasks();
+  }, []);
 
   return (
     <Layout
@@ -215,7 +207,11 @@ const MyTasks = () => {
             activeTab={activeTab}
             onChange={setActiveTab}
           />
-          <MyTaskTable tasks={filteredByTab} onAction={handleAction} />
+
+          <MyTaskTable
+            tasks={filteredByTab}
+            onAction={handleAction}
+          />
         </div>
 
         <p className="text-[11.5px] text-slate-500">
@@ -225,10 +221,22 @@ const MyTasks = () => {
           </span>{" "}
           of {tasks.length} tasks
           {hasActiveFilters && (
-            <span className="ml-1 text-slate-400">· filtered</span>
+            <span className="ml-1 text-slate-400">
+              · filtered
+            </span>
           )}
         </p>
       </div>
+
+      {showViewModal && selectedTask && (
+        <ViewTaskModal
+          task={selectedTask}
+          onClose={() => {
+            setShowViewModal(false);
+            setSelectedTask(null);
+          }}
+        />
+      )}
     </Layout>
   );
 };
