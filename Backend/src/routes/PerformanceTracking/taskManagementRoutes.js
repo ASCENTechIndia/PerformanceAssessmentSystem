@@ -12,11 +12,13 @@ const {
   getEmpDropdown,
   getStatusDropdown,
   getMyTaskList,
+  AOPT_TASK_PROGRESS_upd,
 } = require("../../controllers/PerformanceTracking/taskManagementController");
 const {
   aoptTaskInsUpdSchema,
   aoptTaskStatusInsUpdSchema,
   aoptTaskAssignmentInsUpdSchema,
+  aoptTaskProgressUpdSchema,
 } = require("../../validators/schemas/taskManagementSchema");
 const { validate } = require("../../validators/validate");
 
@@ -47,4 +49,9 @@ router.post(
 router.get("/getEmpDropdown", getEmpDropdown);
 router.get("/getStatusDropdown", getStatusDropdown);
 router.get("/getMyTaskList", getMyTaskList);
+router.post(
+  "/AOPT_TASK_PROGRESS_upd",
+  validate(aoptTaskProgressUpdSchema),
+  AOPT_TASK_PROGRESS_upd
+);
 module.exports = router;

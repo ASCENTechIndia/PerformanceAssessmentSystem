@@ -273,3 +273,50 @@ export const aoptTaskAssignmentInsUpdSchema = z.object({
     .trim()
     .min(1, "UserId is required"),
 });
+
+export const aoptTaskProgressUpdSchema = z.object({
+  IN_TASKASSIGNID: z
+    .number({
+      required_error: "Task Assignment ID is required",
+      invalid_type_error: "Task Assignment ID must be a number",
+    })
+    .int("Task Assignment ID must be an integer"),
+
+  IN_STATUSID: z
+    .number({
+      required_error: "Status ID is required",
+      invalid_type_error: "Status ID must be a number",
+    })
+    .int("Status ID must be an integer"),
+
+  IN_ACTIONBY: z
+    .number({
+      required_error: "Action By is required",
+      invalid_type_error: "Action By must be a number",
+    })
+    .int("Action By must be an integer"),
+
+  IN_userid: z
+    .string({
+      required_error: "UserId is required",
+      invalid_type_error: "UserId must be a string",
+    })
+    .trim()
+    .min(1, "UserId is required"),
+
+  IN_COMMENT: z
+    .string({
+      required_error: "Comment is required",
+      invalid_type_error: "Comment must be a string",
+    })
+    .trim()
+    .min(1, "Comment is required"),
+
+  // Optional attachments
+  IN_FILENAME: z.string().nullable().optional(),
+  
+  // Base64 string can be very long, so we don't restrict length here
+  IN_FILEDOC: z.string().nullable().optional(),
+  
+  IN_FILETYPE: z.string().nullable().optional(),
+});
