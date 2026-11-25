@@ -23,6 +23,9 @@ const mapApiRow = (row) => ({
   assignedTo: null,
   hasSubTask: false,
   taskTypeCode: row.TASKTYPE || "", // <--- MAPPED TASKTYPE HERE
+  bgColor: row.BGCOLOR || "",
+  foreColor: row.FORECOLOR || "",
+  statusName: row.STATUSNAME || ""
 });
 
 const EMPTY_FILTERS = {
@@ -64,6 +67,9 @@ const TaskList = () => {
   const [activeTab, setActiveTab] = useState("my-task");
   const [assigningTask, setAssigningTask] = useState(null);
   const [createOpen, setCreateOpen] = useState(false);
+  const [statusOptions, setStatusOptions] = useState([]);
+
+
 
   const today = new Date().toISOString().split("T")[0];
 
@@ -75,7 +81,6 @@ const TaskList = () => {
     setLoading(true);
     try {
       const res = await apiClient.get(`/getTaskList?userId=${userId}`);
-
       if (res?.success && Array.isArray(res.data)) {
         const mapped = res.data.map(mapApiRow);
         setTasks(mapped);
@@ -107,7 +112,7 @@ const TaskList = () => {
       const matchParent =
         !filters.parentTask || t.parent === filters.parentTask;
       const matchStatus =
-        !filters.status || (filters.status === "Active" ? t.active : !t.active);
+        !filters.status || (filters.status === t.statusName);
       return matchSearch && matchType && matchParent && matchStatus;
     });
   }, [tasks, filters]);
@@ -220,6 +225,35 @@ const TaskList = () => {
     }
   };
 
+  const fetchStatusDropdown = async () => {
+    try {
+      setLoading(true);
+
+      const response = await apiClient.get("/getStatusDropdown");
+
+      if (response.success && Array.isArray(response.data)) {
+        const formatted = response.data.map((item) => ({
+          label: item.STATUSNAME,
+          value: item.STATUSNAME,
+        }));
+
+        setStatusOptions(formatted);
+      }
+    } catch (err) {
+      setStatusOptions([]);
+      console.error(err);
+      toast.error(
+        err.message || "Failed to fetch Status dropdown options"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchStatusDropdown();
+  }, []);
+
   const taskTypeOptions = useMemo(
     () => [...new Set(tasks.map((t) => t.taskType).filter(Boolean))].sort(),
     [tasks],
@@ -252,6 +286,7 @@ const TaskList = () => {
           onClear={clearFilters}
           taskTypes={taskTypeOptions}
           parentTasks={parentTaskOptions}
+          statusOptions={statusOptions}
           onCreate={() => setCreateOpen(true)}
         />
 

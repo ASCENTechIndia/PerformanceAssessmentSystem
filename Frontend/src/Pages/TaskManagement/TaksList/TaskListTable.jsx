@@ -128,33 +128,32 @@ const TaskListTable = ({ tasks, onAssign }) => {
                   <span
                     className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full
                     text-[10.5px] font-semibold ring-1
-                    ${
-                      task.active
-                        ? "bg-blue-50 text-blue-700 ring-blue-200"
-                        : "bg-slate-100 text-slate-500 ring-slate-200"
-                    }`}
+                    bg-[${task?.bgColor}] text-[${task?.foreColor}]
+                    `}
                   >
-                    <span
+                    {/* <span
                       className={`w-1.5 h-1.5 rounded-full ${task.active ? "bg-blue-500" : "bg-slate-400"}`}
-                    />
-                    {task.active ? "Active" : "Inactive"}
+                    /> */}
+                    {task.statusName}
                   </span>
                 </td>
 
                 {/* Action */}
                 <td className="px-3 py-3 text-right">
-                  <button
-                    onClick={() => onAssign(task)}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg
+
+
+                  <div className="flex items-center justify-end gap-2">
+                    <button
+                      onClick={() => onAssign(task)}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg
                       text-[13px] font-semibold text-white bg-blue-500
                       hover:bg-blue-600 active:scale-[0.97]
                       transition-all duration-150"
-                  >
-                    <UserPlus className="w-3 h-3" strokeWidth={2.4} />
-                    Assign
-                  </button>
+                    >
+                      <UserPlus className="w-3 h-3" strokeWidth={2.4} />
+                      Assign
+                    </button>
 
-                  <div className="flex items-center justify-end gap-2">
                     <button
                       onClick={() =>
                         navigate("/Task/task-status", { state: { task } })

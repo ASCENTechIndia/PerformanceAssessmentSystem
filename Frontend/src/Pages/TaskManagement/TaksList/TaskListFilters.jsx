@@ -6,6 +6,7 @@ const TaskListFilters = ({
   onClear,
   taskTypes,
   parentTasks,
+  statusOptions,
   onCreate,
 }) => {
   const hasActive = Object.values(filters).some((v) => v !== "");
@@ -57,7 +58,7 @@ const TaskListFilters = ({
         </div>
 
         {/* Task Type */}
-        <select
+        {/* <select
           value={filters.taskType}
           onChange={(e) => onFilterChange("taskType", e.target.value)}
           className="pas-input"
@@ -68,7 +69,7 @@ const TaskListFilters = ({
               {t}
             </option>
           ))}
-        </select>
+        </select> */}
 
         {/* Parent Task */}
         <select
@@ -90,9 +91,12 @@ const TaskListFilters = ({
           onChange={(e) => onFilterChange("status", e.target.value)}
           className="pas-input"
         >
-          <option value="">All statuses</option>
-          <option value="Active">Active</option>
-          <option value="Inactive">Inactive</option>
+          <option value="">All Statuses</option>
+          {statusOptions?.map((p) => (
+            <option key={p.value} value={p.value}>
+              {p.label}
+            </option>
+          ))}
         </select>
 
         {/* Create Task */}
