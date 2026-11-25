@@ -257,7 +257,7 @@ async function getTaskList(req, res) {
     }
 
     const query = `SELECT a.task_id, a.task_title, a.excepcteddays, a.parentid, a.isactive,
-       a.insdt, a.tasktype
+       a.insdt, a.tasktype, a.statusname, a.statusid, a.bgcolor, a.forecolor
       FROM view_task_list a where insby=:userId`;
 
     const result = await connection.execute(
