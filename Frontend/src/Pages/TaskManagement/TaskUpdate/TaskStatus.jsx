@@ -137,10 +137,12 @@ const TaskStatus = () => {
         IN_userid: String(userId),
         IN_COMMENT: data.remarks,
         IN_FILENAME: fileName,
-        IN_DOC: fileBase64,
+        IN_FILEDOC: fileBase64,
         IN_FILETYPE: fileType,
       };
 
+      console.log("value L:", payload)
+      // return
       const response = await apiClient.post("/AOPT_TASK_PROGRESS_upd", payload);
 
       if (

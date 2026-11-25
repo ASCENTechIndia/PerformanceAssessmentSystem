@@ -23,6 +23,7 @@ import FrmStatusConfig from "./Pages/Master/TaskStatusConfig/FrmStatusConfig.jsx
 import EmployeeMappingList from "./Pages/Master/HierarchyMapping/EmployeeMappingList.jsx";
 import TaskStatusList from "./Pages/TaskManagement/TaskStatus/TaskStatusList.jsx";
 import TaskStatus from "./Pages/TaskManagement/TaskUpdate/TaskStatus.jsx";
+import TaskStatus2 from "./Pages/TaskManagement/TaskStatus/TaskStatus2.jsx";
 
 function App() {
   const hostname = window.location.hostname;
@@ -56,7 +57,7 @@ function App() {
 
                   {/* Task Management */}
                   <Route path="/task-management/tasks" element={<TaskList />} />
-                  <Route path="/task-management/task-status" element={<TaskStatusList />} />
+                  <Route path="/task-management/task-status" element={<TaskStatus2 />} />
                   <Route path="/Task/task-status" element={<TaskStatus />} />
                   <Route path="/admin/userAccess" element={<UserAccess />} />
                   <Route path="/Task/AssignTask" element={<AssignTask />} />

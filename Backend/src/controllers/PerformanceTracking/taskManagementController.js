@@ -262,7 +262,7 @@ async function getTaskList(req, res) {
 
     const result = await connection.execute(
       query,
-      {userId: userId},
+      { userId: userId },
       { outFormat: oracledb.OUT_FORMAT_OBJECT },
     );
 
@@ -765,6 +765,37 @@ async function getAttachmentDetails(req, res) {
   }
 }
 
+async function getTaskAssignList(req, res) {
+  let connection;
+  try {
+    connection = await getConnection();
+
+    const query = `SELECT * FROM view_taskassigned_list`;
+
+    const result = await connection.execute(
+      query,
+      {},
+      { outFormat: oracledb.OUT_FORMAT_OBJECT },
+    );
+
+    res.json({
+      success: true,
+      data: result.rows || [],
+    });
+  } catch (error) {
+    console.error("getTaskAssignList error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error("Error closing DB connection:", err);
+      }
+    }
+  }
+}
+
 module.exports = {
   getParentTaskDropdown,
   getTaskTypeDropdown,
@@ -781,4 +812,5 @@ module.exports = {
   AOPT_TASK_PROGRESS_upd,
   getTaskStatusList,
   getAttachmentDetails,
+  getTaskAssignList,
 };
