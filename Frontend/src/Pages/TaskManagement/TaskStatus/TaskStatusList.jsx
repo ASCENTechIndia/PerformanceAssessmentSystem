@@ -16,7 +16,7 @@ const TaskStatusList = () => {
     const fetchTaskStatusList = async () => {
       setLoading(true);
       try {
-        const res = await apiClient.get("/getTaskStatusList?taskAssignedId=41");
+        const res = await apiClient.get("/getTaskStatusList?taskAssignedId=91");
         if (res.success && res.data) {
           setListData(res.data);
         }

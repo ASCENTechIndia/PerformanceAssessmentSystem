@@ -19,10 +19,10 @@ import TaskTypeMaster from "./Pages/Master/TaskTypeMaster/TaskTypeMaster.jsx";
 import FrmAddTaskType from "./Pages/Master/TaskTypeMaster/FrmAddTaskType.jsx";
 import TaskList from "./Pages/TaskManagement/TaksList/TaskList.jsx";
 import MyTasks from "./Pages/MyTask/MyTask/MyTasks.jsx";
-import TaskStatus from "./Pages/MyTask/TaskStatus/TaskStatus.jsx";
 import FrmStatusConfig from "./Pages/Master/TaskStatusConfig/FrmStatusConfig.jsx";
 import EmployeeMappingList from "./Pages/Master/HierarchyMapping/EmployeeMappingList.jsx";
 import TaskStatusList from "./Pages/TaskManagement/TaskStatus/TaskStatusList.jsx";
+import TaskStatus from "./Pages/TaskManagement/TaskUpdate/TaskStatus.jsx";
 
 function App() {
   const hostname = window.location.hostname;
@@ -53,11 +53,11 @@ function App() {
 
                   {/* My Task */}
                   <Route path="/Task/MyTask" element={<MyTasks />} />
-                  <Route path="/Task/task-status" element={<TaskStatus />} />
 
                   {/* Task Management */}
                   <Route path="/task-management/tasks" element={<TaskList />} />
                   <Route path="/task-management/task-status" element={<TaskStatusList />} />
+                  <Route path="/Task/task-status" element={<TaskStatus />} />
                   <Route path="/admin/userAccess" element={<UserAccess />} />
                   <Route path="/Task/AssignTask" element={<AssignTask />} />
                   <Route path="/Task/TeamTasks" element={<TeamTasks />} />

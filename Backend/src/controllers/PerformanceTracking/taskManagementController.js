@@ -251,14 +251,18 @@ async function getTaskList(req, res) {
   let connection;
   try {
     connection = await getConnection();
+    const userId = req.query.userId;
+    if (!userId) {
+      return res.json({ success: false, errorMessage: "User Id is required" });
+    }
 
     const query = `SELECT a.task_id, a.task_title, a.excepcteddays, a.parentid, a.isactive,
-       a.insdt
-  FROM view_task_list a`;
+       a.insdt, a.tasktype
+      FROM view_task_list a where insby=:userId`;
 
     const result = await connection.execute(
       query,
-      {},
+      {userId: userId},
       { outFormat: oracledb.OUT_FORMAT_OBJECT },
     );
 

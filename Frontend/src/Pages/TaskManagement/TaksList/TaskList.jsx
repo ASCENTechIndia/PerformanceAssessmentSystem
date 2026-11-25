@@ -16,12 +16,13 @@ const mapApiRow = (row) => ({
   rawId: Number(row.TASK_ID),
   title: row.TASK_TITLE || "",
   expectedDuration: Number(row.EXCEPCTEDDAYS ?? 0),
-  parent: row.PARENTID || "", 
+  parent: row.PARENTID || "",
   createdAt: row.INSDT,
   active: String(row.ISACTIVE).toUpperCase() === "Y",
   taskType: null,
   assignedTo: null,
   hasSubTask: false,
+  taskTypeCode: row.TASKTYPE || "", // <--- MAPPED TASKTYPE HERE
 });
 
 const EMPTY_FILTERS = {
@@ -60,16 +61,20 @@ const TaskList = () => {
 
   const [tasks, setTasks] = useState([]);
   const [filters, setFilters] = useState(EMPTY_FILTERS);
-  const [activeTab, setActiveTab] = useState("all");
+  const [activeTab, setActiveTab] = useState("my-task");
   const [assigningTask, setAssigningTask] = useState(null);
   const [createOpen, setCreateOpen] = useState(false);
 
   const today = new Date().toISOString().split("T")[0];
 
   const fetchTasks = async () => {
+    if (!userId) {
+      alert("User Id is not set");
+      return;
+    }
     setLoading(true);
     try {
-      const res = await apiClient.get("/getTaskList");
+      const res = await apiClient.get(`/getTaskList?userId=${userId}`);
 
       if (res?.success && Array.isArray(res.data)) {
         const mapped = res.data.map(mapApiRow);
@@ -107,30 +112,24 @@ const TaskList = () => {
     });
   }, [tasks, filters]);
 
+  // --- UPDATED TAB FILTER LOGIC ---
   const filteredByTab = useMemo(() => {
     switch (activeTab) {
       case "my-task":
-        
-        return filteredByFilters.filter(
-          (t) => !t.parent || t.parent === "0" || t.parent === 0,
-        );
+        return filteredByFilters.filter((t) => t.taskTypeCode !== "C");
       case "assigned-by-me":
-        return filteredByFilters.filter(
-          (t) => t.parent && t.parent !== "0" && t.parent !== 0,
-        );
+        return filteredByFilters.filter((t) => t.taskTypeCode !== "A");
       default:
         return filteredByFilters;
     }
   }, [filteredByFilters, activeTab]);
 
+  // --- UPDATED TAB COUNTS LOGIC ---
   const tabCounts = useMemo(
     () => ({
-      "my-task": filteredByFilters.filter(
-        (t) => !t.parent || t.parent === "0" || t.parent === 0,
-      ).length,
-      "assigned-by-me": filteredByFilters.filter(
-        (t) => t.parent && t.parent !== "0" && t.parent !== 0,
-      ).length,
+      "my-task": filteredByFilters.filter((t) => t.taskTypeCode !== "C").length,
+      "assigned-by-me": filteredByFilters.filter((t) => t.taskTypeCode !== "A")
+        .length,
     }),
     [filteredByFilters],
   );
@@ -209,7 +208,7 @@ const TaskList = () => {
       if (response.success && response.errorCode === 9999) {
         toast.success(response.errorMessage || "Task assigned");
         setAssigningTask(null);
-        fetchTasks(); // Refresh list
+        fetchTasks();
       } else {
         toast.error(response.errorMessage || "Failed to assign task");
       }
@@ -291,7 +290,7 @@ const TaskList = () => {
         open={!!assigningTask}
         onClose={() => setAssigningTask(null)}
         task={assigningTask}
-        onAssign={handleAssignSubmit} // Uncommented and attached
+        onAssign={handleAssignSubmit}
       />
     </Layout>
   );
