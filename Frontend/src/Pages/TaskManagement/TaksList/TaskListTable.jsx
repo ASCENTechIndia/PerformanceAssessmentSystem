@@ -1,4 +1,5 @@
-import { Inbox, UserPlus } from "lucide-react";
+import { Inbox, Pencil, UserPlus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const formatDate = (iso) => {
   if (!iso) return "—";
@@ -10,6 +11,7 @@ const formatDate = (iso) => {
 };
 
 const TaskListTable = ({ tasks, onAssign }) => {
+  const navigate = useNavigate();
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-left">
@@ -97,7 +99,9 @@ const TaskListTable = ({ tasks, onAssign }) => {
                       No
                     </span>
                   ) : (
-                    <span className="text-[11px] text-slate-400 italic">Yes</span>
+                    <span className="text-[11px] text-slate-400 italic">
+                      Yes
+                    </span>
                   )}
                 </td>
 
@@ -149,6 +153,17 @@ const TaskListTable = ({ tasks, onAssign }) => {
                     <UserPlus className="w-3 h-3" strokeWidth={2.4} />
                     Assign
                   </button>
+
+                  <div className="flex items-center justify-end gap-2">
+                    <button
+                      onClick={() =>
+                        navigate("/Task/task-status", { state: { task } })
+                      }
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold text-indigo-700 bg-indigo-50 ring-1 ring-indigo-200 hover:bg-indigo-100 transition-colors"
+                    >
+                      <Pencil className="w-3 h-3" />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))

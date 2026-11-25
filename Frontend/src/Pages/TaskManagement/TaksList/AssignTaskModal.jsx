@@ -6,25 +6,12 @@ import { toast } from "sonner";
 import { useAuth } from "../../../Context/AuthContext";
 import { useLoader } from "../../../Context/LoaderContext";
 
-/* ---------- Dummy options (replace with API data) ---------- */
-const DEPARTMENTS = [
-  { value: "engineering", label: "Engineering" },
-  { value: "accounts", label: "Accounts" },
-  { value: "hr", label: "Human Resources" },
-  { value: "sanitation", label: "Sanitation" },
-];
-
 const EMPLOYEES = [
   { id: "e1", name: "Sneha Patil", department: "engineering" },
   { id: "e2", name: "Ravi Sharma", department: "engineering" },
   { id: "e3", name: "Priya Menon", department: "accounts" },
   { id: "e4", name: "Amit Patel", department: "accounts" },
 ];
-
-const STATUS = [
-  { value: "A", label: "Assigned" },
-  { value: "NA", label: "Not Assigned" }
-]
 
 const PRIORITIES = ["Low", "Medium", "High", "Critical"];
 
@@ -43,21 +30,15 @@ function formatDateToAPI(dateString) {
     "07": "Jul",
     "08": "Aug",
     "09": "Sep",
-    "10": "Oct",
-    "11": "Nov",
-    "12": "Dec"
+    10: "Oct",
+    11: "Nov",
+    12: "Dec",
   };
 
   return `${day}-${monthMap[month]}-${year}`;
-} 
+}
 
-const AssignTaskModal = ({
-  open,
-  onClose,
-  task,
-  onAssign,
-  createdBy = "Rajesh Kulkarni",
-}) => {
+const AssignTaskModal = ({ open, onClose, task, onAssign, createdBy = "" }) => {
   const { user } = useAuth();
   const { setLoading } = useLoader();
   const userId = user?.userId;
@@ -98,19 +79,6 @@ const AssignTaskModal = ({
   const [statusOptions, setStatusOptions] = useState([]);
   const [priorityOptions, setPriorityOptions] = useState([]);
 
-  /* Filter employees based on selected department */
-  const filteredEmployees = useMemo(
-    () =>
-      EMPLOYEES.filter(
-        (emp) => !selectedDepartment || emp.department === selectedDepartment,
-      ),
-    [selectedDepartment],
-  );
-
-  const selectedEmployee = filteredEmployees.find(
-    (e) => e.id === selectedEmployeeId,
-  );
-
   /* Reset form on open */
   useEffect(() => {
     if (open && task) {
@@ -142,12 +110,18 @@ const AssignTaskModal = ({
     try {
       setLoading(true);
 
-      const response = await apiClient.get("/getEmpDropdown?reportingId=90043&ulbId=2&deptId=287");
+      const response = await apiClient.get(
+        "/getEmpDropdown?reportingId=90038&ulbId=2&deptId=287",
+      );
 
-      if (response.success && Array.isArray(response.data) && response.data.length > 0) {
-        const formatted = response.data.map(item => ({
+      if (
+        response.success &&
+        Array.isArray(response.data) &&
+        response.data.length > 0
+      ) {
+        const formatted = response.data.map((item) => ({
           label: item.EMPLOYEE_NAME,
-          value: item.EMPLOYEE_ID
+          value: item.EMPLOYEE_ID,
         }));
 
         setAssignedToOptions(formatted);
@@ -157,11 +131,13 @@ const AssignTaskModal = ({
     } catch (err) {
       setAssignedToOptions([]);
       console.error(err);
-      toast.error(err.message || "Failed to fetch Assigned To employee dropdown");
+      toast.error(
+        err.message || "Failed to fetch Assigned To employee dropdown",
+      );
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   const fetchStatusDropdown = async () => {
     try {
@@ -169,11 +145,15 @@ const AssignTaskModal = ({
 
       const response = await apiClient.get("/getStatusDropdown");
 
-      if (response.success && Array.isArray(response.data) && response.data.length > 0) {
-        const formatted = response.data.map(item => ({
+      if (
+        response.success &&
+        Array.isArray(response.data) &&
+        response.data.length > 0
+      ) {
+        const formatted = response.data.map((item) => ({
           ...item,
           label: item.STATUSNAME,
-          value: item.STATUSID
+          value: item.STATUSID,
         }));
 
         setStatusOptions(formatted);
@@ -185,35 +165,36 @@ const AssignTaskModal = ({
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   const submit = async (data) => {
     try {
       setLoading(true);
 
-
       const payload = {
-        "IN_MODE": 1,
-        "IN_TASKASSIGNMENT_ID": null,
-        "IN_TASKID": Number(task.id),
-        "IN_DEPTID": Number(deptId),
-        "IN_ASSIGNEDBY": 90043,
-        "IN_ASSIGNEDTO": Number(data.assignedTo),
-        "IN_ASSIGNEDDATE": formatDateToAPI(today),
-        "IN_STARTDATE": formatDateToAPI(data.expectedStart),
-        "IN_DUEDATE": formatDateToAPI(data.expectedCompletion),
-        "IN_STATUSID": Number(data.status),
-        "IN_PRIORITY": data.priority,
-        "IN_FINISHEDDATE": null,
-        "IN_COMPLETEDDATE": null,
-        "IN_ISACTIVE": data.active ? "Y" : "N",
-        "IN_ACTIONREMARK": data.actionRemark,
-        "IN_meetingreference": data.meetingReference,
-        "IN_USERID": userId
-      }
+        IN_MODE: 1,
+        IN_TASKASSIGNMENT_ID: null,
+        IN_TASKID: Number(task.id),
+        IN_DEPTID: Number(deptId),
+        IN_ASSIGNEDBY: 90038,
+        IN_ASSIGNEDTO: Number(data.assignedTo),
+        IN_ASSIGNEDDATE: formatDateToAPI(today),
+        IN_STARTDATE: formatDateToAPI(data.expectedStart),
+        IN_DUEDATE: formatDateToAPI(data.expectedCompletion),
+        IN_STATUSID: Number(data.status),
+        IN_PRIORITY: data.priority,
+        IN_FINISHEDDATE: null,
+        IN_COMPLETEDDATE: null,
+        IN_ISACTIVE: data.active ? "Y" : "N",
+        IN_ACTIONREMARK: data.actionRemark,
+        IN_meetingreference: data.meetingReference,
+        IN_USERID: userId,
+      };
 
-
-      const response = await apiClient.post("/AOPT_TASKASSIGNMENT_INSUPD", payload);
+      const response = await apiClient.post(
+        "/AOPT_TASKASSIGNMENT_INSUPD",
+        payload,
+      );
       if (response.success && response.errorCode === 9999) {
         toast.success(response.errorMessage);
         reset();
@@ -227,7 +208,6 @@ const AssignTaskModal = ({
     } finally {
       setLoading(false);
     }
-
 
     // await new Promise((r) => setTimeout(r, 400));
     // const emp = EMPLOYEES.find((e) => e.id === data.assignedTo);
@@ -243,7 +223,6 @@ const AssignTaskModal = ({
       fetchStatusDropdown();
     }
   }, [user]);
-
 
   if (!open || !task) return null;
 
@@ -268,16 +247,22 @@ const AssignTaskModal = ({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <p className="font-semibold text-slate-800" style={{
-                  fontSize: "20px",
-                }}>
+                <p
+                  className="font-semibold text-slate-800"
+                  style={{
+                    fontSize: "20px",
+                  }}
+                >
                   Assign Task
                 </p>
-                <span className="font-medium text-slate-400" style={{
-                  fontSize: "16px",
-                  alignSelf: "center",
-                  marginTop: 2
-                }}>
+                <span
+                  className="font-medium text-slate-400"
+                  style={{
+                    fontSize: "16px",
+                    alignSelf: "center",
+                    marginTop: 2,
+                  }}
+                >
                   Step 2 of 2 · Assign to team
                 </span>
               </div>
@@ -433,7 +418,6 @@ const AssignTaskModal = ({
                   )}
                 </div>
 
-
                 {/* 4. Assigned Date */}
                 {/* <div>
                   <label className="pas-label">Assigned Date</label>
@@ -507,7 +491,6 @@ const AssignTaskModal = ({
                   {errors.status && (
                     <p className="pas-error">{errors.status.message}</p>
                   )}
-
                 </div>
 
                 {/* 8. Active Toggle */}
@@ -566,10 +549,7 @@ const AssignTaskModal = ({
 
             <div>
               <label className="pas-label">
-                Remark{" "}
-                <span className="text-rose-500">
-                  *
-                </span>
+                Remark <span className="text-rose-500">*</span>
               </label>
               <input
                 type="text"
@@ -601,17 +581,7 @@ const AssignTaskModal = ({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between gap-3 px-6 py-4 border-t border-slate-100 bg-slate-50/60 flex-shrink-0">
-          <p className="text-[11.5px] text-slate-500 max-w-[60%] leading-snug">
-            {selectedEmployee ? (
-              <>
-                <b>{selectedEmployee.name}</b> will be notified and the task
-                will appear in their <b>My Tasks</b>.
-              </>
-            ) : (
-              "The assignee will be notified and the task will appear in their My Tasks."
-            )}
-          </p>
+        <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-100 bg-slate-50/60 flex-shrink-0">
           <div className="flex items-center gap-2">
             <button
               onClick={onClose}

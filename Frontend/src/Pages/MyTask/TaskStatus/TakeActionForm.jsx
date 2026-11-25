@@ -14,7 +14,7 @@ const STATUS_OPTIONS = [
 ];
 
 const TakeActionForm = ({
-  actionBy = "Rajesh Kulkarni (you)",
+  actionBy = "",
   taskStatus,
   actionDate = new Date().toLocaleDateString("en-GB", {
     day: "2-digit",

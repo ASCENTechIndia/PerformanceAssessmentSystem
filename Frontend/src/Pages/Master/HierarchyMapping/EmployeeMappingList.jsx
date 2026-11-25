@@ -219,9 +219,14 @@ const EmployeeMappingList = () => {
                         </td>
                         <td className="px-4 py-3 text-slate-600">
                           {emp.REPORTING_NAME ? (
-                            <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-xs font-medium">
-                              {emp.REPORTING_NAME}
-                            </span>
+                            <div className="flex flex-col">
+                              <span className="font-medium text-slate-800">
+                                {emp.REPORTING_NAME}
+                              </span>
+                              <span className="text-[12px] font-mono text-slate-500">
+                                {emp.REPORTINGTO}
+                              </span>
+                            </div>
                           ) : (
                             <span className="text-xs text-slate-400 italic">
                               Top Level
@@ -275,7 +280,12 @@ const StatCard = ({ label, value, tone, icon: Icon }) => {
         <p className="text-[10.5px] font-semibold uppercase tracking-wider opacity-80">
           {label}
         </p>
-        <p className="font-bold leading-none mt-0.5" style={{fontSize: "23px"}}>{value}</p>
+        <p
+          className="font-bold leading-none mt-0.5"
+          style={{ fontSize: "23px" }}
+        >
+          {value}
+        </p>
       </div>
     </div>
   );
