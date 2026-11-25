@@ -64,7 +64,7 @@ const StatCard = ({ label, value, color, icon: Icon }) => {
 const MyTaskStats = ({ tasks }) => {
   const stats = useMemo(
     () => ({
-      new: tasks.filter((t) => t.status === "New").length,
+      new: tasks.length,
       inProgress: tasks.filter((t) => t.status === "In Progress").length,
       rework: tasks.filter((t) => t.status === "Rework").length,
       submitted: tasks.filter((t) => t.status === "Submitted").length,
@@ -74,8 +74,8 @@ const MyTaskStats = ({ tasks }) => {
   );
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-      <StatCard label="New" value={stats.new} color="blue" icon={Inbox} />
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      <StatCard label="All Task" value={stats.new} color="blue" icon={Inbox} />
       <StatCard
         label="In Progress"
         value={stats.inProgress}
@@ -88,12 +88,12 @@ const MyTaskStats = ({ tasks }) => {
         color="rose"
         icon={RotateCcw}
       />
-      <StatCard
+      {/* <StatCard
         label="Awaiting Approval"
         value={stats.submitted}
         color="amber"
         icon={Send}
-      />
+      /> */}
       <StatCard
         label="Completed"
         value={stats.completed}

@@ -1,5 +1,5 @@
 const TAB_CONFIG = [
-  { key: "open", label: "Open" },
+  { key: "open", label: "My Tasks" },
 ];
 
 const MyTaskTabs = ({ counts, activeTab, onChange }) => {
