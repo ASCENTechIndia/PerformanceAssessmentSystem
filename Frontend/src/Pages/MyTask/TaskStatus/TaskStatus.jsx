@@ -68,12 +68,10 @@ const TaskStatus = () => {
         IN_FILETYPE: fileType,
       };
 
-
       const response = await apiClient.post(
         "/AOPT_TASK_PROGRESS_upd",
         payload
       );
-
 
       if (response.success && response.errorCode === 0) {
         toast.success(response.errorMessage);
