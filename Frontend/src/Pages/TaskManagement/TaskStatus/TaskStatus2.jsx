@@ -74,7 +74,8 @@ const TaskStatus2 = () => {
                 placeholder="Search by Task ID or Title..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pas-input pl-9"
+                className="pas-input"
+                style={{paddingLeft: "35px"}}
               />
             </div>
             <span className="text-xs text-slate-500 ml-auto">
