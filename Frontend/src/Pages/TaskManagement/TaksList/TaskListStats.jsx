@@ -76,7 +76,7 @@ const TaskListStats = ({ tasks }) => {
       total: tasks.length,
       progress: tasks.filter((t) => t.statusName === "In Progress").length,
       notAssigned: tasks.filter((t) => t.statusName === "Not Assign").length,
-      parentTasks: tasks.filter((t) => t.statusName === "Completed").length,
+      completedTasks: tasks.filter((t) => t.statusName === "Completed").length,
     }),
     [tasks],
   );
@@ -103,7 +103,7 @@ const TaskListStats = ({ tasks }) => {
       />
       <StatCard
         label="Completed Tasks"
-        value={stats.parentTasks}
+        value={stats.completedTasks}
         color="emerald"
         icon={CheckCircle2}
       />
