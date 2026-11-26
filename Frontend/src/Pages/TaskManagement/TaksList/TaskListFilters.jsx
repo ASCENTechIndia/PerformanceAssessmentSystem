@@ -43,64 +43,37 @@ const TaskListFilters = ({
       </div>
 
       {/* Grid — 4 filters + Create Task */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_170px_170px_150px_auto] gap-3">
-        {/* Search */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
-          <input
-            type="text"
-            value={filters.search}
-            onChange={(e) => onFilterChange("search", e.target.value)}
-            placeholder="Search Task title or ID"
+      <div className="flex justify-between gap-3">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-3">
+          {/* Search */}
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
+            <input
+              type="text"
+              value={filters.search}
+              onChange={(e) => onFilterChange("search", e.target.value)}
+              placeholder="Search Task title or ID"
+              className="pas-input"
+              style={{ paddingLeft: "35px" }}
+            />
+          </div>
+          {/* Status */}
+          <select
+            value={filters.status}
+            onChange={(e) => onFilterChange("status", e.target.value)}
             className="pas-input"
-            style={{paddingLeft: "35px"}}
-          />
+          >
+            <option value="">All Statuses</option>
+            {statusOptions?.map((p) => (
+              <option key={p.value} value={p.value}>
+                {p.label}
+              </option>
+            ))}
+          </select>
         </div>
 
-        {/* Task Type */}
-        {/* <select
-          value={filters.taskType}
-          onChange={(e) => onFilterChange("taskType", e.target.value)}
-          className="pas-input"
-        >
-          <option value="">All task types</option>
-          {taskTypes.map((t) => (
-            <option key={t} value={t}>
-              {t}
-            </option>
-          ))}
-        </select> */}
-
-        {/* Parent Task */}
-        <select
-          value={filters.parentTask}
-          onChange={(e) => onFilterChange("parentTask", e.target.value)}
-          className="pas-input"
-        >
-          <option value="">All parents</option>
-          {parentTasks.map((p) => (
-            <option key={p.id} value={p.id}>
-              {p.title}
-            </option>
-          ))}
-        </select>
-
-        {/* Status */}
-        <select
-          value={filters.status}
-          onChange={(e) => onFilterChange("status", e.target.value)}
-          className="pas-input"
-        >
-          <option value="">All Statuses</option>
-          {statusOptions?.map((p) => (
-            <option key={p.value} value={p.value}>
-              {p.label}
-            </option>
-          ))}
-        </select>
-
         {/* Create Task */}
-        <button onClick={onCreate} className="submit-btn sm:justify-self-end">
+        <button onClick={onCreate} className="submit-btn ">
           <Plus className="w-4 h-4" strokeWidth={2.4} />
           Create Task
         </button>

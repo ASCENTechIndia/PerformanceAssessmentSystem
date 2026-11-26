@@ -45,7 +45,7 @@ async function getParentTaskDropdown(req, res) {
 
     const result = await connection.execute(
       query,
-      { userId: Number(userId) },
+      { userId: userId },
       { outFormat: oracledb.OUT_FORMAT_OBJECT },
     );
 
@@ -773,12 +773,16 @@ async function getTaskAssignList(req, res) {
   let connection;
   try {
     connection = await getConnection();
+    const userId = req.query.userId;
+    if (!userId) {
+      return res.json({ success: false, errorMessage: "User Id is missing" });
+    }
 
-    const query = `SELECT * FROM view_taskassigned_list`;
+    const query = `SELECT * FROM view_taskassigned_list where assignedby=:userId`;
 
     const result = await connection.execute(
       query,
-      {},
+      {userId: userId},
       { outFormat: oracledb.OUT_FORMAT_OBJECT },
     );
 

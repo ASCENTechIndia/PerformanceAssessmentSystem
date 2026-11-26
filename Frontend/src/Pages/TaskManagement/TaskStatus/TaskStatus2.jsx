@@ -6,10 +6,12 @@ import apiClient from "../../../../apiClient";
 import { useLoader } from "../../../Context/LoaderContext";
 import TaskHistoryModal from "./TaskHistoryModal";
 import TaskHierarchyModal from "./TaskHierarchyModal";
+import { useAuth } from "../../../Context/AuthContext";
 
 const TaskStatus2 = () => {
   const { setLoading } = useLoader();
-
+  const {user} = useAuth()
+  const userId =user?.userId
   const [tasks, setTasks] = useState([]);
   const [search, setSearch] = useState("");
 
@@ -21,7 +23,7 @@ const TaskStatus2 = () => {
     const fetchTaskAssignList = async () => {
       setLoading(true);
       try {
-        const response = await apiClient.get("/getTaskAssignList");
+        const response = await apiClient.get(`/getTaskAssignList?userId=${userId}`);
         if (response.success && Array.isArray(response.data)) {
           setTasks(response.data);
         } else {
