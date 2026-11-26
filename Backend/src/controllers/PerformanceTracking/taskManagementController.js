@@ -36,12 +36,16 @@ async function getParentTaskDropdown(req, res) {
   let connection;
   try {
     connection = await getConnection();
+    const userId = req.query.userId;
+    if (!userId) {
+      return res.json({ success: false, errorMessage: "User Id is missing" });
+    }
 
-    const query = `select task_id, task_title from view_task_list`;
+    const query = `select distinct task_id, task_title from view_task_list where insby=:userId`;
 
     const result = await connection.execute(
       query,
-      {},
+      { userId: Number(userId) },
       { outFormat: oracledb.OUT_FORMAT_OBJECT },
     );
 
@@ -257,7 +261,7 @@ async function getTaskList(req, res) {
     }
 
     const query = `SELECT a.task_id, a.task_title, a.excepcteddays, a.parentid, a.isactive,
-       a.insdt, a.tasktype, a.statusname, a.statusid, a.bgcolor, a.forecolor
+       a.insdt, a.tasktype, a.statusname, a.statusid, a.bgcolor, a.forecolor, a.description, a.complete_criteria, a.tasktype_id, a.tasktype_name, a.createby_engname, a.assignto_engname
       FROM view_task_list a where insby=:userId`;
 
     const result = await connection.execute(

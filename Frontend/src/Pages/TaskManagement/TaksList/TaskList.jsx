@@ -10,6 +10,7 @@ import AssignTaskModal from "./AssignTaskModal";
 import { useAuth } from "../../../Context/AuthContext";
 import apiClient from "../../../../apiClient";
 import { useLoader } from "../../../Context/LoaderContext";
+import ViewTaskModal from "./ViewTaskModal";
 
 const mapApiRow = (row) => ({
   id: row.TASK_ID || "",
@@ -19,13 +20,19 @@ const mapApiRow = (row) => ({
   parent: row.PARENTID || "",
   createdAt: row.INSDT,
   active: String(row.ISACTIVE).toUpperCase() === "Y",
-  taskType: null,
+  taskType: row.TASKTYPE_NAME || null,
+  taskTypeCode: row.TASKTYPE || "",
   assignedTo: null,
   hasSubTask: false,
-  taskTypeCode: row.TASKTYPE || "", // <--- MAPPED TASKTYPE HERE
-  bgColor: row.BGCOLOR || "",
-  foreColor: row.FORECOLOR || "",
+  bgColor: row.BGCOLOR || "#e2e8f0",
+  foreColor: row.FORECOLOR || "#334155",
   statusName: row.STATUSNAME || "",
+  statusId: row.STATUSID,
+  description: row.DESCRIPTION || "",
+  completionCriteria: row.COMPLETE_CRITERIA || "",
+  taskTypeId: row.TASKTYPE_ID,
+  assignTo: row.ASSIGNTO_ENGNAME || "",
+  assignBy: row.CREATEBY_ENGNAME || ""
 });
 
 const EMPTY_FILTERS = {
@@ -68,6 +75,7 @@ const TaskList = () => {
   const [assigningTask, setAssigningTask] = useState(null);
   const [createOpen, setCreateOpen] = useState(false);
   const [statusOptions, setStatusOptions] = useState([]);
+  const [viewingTask, setViewingTask] = useState(null);
 
   const today = new Date().toISOString().split("T")[0];
 
@@ -297,6 +305,7 @@ const TaskList = () => {
               tasks={filteredByTab}
               onAssign={handleAssign}
               allowAssign={activeTab === "my-task"}
+              onView={(task) => setViewingTask(task)}
             />
           )}
         </div>
@@ -322,9 +331,17 @@ const TaskList = () => {
       />
       <AssignTaskModal
         open={!!assigningTask}
-        onClose={() => setAssigningTask(null)}
+        onClose={() => {
+          setAssigningTask(null);
+          fetchTasks();
+        }}
         task={assigningTask}
         onAssign={handleAssignSubmit}
+      />
+      <ViewTaskModal
+        open={!!viewingTask}
+        task={viewingTask}
+        onClose={() => setViewingTask(null)}
       />
     </Layout>
   );

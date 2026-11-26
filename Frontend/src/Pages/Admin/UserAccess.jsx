@@ -135,8 +135,6 @@ const UserAccess = () => {
         try {
             setLoading(true);
 
-            console.log(data);
-
             toast.success("User Menu Access details saved successfully");
         } catch (error) {
             console.error(error);

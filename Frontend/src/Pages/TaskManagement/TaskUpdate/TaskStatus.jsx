@@ -22,10 +22,8 @@ const TaskStatus = () => {
   const userId = user?.userId
   const { setLoading } = useLoader();
 
-  // Safely extract the task from the state passed by TaskListTable
   const task = location.state?.task;
 
-  console.log("full task :", task)
   // States
   const [statusOptions, setStatusOptions] = useState([]);
   const [files, setFiles] = useState([]);
@@ -140,9 +138,6 @@ const TaskStatus = () => {
         IN_FILEDOC: fileBase64,
         IN_FILETYPE: fileType,
       };
-
-      console.log("value L:", payload)
-      // return
       const response = await apiClient.post("/AOPT_TASK_PROGRESS_upd", payload);
 
       if (

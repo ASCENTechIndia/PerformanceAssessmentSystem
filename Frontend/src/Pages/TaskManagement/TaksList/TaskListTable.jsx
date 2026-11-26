@@ -1,4 +1,4 @@
-import { Inbox, Pencil, UserPlus } from "lucide-react";
+import { Inbox, Pencil, UserPlus, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const formatDate = (iso) => {
@@ -10,7 +10,7 @@ const formatDate = (iso) => {
   });
 };
 
-const TaskListTable = ({ tasks, onAssign, allowAssign }) => {
+const TaskListTable = ({ tasks, onAssign, allowAssign, onView  }) => {
   const navigate = useNavigate();
   return (
     <div className="overflow-x-auto">
@@ -25,6 +25,9 @@ const TaskListTable = ({ tasks, onAssign, allowAssign }) => {
             </th>
             <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
               Expected Duration
+            </th>
+            <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+              Assign To
             </th>
             <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
               Parent
@@ -89,6 +92,11 @@ const TaskListTable = ({ tasks, onAssign, allowAssign }) => {
                   {task.expectedDuration} days
                 </td>
 
+                {/* Assign To */}
+                <td className="px-3 py-3 text-[12px] text-slate-600 whitespace-nowrap">
+                  {task.assignTo}
+                </td>
+
                 {/* Parent */}
                 <td className="px-3 py-3 text-[12px] text-slate-600 whitespace-nowrap">
                   {task.parent ? (
@@ -142,6 +150,14 @@ const TaskListTable = ({ tasks, onAssign, allowAssign }) => {
                 {/* Action */}
                 <td className="px-3 py-3 text-right">
                   <div className="flex items-center justify-end gap-2">
+                    {/* NEW VIEW BUTTON */}
+                    <button
+                      onClick={() => onView(task)}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold text-slate-600 bg-slate-100 ring-1 ring-slate-200 hover:bg-slate-200 transition-colors"
+                      title="View Full Details"
+                    >
+                      <Eye className="w-3 h-3" />
+                    </button>
                     <button
                       disabled={allowAssign}
                       onClick={() => onAssign(task)}

@@ -199,6 +199,7 @@ const AssignTaskModal = ({ open, onClose, task, onAssign, createdBy = "" }) => {
         toast.success(response.errorMessage);
         reset();
         onClose();
+        
       } else {
         toast.error(response.errorMessage);
       }
