@@ -192,7 +192,7 @@ const TaskStatus = () => {
         current: "Task Progress",
       }}
     >
-      <div className="space-y-4 max-w-4xl mx-auto">
+      <div className="space-y-4 mx-auto">
         {/* Breadcrumb Inline */}
         <div className="flex items-center gap-1.5 text-[11.5px] font-medium text-slate-500">
           <span>Task Progress</span>

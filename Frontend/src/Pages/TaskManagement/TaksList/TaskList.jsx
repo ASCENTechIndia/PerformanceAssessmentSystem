@@ -25,7 +25,7 @@ const mapApiRow = (row) => ({
   taskTypeCode: row.TASKTYPE || "", // <--- MAPPED TASKTYPE HERE
   bgColor: row.BGCOLOR || "",
   foreColor: row.FORECOLOR || "",
-  statusName: row.STATUSNAME || ""
+  statusName: row.STATUSNAME || "",
 });
 
 const EMPTY_FILTERS = {
@@ -69,8 +69,6 @@ const TaskList = () => {
   const [createOpen, setCreateOpen] = useState(false);
   const [statusOptions, setStatusOptions] = useState([]);
 
-
-
   const today = new Date().toISOString().split("T")[0];
 
   const fetchTasks = async () => {
@@ -83,7 +81,6 @@ const TaskList = () => {
       const res = await apiClient.get(`/getTaskList?userId=${userId}`);
       if (res?.success && Array.isArray(res.data)) {
         const mapped = res.data.map(mapApiRow);
-        console.log(mapped);
         setTasks(mapped);
       } else {
         setTasks([]);
@@ -112,8 +109,7 @@ const TaskList = () => {
       const matchType = !filters.taskType || t.taskType === filters.taskType;
       const matchParent =
         !filters.parentTask || t.parent === filters.parentTask;
-      const matchStatus =
-        !filters.status || (filters.status === t.statusName);
+      const matchStatus = !filters.status || filters.status === t.statusName;
       return matchSearch && matchType && matchParent && matchStatus;
     });
   }, [tasks, filters]);
@@ -243,9 +239,7 @@ const TaskList = () => {
     } catch (err) {
       setStatusOptions([]);
       console.error(err);
-      toast.error(
-        err.message || "Failed to fetch Status dropdown options"
-      );
+      toast.error(err.message || "Failed to fetch Status dropdown options");
     } finally {
       setLoading(false);
     }
@@ -299,7 +293,11 @@ const TaskList = () => {
           />
 
           {tasks?.length > 0 && (
-            <TaskListTable tasks={filteredByTab} onAssign={handleAssign} />
+            <TaskListTable
+              tasks={filteredByTab}
+              onAssign={handleAssign}
+              allowAssign={activeTab === "my-task"}
+            />
           )}
         </div>
 

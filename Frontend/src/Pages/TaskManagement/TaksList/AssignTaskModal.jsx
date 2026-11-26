@@ -111,7 +111,7 @@ const AssignTaskModal = ({ open, onClose, task, onAssign, createdBy = "" }) => {
       setLoading(true);
 
       const response = await apiClient.get(
-        "/getEmpDropdown?reportingId=90038&ulbId=2&deptId=287",
+        `/getEmpDropdown?reportingId=${userId}&ulbId=${ulbId}&deptId=287`,
       );
 
       if (
@@ -176,7 +176,7 @@ const AssignTaskModal = ({ open, onClose, task, onAssign, createdBy = "" }) => {
         IN_TASKASSIGNMENT_ID: null,
         IN_TASKID: Number(task.id),
         IN_DEPTID: Number(deptId),
-        IN_ASSIGNEDBY: 90038,
+        IN_ASSIGNEDBY: Number(userId),
         IN_ASSIGNEDTO: Number(data.assignedTo),
         IN_ASSIGNEDDATE: formatDateToAPI(today),
         IN_STARTDATE: formatDateToAPI(data.expectedStart),

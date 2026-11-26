@@ -10,7 +10,7 @@ const formatDate = (iso) => {
   });
 };
 
-const TaskListTable = ({ tasks, onAssign }) => {
+const TaskListTable = ({ tasks, onAssign, allowAssign }) => {
   const navigate = useNavigate();
   return (
     <div className="overflow-x-auto">
@@ -43,7 +43,6 @@ const TaskListTable = ({ tasks, onAssign }) => {
             </th>
           </tr>
         </thead>
-        {console.log(tasks)}
         <tbody className="divide-y divide-slate-100 bg-white">
           {tasks.length === 0 ? (
             <tr>
@@ -140,18 +139,19 @@ const TaskListTable = ({ tasks, onAssign }) => {
                   </span>
                 </td>
 
-
                 {/* Action */}
                 <td className="px-3 py-3 text-right">
-
-
                   <div className="flex items-center justify-end gap-2">
                     <button
+                      disabled={allowAssign}
                       onClick={() => onAssign(task)}
-                      className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg
-                      text-[13px] font-semibold text-white bg-blue-500
-                      hover:bg-blue-600 active:scale-[0.97]
-                      transition-all duration-150"
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg
+                        text-[13px] font-semibold transition-all duration-150
+                        ${
+                          allowAssign
+                            ? "bg-slate-200 text-slate-400 cursor-not-allowed"
+                            : "bg-blue-500 text-white hover:bg-blue-600 active:scale-[0.97]"
+                        }`}
                     >
                       <UserPlus className="w-3 h-3" strokeWidth={2.4} />
                       Assign
