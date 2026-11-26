@@ -78,7 +78,7 @@ const TaskListStats = ({ tasks }) => {
       notAssigned: tasks.filter((t) => t.statusName === "Not Assign").length,
       completedTasks: tasks.filter((t) => t.statusName === "Completed").length,
     }),
-    [tasks],
+    [tasks]
   );
 
   return (
