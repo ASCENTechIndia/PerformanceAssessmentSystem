@@ -43,6 +43,7 @@ const TaskListTable = ({ tasks, onAssign }) => {
             </th>
           </tr>
         </thead>
+        {console.log(tasks)}
         <tbody className="divide-y divide-slate-100 bg-white">
           {tasks.length === 0 ? (
             <tr>
@@ -124,19 +125,21 @@ const TaskListTable = ({ tasks, onAssign }) => {
                 </td> */}
 
                 {/* Status */}
+
+                {/* Status */}
                 <td className="px-3 py-3">
                   <span
-                    className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full
-                    text-[10.5px] font-semibold ring-1
-                    bg-[${task?.bgColor}] text-[${task?.foreColor}]
-                    `}
+                    className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10.5px] font-semibold ring-1"
+                    style={{
+                      backgroundColor: task.bgColor,
+                      color: task.foreColor,
+                      borderColor: task.bgColor,
+                    }}
                   >
-                    {/* <span
-                      className={`w-1.5 h-1.5 rounded-full ${task.active ? "bg-blue-500" : "bg-slate-400"}`}
-                    /> */}
                     {task.statusName}
                   </span>
                 </td>
+
 
                 {/* Action */}
                 <td className="px-3 py-3 text-right">
