@@ -74,9 +74,9 @@ const TaskListStats = ({ tasks }) => {
   const stats = useMemo(
     () => ({
       total: tasks.length,
-      active: tasks.filter((t) => t.active).length,
-      notAssigned: tasks.filter((t) => t.active && !t.assignedTo).length,
-      parentTasks: tasks.filter((t) => t.hasSubTask).length,
+      progress: tasks.filter((t) => t.statusName === "In Progress").length,
+      notAssigned: tasks.filter((t) => t.statusName === "Not Assign").length,
+      parentTasks: tasks.filter((t) => t.statusName === "Completed").length,
     }),
     [tasks],
   );
@@ -90,8 +90,8 @@ const TaskListStats = ({ tasks }) => {
         icon={ListTodo}
       />
       <StatCard
-        label="Active"
-        value={stats.active}
+        label="In Progress"
+        value={stats.progress}
         color="orange"
         icon={CirclePlay}
       />
