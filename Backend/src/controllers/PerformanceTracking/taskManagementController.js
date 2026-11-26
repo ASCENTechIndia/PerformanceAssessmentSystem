@@ -36,12 +36,16 @@ async function getParentTaskDropdown(req, res) {
   let connection;
   try {
     connection = await getConnection();
+    const userId = req.query.userId;
+    if (!userId) {
+      return res.json({ success: false, errorMessage: "User Id is missing" });
+    }
 
-    const query = `select task_id, task_title from view_task_list`;
+    const query = `select distinct task_id, task_title from view_task_list where insby=:userId`;
 
     const result = await connection.execute(
       query,
-      {},
+      { userId: Number(userId) },
       { outFormat: oracledb.OUT_FORMAT_OBJECT },
     );
 
@@ -257,7 +261,7 @@ async function getTaskList(req, res) {
     }
 
     const query = `SELECT a.task_id, a.task_title, a.excepcteddays, a.parentid, a.isactive,
-       a.insdt, a.tasktype, a.statusname, a.statusid, a.bgcolor, a.forecolor
+       a.insdt, a.tasktype, a.statusname, a.statusid, a.bgcolor, a.forecolor, a.description, a.complete_criteria, a.tasktype_id, a.tasktype_name, a.createby_engname, a.assignto_engname
       FROM view_task_list a where insby=:userId`;
 
     const result = await connection.execute(
@@ -796,6 +800,55 @@ async function getTaskAssignList(req, res) {
   }
 }
 
+async function getHierarchyViewData(req, res) {
+  let connection;
+  try {
+    connection = await getConnection();
+
+    const taskId = req.query.taskId;
+    if (!taskId) {
+      return res.json({ success: false, errorMessage: "Task Id is required" });
+    }
+
+    const query = `
+      SELECT TASKMGMT.FUN_TASK_HIERARCHY_JSON(:taskId) AS JSON_DATA 
+      FROM DUAL
+    `;
+
+    const bind = { taskId: Number(taskId) };
+
+    const result = await connection.execute(query, bind, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+      fetchInfo: { JSON_DATA: { type: oracledb.STRING } },
+    });
+
+    const jsonString = result.rows[0]?.JSON_DATA || "{}";
+
+    let parsedData = {};
+    try {
+      parsedData = JSON.parse(jsonString);
+    } catch (e) {
+      console.error("Failed to parse hierarchy JSON string:", e);
+    }
+
+    res.json({
+      success: true,
+      data: parsedData,
+    });
+  } catch (error) {
+    console.error("getHierarchyViewData error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  } finally {
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error("Error closing DB connection:", err);
+      }
+    }
+  }
+}
+
 module.exports = {
   getParentTaskDropdown,
   getTaskTypeDropdown,
@@ -813,4 +866,5 @@ module.exports = {
   getTaskStatusList,
   getAttachmentDetails,
   getTaskAssignList,
+  getHierarchyViewData,
 };

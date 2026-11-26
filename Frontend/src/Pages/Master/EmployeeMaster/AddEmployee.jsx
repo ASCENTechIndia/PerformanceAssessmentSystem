@@ -102,7 +102,6 @@ const AddEmployee = () => {
     try {
       // await apiService.post("/employees", data);
       await new Promise((r) => setTimeout(r, 500));
-      console.log("New employee →", data);
       toast.success(`${data.name} added successfully`);
       navigate("/master/employees");
     } catch (err) {

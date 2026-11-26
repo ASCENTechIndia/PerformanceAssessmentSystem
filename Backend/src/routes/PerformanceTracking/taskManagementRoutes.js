@@ -16,6 +16,7 @@ const {
   getTaskStatusList,
   getAttachmentDetails,
   getTaskAssignList,
+  getHierarchyViewData,
 } = require("../../controllers/PerformanceTracking/taskManagementController");
 const {
   aoptTaskInsUpdSchema,
@@ -60,4 +61,5 @@ router.post(
 router.get("/getTaskStatusList", getTaskStatusList);
 router.get("/getAttachmentDetails", getAttachmentDetails);
 router.get("/getTaskAssignList", getTaskAssignList);
+router.get("/getHierarchyViewData", getHierarchyViewData);
 module.exports = router;

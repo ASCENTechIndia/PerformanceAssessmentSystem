@@ -15,7 +15,6 @@ import apiClient from "../../../../apiClient";
 const HierarchyMapping = () => {
     const { setLoading } = useLoader();
     const { user } = useAuth();
-    console.log(user);
     const ulbId = user?.ulbId;
     const userId = user?.userId;
     const navigate = useNavigate();

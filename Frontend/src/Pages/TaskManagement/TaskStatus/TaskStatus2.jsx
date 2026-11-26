@@ -4,7 +4,8 @@ import { toast } from "sonner";
 import Layout from "../../../Components/Layout";
 import apiClient from "../../../../apiClient";
 import { useLoader } from "../../../Context/LoaderContext";
-import TaskHistoryModal from "./TaskHistoryModal"; // <--- Import the new modal
+import TaskHistoryModal from "./TaskHistoryModal";
+import TaskHierarchyModal from "./TaskHierarchyModal";
 
 const TaskStatus2 = () => {
   const { setLoading } = useLoader();
@@ -12,8 +13,9 @@ const TaskStatus2 = () => {
   const [tasks, setTasks] = useState([]);
   const [search, setSearch] = useState("");
 
-  // State for the Progress History Modal
+  // State for the Progress History Modal and hierarchy modal
   const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const [selectedHierarchyId, setSelectedHierarchyId] = useState(null);
 
   useEffect(() => {
     const fetchTaskAssignList = async () => {
@@ -75,7 +77,7 @@ const TaskStatus2 = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="pas-input"
-                style={{paddingLeft: "35px"}}
+                style={{ paddingLeft: "35px" }}
               />
             </div>
             <span className="text-xs text-slate-500 ml-auto">
@@ -177,7 +179,7 @@ const TaskStatus2 = () => {
                           </button>
 
                           <button
-                            onClick={() => setSelectedTaskId(task.TASK_ID)}
+                            onClick={() => setSelectedHierarchyId(task.TASK_ID)}
                             className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11.5px] font-semibold text-indigo-700 bg-indigo-50 ring-1 ring-indigo-200 hover:bg-indigo-100 transition-colors"
                           >
                             <Activity className="w-3.5 h-3.5" /> View Hierarchy
@@ -198,6 +200,13 @@ const TaskStatus2 = () => {
         open={!!selectedTaskId}
         taskAssignedId={selectedTaskId}
         onClose={() => setSelectedTaskId(null)}
+      />
+
+      {/* Task Hierarchy Modal */}
+      <TaskHierarchyModal
+        open={!!selectedHierarchyId}
+        taskId={selectedHierarchyId}
+        onClose={() => setSelectedHierarchyId(null)}
       />
     </Layout>
   );

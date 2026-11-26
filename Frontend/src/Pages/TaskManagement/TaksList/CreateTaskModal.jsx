@@ -33,6 +33,7 @@ const CreateTaskModal = ({
   const { setLoading } = useLoader();
   const { user } = useAuth();
   const userName = user?.username;
+  const userId = user?.userId;
   const ulbId = user?.ulbId;
   const [taskTypeOptions, setTaskTypeOptions] = useState([]);
   const [parentTaskOptions, setParentTaskOptions] = useState([]);
@@ -76,16 +77,13 @@ const CreateTaskModal = ({
   }, [open, reset]);
 
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
-  const now = new
+  const now = new useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 1000);
 
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setCurrentDateTime(new Date());
-      }, 1000);
-
-      return () => clearInterval(interval);
-    }, []);
-
+    return () => clearInterval(interval);
+  }, []);
 
   const createdOn = currentDateTime.toLocaleDateString("en-IN", {
     day: "2-digit",
@@ -95,7 +93,7 @@ const CreateTaskModal = ({
 
   const createdTime = currentDateTime.toLocaleTimeString("en-IN", {
     hour: "2-digit",
-    minute: "2-digit"
+    minute: "2-digit",
   });
 
   const submit = async (data) => {
@@ -134,13 +132,19 @@ const CreateTaskModal = ({
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   const fetchParentTaskDropdown = async () => {
+    if (!userId) {
+      alert("User Id is not set, please login and try again");
+      return;
+    }
     try {
       setLoading(true);
 
-      const response = await apiClient.get("/getParentTaskDropdown");
+      const response = await apiClient.get(
+        `/getParentTaskDropdown?userId=${userId}`,
+      );
 
       if (
         response.success &&
@@ -157,13 +161,13 @@ const CreateTaskModal = ({
         setParentTaskOptions([]);
       }
     } catch (err) {
-      setParentTaskOptions([])
+      setParentTaskOptions([]);
       console.error(err);
       toast.error(err.message || "Failed to fetch parent tasks");
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     fetchTaskTypeDropdown();
@@ -177,7 +181,6 @@ const CreateTaskModal = ({
   }, [hasSubTask, setValue]);
 
   if (!open) return null;
-
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -199,14 +202,20 @@ const CreateTaskModal = ({
               <ClipboardList className="w-5 h-5" strokeWidth={2.2} />
             </div>
             <div>
-              <p className="font-bold text-slate-800" style={{
-                fontSize: "20px"
-              }}>
+              <p
+                className="font-bold text-slate-800"
+                style={{
+                  fontSize: "20px",
+                }}
+              >
                 Create Task{" "}
-                <span className="font-medium text-slate-400" style={{
-                  fontSize: "15px",
-                  marginLeft: 2
-                }}>
+                <span
+                  className="font-medium text-slate-400"
+                  style={{
+                    fontSize: "15px",
+                    marginLeft: 2,
+                  }}
+                >
                   Step 1 of 2 · Create task
                 </span>
               </p>
@@ -249,9 +258,10 @@ const CreateTaskModal = ({
                   bg-gradient-to-br from-white to-blue-50/30 rounded-xl
                   placeholder:text-slate-400 placeholder:font-normal
                   border-2 transition-all duration-200 outline-none
-                  ${errors.title
-                    ? "border-rose-300 focus:border-rose-400 focus:ring-4 focus:ring-rose-400/15"
-                    : "border-slate-200 hover:border-blue-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-400/15"
+                  ${
+                    errors.title
+                      ? "border-rose-300 focus:border-rose-400 focus:ring-4 focus:ring-rose-400/15"
+                      : "border-slate-200 hover:border-blue-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-400/15"
                   }`}
                 aria-invalid={!!errors.title}
                 autoFocus
@@ -281,7 +291,10 @@ const CreateTaskModal = ({
               {...register("description", {
                 required: "Description is required",
                 minLength: { value: 20, message: "At least 20 characters" },
-                maxLength: { value: 1000, message: "Description should be of 1000 characters" }
+                maxLength: {
+                  value: 1000,
+                  message: "Description should be of 1000 characters",
+                },
               })}
             />
             {errors.description && (
@@ -315,7 +328,8 @@ const CreateTaskModal = ({
 
             <div>
               <label htmlFor="expectedDuration" className="pas-label">
-                Expected Duration (in Days)<span className="text-rose-500">*</span>
+                Expected Duration (in Days)
+                <span className="text-rose-500">*</span>
               </label>
               {/* <select
                 id="expectedDuration"
@@ -352,7 +366,8 @@ const CreateTaskModal = ({
                     message: "Expected duration must be greater than 0",
                   },
                   validate: (value) =>
-                    Number.isInteger(value) || "Please enter a valid whole number",
+                    Number.isInteger(value) ||
+                    "Please enter a valid whole number",
                 })}
               />
 
@@ -377,9 +392,10 @@ const CreateTaskModal = ({
                     onClick={() => field.onChange(!field.value)}
                     className={`w-full flex items-center justify-between gap-3
                       px-3.5 py-2.5 rounded-xl border transition-all duration-150
-                      ${field.value
-                        ? "bg-blue-50/60 border-blue-200 hover:bg-blue-50"
-                        : "bg-white border-slate-200 hover:border-slate-300"
+                      ${
+                        field.value
+                          ? "bg-blue-50/60 border-blue-200 hover:bg-blue-50"
+                          : "bg-white border-slate-200 hover:border-slate-300"
                       }`}
                   >
                     <span
@@ -410,7 +426,12 @@ const CreateTaskModal = ({
                   (optional)
                 </span>
               </label>
-              <select id="parent" className={`pas-input ${hasSubTask ? "" : "cursor-not-allowed"}`} {...register("parent")} disabled={!hasSubTask}>
+              <select
+                id="parent"
+                className={`pas-input ${hasSubTask ? "" : "cursor-not-allowed"}`}
+                {...register("parent")}
+                disabled={!hasSubTask}
+              >
                 <option value="">None (top-level)</option>
                 {parentTaskOptions.map((p) => (
                   <option key={p.value} value={p.value}>
@@ -483,9 +504,10 @@ const CreateTaskModal = ({
                   onClick={() => field.onChange(!field.value)}
                   className={`w-full flex items-center justify-between gap-3
                     px-3.5 py-2.5 rounded-xl border transition-all duration-150
-                    ${field.value
-                      ? "bg-blue-50/60 border-blue-200 hover:bg-blue-50"
-                      : "bg-white border-slate-200 hover:border-slate-300"
+                    ${
+                      field.value
+                        ? "bg-blue-50/60 border-blue-200 hover:bg-blue-50"
+                        : "bg-white border-slate-200 hover:border-slate-300"
                     }`}
                 >
                   <span

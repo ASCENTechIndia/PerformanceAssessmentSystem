@@ -170,7 +170,6 @@ const ExtensionRequests = () => {
         `${request.taskId} extension rejected — ${request.employee} notified`,
       );
     }
-    console.log("Extension decision →", { mode, request, reason });
   };
 
   const clearFilters = () => {

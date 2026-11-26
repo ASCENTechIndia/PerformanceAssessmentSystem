@@ -111,7 +111,8 @@ const TaskHistoryModal = ({ open, taskAssignedId, onClose }) => {
               placeholder="Search by Progress ID..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pas-input pl-9 bg-white"
+              className="pas-input bg-white"
+              style={{ paddingLeft: "35px" }}
             />
           </div>
           <span className="text-xs text-slate-500 ml-auto">

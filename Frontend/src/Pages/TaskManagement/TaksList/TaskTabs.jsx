@@ -1,6 +1,6 @@
 const TAB_CONFIG = [
   { key: "my-task", label: "My Task" },
-  { key: "assigned-by-me", label: "Assigned By Me" },
+  { key: "assigned-by-me", label: "Created/Assigned By Me" },
 ];
 
 const TaskTabs = ({ counts, activeTab, onChange }) => {

@@ -1,5 +1,11 @@
 import { useMemo } from "react";
-import { ListTodo, CheckCircle2, UserX, GitBranch, CirclePlay } from "lucide-react";
+import {
+  ListTodo,
+  CheckCircle2,
+  UserX,
+  GitBranch,
+  CirclePlay,
+} from "lucide-react";
 
 const StatCard = ({ label, value, color, icon: Icon }) => {
   const palette = {
@@ -59,7 +65,10 @@ const StatCard = ({ label, value, color, icon: Icon }) => {
         >
           {label}
         </p>
-        <p className={`font-bold leading-none mt-0.5 ${p.text}`} style={{fontSize: "23px"}}>
+        <p
+          className={`font-bold leading-none mt-0.5 ${p.text}`}
+          style={{ fontSize: "23px" }}
+        >
           {value}
         </p>
       </div>

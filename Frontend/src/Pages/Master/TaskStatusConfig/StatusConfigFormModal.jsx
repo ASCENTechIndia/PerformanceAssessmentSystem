@@ -35,7 +35,6 @@ const StatusConfigFormModal = ({ open, editing, onClose, onSaved }) => {
   useEffect(() => {
     if (!open) return;
     if (editing) {
-      console.log("editing :", editing);
       // fill the form for editing
       reset({
         IN_TASKSTATUS_CODE: editing.STATUSCODE || "",
