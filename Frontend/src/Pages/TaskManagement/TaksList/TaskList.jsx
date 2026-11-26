@@ -261,13 +261,6 @@ const TaskList = () => {
     () => [...new Set(tasks.map((t) => t.taskType).filter(Boolean))].sort(),
     [tasks],
   );
-  const parentTaskOptions = useMemo(
-    () =>
-      tasks
-        .filter((t) => t.hasSubTask && t.active)
-        .map((t) => ({ id: t.id, title: t.title })),
-    [tasks],
-  );
 
   const hasActiveFilters = Object.values(filters).some((v) => v !== "");
 
@@ -288,7 +281,6 @@ const TaskList = () => {
           onFilterChange={setFilter}
           onClear={clearFilters}
           taskTypes={taskTypeOptions}
-          parentTasks={parentTaskOptions}
           statusOptions={statusOptions}
           onCreate={() => setCreateOpen(true)}
         />
