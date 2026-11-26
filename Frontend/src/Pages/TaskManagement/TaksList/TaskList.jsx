@@ -83,7 +83,6 @@ const TaskList = () => {
       const res = await apiClient.get(`/getTaskList?userId=${userId}`);
       if (res?.success && Array.isArray(res.data)) {
         const mapped = res.data.map(mapApiRow);
-        console.log(mapped);
         setTasks(mapped);
       } else {
         setTasks([]);
