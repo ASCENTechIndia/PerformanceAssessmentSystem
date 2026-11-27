@@ -663,7 +663,7 @@ async function getTaskStatusList(req, res) {
 
     const query = `
       SELECT * FROM view_task_progress_list 
-      WHERE taskassignid = :taskAssignedId
+      WHERE taskid = :taskAssignedId
     `;
 
     const bind = {
