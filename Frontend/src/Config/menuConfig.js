@@ -155,18 +155,18 @@ export const STATIC_MENU = [
   /* ============================================================
      GROUP 5 — Admin (User access management)
      ============================================================ */
-  {
-    MENUID: 5,
-    MENUTITLE: "Admin",
-    children: [
-      {
-        MENUID: 501,
-        MENUTITLE: "User Access",
-        PAGEPATH: "/admin/userAccess",
-        ICON: ShieldCheck,
-      },
-    ],
-  },
+  // {
+  //   MENUID: 5,
+  //   MENUTITLE: "Admin",
+  //   children: [
+  //     {
+  //       MENUID: 501,
+  //       MENUTITLE: "User Access",
+  //       PAGEPATH: "/admin/userAccess",
+  //       ICON: ShieldCheck,
+  //     },
+  //   ],
+  // },
   {
     MENUID: 6,
     MENUTITLE: "Task Management",
