@@ -120,6 +120,7 @@ const TaskProgressModal = ({ open, data, onClose }) => {
   const ext = getExt(attachment);
   const isPdf = ext === "pdf";
   const isImage = ["jpg", "jpeg", "png", "gif", "webp"].includes(ext);
+  // TASK_TITLE
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">

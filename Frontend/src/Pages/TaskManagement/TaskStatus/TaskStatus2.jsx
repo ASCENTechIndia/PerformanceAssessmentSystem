@@ -149,7 +149,7 @@ const TaskStatus2 = () => {
                       </td>
 
                       <td className="px-4 py-3 text-center">
-                        <span className="text-[12px]  text-slate-600">
+                        <span className="text-[12px] text-slate-600">
                           {task.EXCEPCTEDDAYS} days
                         </span>
                       </td>

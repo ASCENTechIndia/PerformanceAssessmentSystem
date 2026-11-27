@@ -32,7 +32,8 @@ const mapApiRow = (row) => ({
   completionCriteria: row.COMPLETE_CRITERIA || "",
   taskTypeId: row.TASKTYPE_ID,
   assignTo: row.ASSIGNTO_ENGNAME || "",
-  assignBy: row.CREATEBY_ENGNAME || ""
+  assignBy: row.CREATEBY_ENGNAME || "",
+  taskAssignId: row.ASSIGNMENT_ID ?? ""
 });
 
 const EMPTY_FILTERS = {
@@ -89,6 +90,9 @@ const TaskList = () => {
       const res = await apiClient.get(`/getTaskList?userId=${userId}`);
       if (res?.success && Array.isArray(res.data)) {
         const mapped = res.data.map(mapApiRow);
+        // console.log(res.data);
+        // console.log(mapped);
+
         setTasks(mapped);
       } else {
         setTasks([]);
@@ -186,7 +190,7 @@ const TaskList = () => {
     }
   };
 
-  const handleAssign = (task) => setAssigningTask(task);
+  const   handleAssign = (task) => setAssigningTask(task);
 
   const handleAssignSubmit = async (data) => {
     try {

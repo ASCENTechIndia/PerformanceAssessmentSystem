@@ -136,7 +136,7 @@ const   TaskListTable = ({ tasks, onAssign, allowAssign, onView  }) => {
                 {/* Status */}
                 <td className="px-3 py-3">
                   <span
-                    className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10.5px] font-semibold ring-1"
+                    className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[9.5px] font-semibold ring-1"
                     style={{
                       backgroundColor: task.bgColor,
                       color: task.foreColor,

@@ -128,8 +128,9 @@ const TaskStatus = () => {
         fileType = `.${file.name.split(".").pop().toLowerCase()}`;
       }
 
+
       const payload = {
-        IN_TASKASSIGNID: Number(task?.rawId || task?.id),
+        IN_TASKASSIGNID: Number(task?.taskAssignId),
         IN_STATUSID: Number(data.status),
         IN_ACTIONBY: Number(userId),
         IN_userid: String(userId),

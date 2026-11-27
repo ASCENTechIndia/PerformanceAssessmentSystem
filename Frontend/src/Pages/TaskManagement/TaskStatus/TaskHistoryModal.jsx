@@ -28,6 +28,7 @@ const TaskHistoryModal = ({ open, taskAssignedId, onClose }) => {
         const res = await apiClient.get(
           `/getTaskStatusList?taskAssignedId=${taskAssignedId}`,
         );
+
         if (res.success && res.data) {
           setListData(res.data);
         } else {
@@ -129,9 +130,10 @@ const TaskHistoryModal = ({ open, taskAssignedId, onClose }) => {
                   <th className="px-4 py-3 font-semibold">Progress ID</th>
                   <th className="px-4 py-3 font-semibold">Action Date</th>
                   <th className="px-4 py-3 font-semibold">Status</th>
-                  <th className="px-4 py-3 font-semibold">Remarks</th>
+                  <th className="px-4 py-3 font-semibold">Action By</th>
+                  {/* <th className="px-4 py-3 font-semibold">Remarks</th> */}
                   <th className="px-4 py-3 font-semibold text-right">
-                    Attachments
+                    View Details
                   </th>
                 </tr>
               </thead>
@@ -184,7 +186,8 @@ const TaskHistoryModal = ({ open, taskAssignedId, onClose }) => {
                           {item.STATUSNAME}
                         </span>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3">{item.ACTIONBY_USER}</td>
+                      {/* <td className="px-4 py-3">
                         <div
                           className="flex items-center gap-1.5 text-slate-600 text-[12px] max-w-[200px] truncate"
                           title={item.ACTIONREMARK}
@@ -192,22 +195,18 @@ const TaskHistoryModal = ({ open, taskAssignedId, onClose }) => {
                           <MessageSquare className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
                           {item.ACTIONREMARK || "—"}
                         </div>
-                      </td>
+                      </td> */}
                       <td className="px-4 py-3 text-right">
                         {/* Only show view button if there is an attachment */}
-                        {item.ATTACHMENT_ID ? (
-                          <button
-                            onClick={() => setSelectedProgress(item)}
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11.5px] font-semibold text-blue-700 bg-blue-50 ring-1 ring-blue-200 hover:bg-blue-100 transition-colors"
-                          >
-                            <Eye className="w-3.5 h-3.5" />
-                            View File
-                          </button>
-                        ) : (
-                          <span className="text-[11px] text-slate-400 italic">
-                            No file
-                          </span>
-                        )}
+
+                        <button
+                          onClick={() => setSelectedProgress(item)}
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11.5px] font-semibold text-blue-700 bg-blue-50 ring-1 ring-blue-200 hover:bg-blue-100 transition-colors"
+                        >
+                          <Eye className="w-3.5 h-3.5" />
+                          View
+                        </button>
+
                       </td>
                     </tr>
                   ))
