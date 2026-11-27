@@ -10,38 +10,38 @@ const formatDate = (iso) => {
   });
 };
 
-const TaskListTable = ({ tasks, onAssign, allowAssign, onView  }) => {
+const   TaskListTable = ({ tasks, onAssign, allowAssign, onView  }) => {
   const navigate = useNavigate();
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-left">
         <thead className="bg-blue-50 border-b border-slate-200">
           <tr>
-            <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+            <th className="px-3 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-800">
               Task ID
             </th>
-            <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+            <th className="px-3 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-800">
               Task Title
             </th>
-            <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+            <th className="px-3 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-800">
               Expected Duration
             </th>
-            <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+            <th className="px-3 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-800">
               Assign To
             </th>
-            <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+            <th className="px-3 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-800">
               Parent
             </th>
-            <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+            <th className="px-3 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-800">
               Created
             </th>
             {/* <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
               Assigned To
             </th> */}
-            <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+            <th className="px-3 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-800">
               Status
             </th>
-            <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 text-right">
+            <th className="px-3 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-800 text-right">
               Action
             </th>
           </tr>
@@ -70,7 +70,7 @@ const TaskListTable = ({ tasks, onAssign, allowAssign, onView  }) => {
                 {/* Task ID */}
                 <td className="px-3 py-3">
                   <span
-                    className="inline-flex items-center px-1.5 py-0.5 text-[10.5px] font-mono font-semibold
+                    className="inline-flex items-center px-1.5 py-0.5 text-[10.5px] 
                     bg-slate-100 text-slate-600 rounded"
                   >
                     {task.id}
@@ -80,7 +80,7 @@ const TaskListTable = ({ tasks, onAssign, allowAssign, onView  }) => {
                 {/* Task Title */}
                 <td className="px-3 py-3">
                   <span
-                    className="text-[12.5px] font-medium text-slate-800 truncate max-w-[240px] block"
+                    className="text-[12.5px] text-slate-600 truncate max-w-[240px] block"
                     title={task.title}
                   >
                     {task.title}

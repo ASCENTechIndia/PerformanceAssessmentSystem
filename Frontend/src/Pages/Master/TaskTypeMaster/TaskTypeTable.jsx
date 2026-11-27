@@ -25,7 +25,7 @@ const TaskTypeTable = ({ taskTypes, onView, onEdit, onDelete }) => {
               <th className="px-3 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-700">
                 Description
               </th>
-              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-700">
+              <th className="px-3 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-700">
                 Status
               </th>
               <th className="px-3 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-700">
