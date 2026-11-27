@@ -138,7 +138,7 @@ const FrmStatusConfig = () => {
           {/* Table */}
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
+              <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-900">
                 <tr>
                   <th className="px-4 py-3 text-left font-semibold">Preview</th>
                   <th className="px-4 py-3 text-left font-semibold">Code</th>
