@@ -60,7 +60,7 @@ const AssignTaskModal = ({ open, onClose, task, onAssign, createdBy = "" }) => {
       assignedBy: "",
       expectedStart: "",
       expectedCompletion: "",
-      status: "",
+      status: "103",
       priority: task?.priority || "Medium",
       active: true,
       actionRemark: "",

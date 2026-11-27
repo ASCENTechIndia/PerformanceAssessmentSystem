@@ -285,28 +285,6 @@ const TaskHierarchyModal = ({ open, taskId, onClose }) => {
           </button>
         </div>
 
-        {/* Summary + controls */}
-        {!loading && tree.length > 0 && (
-          <div className="flex flex-shrink-0 flex-wrap items-center gap-3 border-b border-slate-200 bg-slate-50/60 px-6 py-3">
-            {[
-              { icon: ListChecks, label: "Tasks", value: stats.total },
-              { icon: Layers, label: "Levels", value: stats.maxLevel },
-              { icon: Users, label: "People", value: stats.people },
-            ].map(({ icon: Icon, label, value }) => (
-              <div
-                key={label}
-                className="flex items-center gap-2 rounded-lg bg-white px-3 py-1.5 ring-1 ring-slate-200"
-              >
-                <Icon className="h-4 w-4 text-blue-600" />
-                <span className="text-[13px] font-semibold text-slate-800">
-                  {value}
-                </span>
-                <span className="text-[11.5px] text-slate-500">{label}</span>
-              </div>
-            ))}
-          </div>
-        )}
-
         {/* Tree area */}
         <div className="flex-1 overflow-auto bg-slate-50/40 p-6">
           {loading ? (

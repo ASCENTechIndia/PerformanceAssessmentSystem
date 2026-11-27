@@ -16,7 +16,7 @@ createRoot(document.getElementById("root")).render(
         <Toaster
           position="top-right"
           richColors
-          duration={2500}
+          duration={3000}
           closeButton
           toastOptions={{
             classNames: {
