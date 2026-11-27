@@ -65,24 +65,24 @@ export const STATIC_MENU = [
   /* ============================================================
      GROUP 2 — My Work (Junior daily workflow)
      ============================================================ */
-  {
-    MENUID: 2,
-    MENUTITLE: "My Task",
-    children: [
-      {
-        MENUID: 201,
-        MENUTITLE: "My Task",
-        PAGEPATH: "/Task/MyTask",
-        ICON: Menu,
-      },
-      // {
-      //   MENUID: 202,
-      //   MENUTITLE: "Task Status",
-      //   PAGEPATH: "/Task/task-status",
-      //   ICON: Menu,
-      // },
-    ],
-  },
+  // {
+  //   MENUID: 2,
+  //   MENUTITLE: "My Task",
+  //   children: [
+  //     {
+  //       MENUID: 201,
+  //       MENUTITLE: "My Task",
+  //       PAGEPATH: "/Task/MyTask",
+  //       ICON: Menu,
+  //     },
+  //     {
+  //       MENUID: 202,
+  //       MENUTITLE: "Task Status",
+  //       PAGEPATH: "/Task/task-status",
+  //       ICON: Menu,
+  //     },
+  //   ],
+  // },
 
   /* ============================================================
      GROUP 3 — Performance Details (reports, drill-down)
@@ -119,24 +119,24 @@ export const STATIC_MENU = [
         PAGEPATH: "/master/task-type",
         ICON: LayoutList,
       },
-      {
-        MENUID: 402,
-        MENUTITLE: "Departments",
-        PAGEPATH: "/master/DepartmentMaster",
-        ICON: Building2,
-      },
-      {
-        MENUID: 403,
-        MENUTITLE: "Designation Master",
-        PAGEPATH: "/master/DesignationMaster",
-        ICON: UserCog,
-      },
-      {
-        MENUID: 401,
-        MENUTITLE: "Employees",
-        PAGEPATH: "/master/employees",
-        ICON: Users,
-      },
+      // {
+      //   MENUID: 402,
+      //   MENUTITLE: "Departments",
+      //   PAGEPATH: "/master/DepartmentMaster",
+      //   ICON: Building2,
+      // },
+      // {
+      //   MENUID: 403,
+      //   MENUTITLE: "Designation Master",
+      //   PAGEPATH: "/master/DesignationMaster",
+      //   ICON: UserCog,
+      // },
+      // {
+      //   MENUID: 401,
+      //   MENUTITLE: "Employees",
+      //   PAGEPATH: "/master/employees",
+      //   ICON: Users,
+      // },
       {
         MENUID: 406,
         MENUTITLE: "Status Config",
@@ -155,18 +155,18 @@ export const STATIC_MENU = [
   /* ============================================================
      GROUP 5 — Admin (User access management)
      ============================================================ */
-  {
-    MENUID: 5,
-    MENUTITLE: "Admin",
-    children: [
-      {
-        MENUID: 501,
-        MENUTITLE: "User Access",
-        PAGEPATH: "/admin/userAccess",
-        ICON: ShieldCheck,
-      },
-    ],
-  },
+  // {
+  //   MENUID: 5,
+  //   MENUTITLE: "Admin",
+  //   children: [
+  //     {
+  //       MENUID: 501,
+  //       MENUTITLE: "User Access",
+  //       PAGEPATH: "/admin/userAccess",
+  //       ICON: ShieldCheck,
+  //     },
+  //   ],
+  // },
   {
     MENUID: 6,
     MENUTITLE: "Task Management",

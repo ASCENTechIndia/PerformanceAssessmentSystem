@@ -16,25 +16,25 @@ const TaskTypeTable = ({ taskTypes, onView, onEdit, onDelete }) => {
         <table className="w-full text-left">
           <thead className="bg-blue-50 border-b border-slate-200">
             <tr>
-              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 w-12">
+              <th className="px-3 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-700 w-12">
                 Sr. No
               </th>
-              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+              <th className="px-3 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-700">
                 Task Type
               </th>
-              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+              <th className="px-3 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-700">
                 Description
               </th>
-              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+              <th className="px-3 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-700">
                 Status
               </th>
-              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+              <th className="px-3 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-700">
                 Created By
               </th>
-              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+              <th className="px-3 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-700">
                 Created Date
               </th>
-              <th className="px-3 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 text-right">
+              <th className="px-3 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-700 text-right">
                 Actions
               </th>
             </tr>
@@ -65,7 +65,7 @@ const TaskTypeTable = ({ taskTypes, onView, onEdit, onDelete }) => {
                   </td>
 
                   <td className="px-3 py-3">
-                    <span className="text-[13px] font-semibold text-slate-800">
+                    <span className="text-[13px] text-slate-600">
                       {t.TASKTYPE_NAME}
                     </span>
                   </td>

@@ -134,7 +134,7 @@ const EmployeeMappingList = () => {
           {/* Table */}
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-600 border-b border-slate-200">
+              <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-900 border-b border-slate-200">
                 <tr>
                   <th className="px-4 py-3 font-semibold">Employee</th>
                   <th className="px-4 py-3 font-semibold">Department</th>
@@ -203,10 +203,10 @@ const EmployeeMappingList = () => {
                       >
                         <td className="px-4 py-3">
                           <div className="flex flex-col">
-                            <span className="font-medium text-slate-800">
+                            <span className="text-slate-600">
                               {emp.EMP_NAME}
                             </span>
-                            <span className="text-[12px] font-mono text-slate-500">
+                            <span className="text-[12px] text-slate-600">
                               {emp.EMP_ID}
                             </span>
                           </div>
@@ -220,10 +220,10 @@ const EmployeeMappingList = () => {
                         <td className="px-4 py-3 text-slate-600">
                           {emp.REPORTING_NAME ? (
                             <div className="flex flex-col">
-                              <span className="font-medium text-slate-800">
+                              <span className="text-slate-600">
                                 {emp.REPORTING_NAME}
                               </span>
-                              <span className="text-[12px] font-mono text-slate-500">
+                              <span className="text-[12px] text-slate-600">
                                 {emp.REPORTINGTO}
                               </span>
                             </div>
