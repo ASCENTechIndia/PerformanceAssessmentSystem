@@ -92,22 +92,22 @@ const TaskStatus2 = () => {
             <table className="w-full text-left">
               <thead className="bg-slate-50 border-b border-slate-200">
                 <tr>
-                  <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 w-24">
+                  <th className="px-4 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-800 w-24">
                     Task ID
                   </th>
-                  <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+                  <th className="px-4 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-800">
                     Task Title
                   </th>
-                  <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 text-center">
+                  <th className="px-4 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-800 text-center">
                     Expected Days
                   </th>
-                  <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+                  <th className="px-4 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-800">
                     Assigned Date
                   </th>
-                  <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+                  <th className="px-4 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-800">
                     Status
                   </th>
-                  <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 text-right">
+                  <th className="px-4 py-3 text-[11px] font-bold uppercase tracking-wider text-slate-800 text-right">
                     Action
                   </th>
                 </tr>
@@ -131,7 +131,7 @@ const TaskStatus2 = () => {
                       className="hover:bg-slate-50/50 transition-colors"
                     >
                       <td className="px-4 py-3">
-                        <span className="inline-flex items-center px-2 py-0.5 text-[11px] font-mono font-semibold bg-slate-100 text-slate-600 rounded">
+                        <span className="inline-flex items-center px-2 py-0.5 text-[11px]  bg-slate-100 text-slate-600 rounded">
                           {task.TASK_ID}
                         </span>
                       </td>
@@ -140,7 +140,7 @@ const TaskStatus2 = () => {
                         <div className="flex items-center gap-2">
                           <ClipboardList className="w-4 h-4 text-slate-400" />
                           <span
-                            className="text-[13px] font-medium text-slate-800 truncate max-w-[300px]"
+                            className="text-[13px]  text-slate-600 truncate max-w-[300px]"
                             title={task.TASK_TITLE}
                           >
                             {task.TASK_TITLE}
@@ -149,7 +149,7 @@ const TaskStatus2 = () => {
                       </td>
 
                       <td className="px-4 py-3 text-center">
-                        <span className="text-[12px] font-semibold text-slate-600">
+                        <span className="text-[12px]  text-slate-600">
                           {task.EXCEPCTEDDAYS} days
                         </span>
                       </td>
