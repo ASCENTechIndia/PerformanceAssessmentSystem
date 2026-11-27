@@ -119,24 +119,24 @@ export const STATIC_MENU = [
         PAGEPATH: "/master/task-type",
         ICON: LayoutList,
       },
-      {
-        MENUID: 402,
-        MENUTITLE: "Departments",
-        PAGEPATH: "/master/DepartmentMaster",
-        ICON: Building2,
-      },
-      {
-        MENUID: 403,
-        MENUTITLE: "Designation Master",
-        PAGEPATH: "/master/DesignationMaster",
-        ICON: UserCog,
-      },
-      {
-        MENUID: 401,
-        MENUTITLE: "Employees",
-        PAGEPATH: "/master/employees",
-        ICON: Users,
-      },
+      // {
+      //   MENUID: 402,
+      //   MENUTITLE: "Departments",
+      //   PAGEPATH: "/master/DepartmentMaster",
+      //   ICON: Building2,
+      // },
+      // {
+      //   MENUID: 403,
+      //   MENUTITLE: "Designation Master",
+      //   PAGEPATH: "/master/DesignationMaster",
+      //   ICON: UserCog,
+      // },
+      // {
+      //   MENUID: 401,
+      //   MENUTITLE: "Employees",
+      //   PAGEPATH: "/master/employees",
+      //   ICON: Users,
+      // },
       {
         MENUID: 406,
         MENUTITLE: "Status Config",
