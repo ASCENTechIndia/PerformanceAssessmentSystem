@@ -65,24 +65,24 @@ export const STATIC_MENU = [
   /* ============================================================
      GROUP 2 — My Work (Junior daily workflow)
      ============================================================ */
-  {
-    MENUID: 2,
-    MENUTITLE: "My Task",
-    children: [
-      {
-        MENUID: 201,
-        MENUTITLE: "My Task",
-        PAGEPATH: "/Task/MyTask",
-        ICON: Menu,
-      },
-      // {
-      //   MENUID: 202,
-      //   MENUTITLE: "Task Status",
-      //   PAGEPATH: "/Task/task-status",
-      //   ICON: Menu,
-      // },
-    ],
-  },
+  // {
+  //   MENUID: 2,
+  //   MENUTITLE: "My Task",
+  //   children: [
+  //     {
+  //       MENUID: 201,
+  //       MENUTITLE: "My Task",
+  //       PAGEPATH: "/Task/MyTask",
+  //       ICON: Menu,
+  //     },
+  //     {
+  //       MENUID: 202,
+  //       MENUTITLE: "Task Status",
+  //       PAGEPATH: "/Task/task-status",
+  //       ICON: Menu,
+  //     },
+  //   ],
+  // },
 
   /* ============================================================
      GROUP 3 — Performance Details (reports, drill-down)
