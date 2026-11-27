@@ -168,7 +168,7 @@ const TaskHistoryModal = ({ open, taskAssignedId, onClose }) => {
                       className="hover:bg-slate-50 transition-colors"
                     >
                       <td className="px-4 py-3 font-mono text-[12px] font-semibold text-slate-600">
-                        PRG-{item.TASKPROGRESS_ID}
+                        {item.TASKPROGRESS_ID}
                       </td>
                       <td className="px-4 py-3 text-slate-600 text-[12px] whitespace-nowrap">
                         {formatDate(item.ACTIONDATE)}
