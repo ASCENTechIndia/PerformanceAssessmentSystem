@@ -141,7 +141,7 @@ const TaskProgressModal = ({ open, data, onClose }) => {
               Task Progress Details
             </h2>
             <p className="text-[12px] text-slate-500 mt-0.5">
-              PRG-{data.TASKPROGRESS_ID} • ASG-{data.TASKASSIGNID}
+              Task Progress Id: {data.TASKPROGRESS_ID} • Assign Id: {data.TASKASSIGNID}
             </p>
           </div>
           <button

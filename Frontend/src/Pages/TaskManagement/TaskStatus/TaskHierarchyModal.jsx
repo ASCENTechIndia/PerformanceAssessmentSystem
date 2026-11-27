@@ -93,6 +93,9 @@ const TreeNode = ({ node, isRoot, isLast, collapsed, onToggle }) => {
               Task Id: {node.task_id}
             </span>
             <span className="rounded bg-blue-50 px-1.5 py-0.5 text-[10.5px] font-semibold text-blue-700">
+              Assign To: {node.assignedtoname}
+            </span>
+            <span className="rounded bg-blue-50 px-1.5 py-0.5 text-[10.5px] font-semibold text-blue-700">
               Level {node.hierarchy_level}
             </span>
             {isRoot && (
