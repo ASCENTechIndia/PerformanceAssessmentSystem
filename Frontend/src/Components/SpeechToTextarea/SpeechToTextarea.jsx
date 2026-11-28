@@ -19,6 +19,7 @@ const SpeechToTextTextarea = ({
     const textareaRef = useRef(null);
     const recognitionRef = useRef(null);
     const hasSpeechRef = useRef(false);
+    const finalTranscriptRef = useRef("");
 
     useEffect(() => {
         const SpeechRecognition =
@@ -37,45 +38,62 @@ const SpeechToTextTextarea = ({
         recognition.interimResults = true;
         recognition.lang = language;
 
+
         recognition.onresult = (event) => {
-            let finalTranscript = "";
             let interimTranscript = "";
 
             for (let i = event.resultIndex; i < event.results.length; i++) {
                 const transcript = event.results[i][0].transcript;
 
                 if (event.results[i].isFinal) {
-                    finalTranscript += transcript;
+                    finalTranscriptRef.current += transcript + " ";
+                    hasSpeechRef.current = true;
                 } else {
                     interimTranscript += transcript;
                 }
             }
 
-            if (finalTranscript) {
-                const textarea = textareaRef.current;
-                hasSpeechRef.current = true;
+            const textarea = textareaRef.current;
 
-                if (textarea) {
-                    const currentValue = textarea.value;
-                    const separator = currentValue.trim() ? " " : "";
+            if (textarea) {
+                const currentValue = textarea.value;
 
-                    const updatedValue =
-                        currentValue + separator + finalTranscript.trim();
+                // Text already present before speech recognition.
+                const baseText = currentValue.slice(
+                    0,
+                    currentValue.length -
+                    (textarea.dataset.speechLength
+                        ? Number(textarea.dataset.speechLength)
+                        : 0)
+                );
 
-                    // Trigger React Hook Form's registered onChange handler.
-                    const nativeSetter = Object.getOwnPropertyDescriptor(
-                        window.HTMLTextAreaElement.prototype,
-                        "value"
-                    ).set;
+                // Combine finalized and temporary speech.
+                const speechText =
+                    finalTranscriptRef.current + interimTranscript;
 
-                    nativeSetter.call(textarea, updatedValue);
+                const updatedValue =
+                    baseText +
+                    (baseText.trim() && speechText.trim() ? " " : "") +
+                    speechText;
 
+                const nativeSetter = Object.getOwnPropertyDescriptor(
+                    window.HTMLTextAreaElement.prototype,
+                    "value"
+                ).set;
+
+                nativeSetter.call(textarea, updatedValue);
+
+                textarea.dataset.speechLength = speechText.length;
+
+                // Notify React Hook Form only when final text is received.
+                if (event.results[event.results.length - 1].isFinal) {
                     textarea.dispatchEvent(
                         new Event("input", { bubbles: true })
                     );
                 }
             }
         };
+
 
         recognition.onstart = () => setIsListening(true);
 
@@ -178,8 +196,8 @@ const SpeechToTextTextarea = ({
                                 : "Start speech recognition"
                         }
                         className={`absolute right-3 bottom-3 rounded-full p-2 transition-colors ${isListening
-                                ? "bg-red-100 text-red-600"
-                                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                            ? "bg-red-100 text-red-600"
+                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                             }`}
                     >
                         {isListening ? (
