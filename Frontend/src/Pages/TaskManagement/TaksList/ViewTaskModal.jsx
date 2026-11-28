@@ -8,7 +8,68 @@ import {
   Tag,
   CalendarDays,
   User,
+  Download,
+  Paperclip,
 } from "lucide-react";
+
+const formatFileSize = (bytes) => {
+  if (!bytes) return "0 KB";
+
+  if (bytes < 1024 * 1024) {
+    return `${(bytes / 1024).toFixed(2)} KB`;
+  }
+
+  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+};
+
+const downloadDocument = (file) => {
+  try {
+    const byteCharacters = atob(file.base64);
+    const byteNumbers = new Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+
+    const blob = new Blob([byteArray], {
+      type: file.fileType || "application/octet-stream",
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = file.fileName || "document";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("Document download failed:", error);
+  }
+};
+
+const getDocumentDetails = (file) => {
+  const base64 = file.base64 || file.DOCUMENTBASE64 || "";
+
+  return {
+    fileName: file.fileName || file.DOCUMENTNAME || "document",
+    fileType:
+      file.fileType ||
+      file.DOCUMENTTYPE ||
+      "application/octet-stream",
+    fileSize:
+      file.fileSize ||
+      file.DOCUMENTSIZE ||
+      (base64 ? Math.floor((base64.length * 3) / 4) : 0),
+    base64,
+  };
+};
+
+
 
 const ViewTaskModal = ({ open, task, onClose }) => {
   if (!open || !task) return null;
@@ -23,6 +84,46 @@ const ViewTaskModal = ({ open, task, onClose }) => {
       hour: "2-digit",
       minute: "2-digit",
     });
+  };
+
+  const downloadDocument = (file) => {
+    try {
+      const documentData = getDocumentDetails(file);
+
+      if (!documentData.base64) {
+        console.error("Document Base64 data is missing");
+        return;
+      }
+
+      const base64Data = documentData.base64.includes(",")
+        ? documentData.base64.split(",")[1]
+        : documentData.base64;
+
+      const byteCharacters = atob(base64Data);
+      const byteNumbers = new Uint8Array(byteCharacters.length);
+
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+
+      const blob = new Blob([byteNumbers], {
+        type: documentData.fileType,
+      });
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = documentData.fileName;
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (error) {
+      console.error("Document download failed:", error);
+    }
   };
 
   return createPortal(
@@ -161,6 +262,84 @@ const ViewTaskModal = ({ open, task, onClose }) => {
                 </span>
               )}
             </div>
+          </div>
+
+          {/* Attached Documents */}
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <Paperclip className="w-4 h-4 text-blue-500" />
+
+                <h4 className="text-[13px] font-bold text-slate-800">
+                  Attached Documents
+                </h4>
+              </div>
+
+              <span className="text-xs font-medium text-blue-600">
+                {task.documents?.length || task.IN_DOCUMENTS?.length || 0} file(s)
+              </span>
+            </div>
+
+            {(() => {
+              const documents = task.documents || task.IN_DOCUMENTS || [];
+
+              return documents.length > 0 ? (
+                <div className="space-y-2">
+                  {documents.map((file, index) => {
+                    const document = getDocumentDetails(file);
+
+                    return (
+                      <div
+                        key={`${document.fileName}-${index}`}
+                        className="flex items-center justify-between gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-blue-50/50 transition-colors"
+                      >
+                        {/* File Details */}
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="w-10 h-10 shrink-0 rounded-lg bg-blue-100 flex items-center justify-center">
+                            <FileText className="w-5 h-5 text-blue-600" />
+                          </div>
+
+                          <div className="min-w-0">
+                            <p className="text-sm font-semibold text-slate-800 truncate">
+                              {document.fileName}
+                            </p>
+
+                            <p className="text-xs text-slate-500 mt-1">
+                              {document.fileType}
+                              {" · "}
+                              {formatFileSize(document.fileSize)}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Download Button */}
+                        <button
+                          type="button"
+                          onClick={() => downloadDocument(file)}
+                          className="flex items-center gap-2 px-3 py-2 rounded-lg text-blue-600 bg-blue-50 hover:bg-blue-100 text-xs font-semibold transition-colors shrink-0"
+                          title="Download document"
+                        >
+                          <Download className="w-4 h-4" />
+                          <span className="hidden sm:inline">Download</span>
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center p-6 rounded-xl border border-dashed border-slate-300 bg-slate-50">
+                  <FileText className="w-8 h-8 text-slate-300 mb-2" />
+
+                  <p className="text-sm font-medium text-slate-500">
+                    No documents attached
+                  </p>
+
+                  <p className="text-xs text-slate-400 mt-1">
+                    No documents were uploaded for this task.
+                  </p>
+                </div>
+              );
+            })()}
           </div>
         </div>
 
