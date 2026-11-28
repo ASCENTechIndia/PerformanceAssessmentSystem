@@ -8,6 +8,7 @@ import { useAuth } from "../../../Context/AuthContext";
 import { useLoader } from "../../../Context/LoaderContext";
 import { useEffect, useState } from "react";
 import { useConfirmation } from "../../../Context/ConfirmationContext";
+import SpeechToTextTextarea from "../../../Components/SpeechToTextarea/SpeechToTextarea";
 
 const FrmAddTaskType = () => {
   const navigate = useNavigate();
@@ -272,26 +273,24 @@ const FrmAddTaskType = () => {
 
             {/* Description */}
             <div>
-              <label htmlFor="description" className="pas-label">
-                Description <span className="text-rose-500">*</span>
-              </label>
-              <textarea
+              <SpeechToTextTextarea
                 id="description"
+                label="Description"
                 rows={3}
                 placeholder="What kind of tasks does this type cover?"
-                className="pas-input resize-none"
-                aria-invalid={!!errors.description}
-                {...register("description", {
-                  required: "Description is required",
-                  minLength: { value: 10, message: "At least 10 characters" },
-                  maxLength: { value: 300, message: "Max 300 characters" },
-                })}
+                language="en-IN"
+                error={errors.description?.message}
+                register={register}
+                required="Description is required"
+                minLength={{
+                  value: 10,
+                  message: "At least 10 characters",
+                }}
+                maxLength={{
+                  value: 300,
+                  message: "Max 300 characters"
+                }}
               />
-              {errors.description ? (
-                <p className="pas-error">{errors.description.message}</p>
-              ) : (
-                <p className="pas-help">Between 10 and 300 characters</p>
-              )}
             </div>
           </div>
         </div>
