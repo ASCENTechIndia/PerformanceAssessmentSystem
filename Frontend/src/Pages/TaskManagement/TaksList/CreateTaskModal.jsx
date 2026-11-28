@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import apiClient from "../../../../apiClient";
 import { useAuth } from "../../../Context/AuthContext";
 import { useConfirmation } from "../../../Context/ConfirmationContext";
+import SpeechToTextTextarea from "../../../Components/SpeechToTextarea/SpeechToTextarea";
 
 const TASK_TYPE_OPTIONS = [
   "Inspection",
@@ -287,27 +288,32 @@ const CreateTaskModal = ({
 
           {/* Description */}
           <div>
-            <label htmlFor="description" className="pas-label">
+            {/* <label htmlFor="description" className="pas-label">
               Description <span className="text-rose-500">*</span>
-            </label>
-            <textarea
+            </label> */}
+
+            <SpeechToTextTextarea
               id="description"
+              label="Description"
               rows={3}
-              placeholder="Describe what needs to be done, scope, expected outcome…"
-              className="pas-input resize-none"
-              aria-invalid={!!errors.description}
-              {...register("description", {
-                required: "Description is required",
-                minLength: { value: 20, message: "At least 20 characters" },
-                maxLength: {
-                  value: 1000,
-                  message: "Description should be of 1000 characters",
-                },
-              })}
+              placeholder="Describe what needs to be done, scope, expected outcome..."
+              language="en-IN"
+              error={errors.description?.message}
+              register={register}
+              required="Description is required"
+              minLength={{
+                value: 20,
+                message: "At least 20 characters",
+              }}
+              maxLength={{
+                value: 1000,
+                message: "Description should be of 1000 characters",
+              }}
             />
-            {errors.description && (
+
+            {/* {errors.description && (
               <p className="pas-error">{errors.description.message}</p>
-            )}
+            )} */}
           </div>
 
           {/* Row: Task Type + Expected Duration */}
@@ -451,24 +457,20 @@ const CreateTaskModal = ({
 
           {/* Completion Criteria */}
           <div>
-            <label htmlFor="completionCriteria" className="pas-label">
-              Completion Criteria{" "}
-              <span className="text-slate-400 normal-case font-normal">
-                (optional)
-              </span>
-            </label>
-            <textarea
+            <SpeechToTextTextarea
               id="completionCriteria"
+              label="Completion Criteria (optional)"
               rows={2}
               placeholder="What defines a completed task? Any must-have deliverables…"
+              language="en-IN"
               className="pas-input resize-none"
-              {...register("completionCriteria", {
-                maxLength: { value: 500, message: "Max 500 characters" },
-              })}
+              error={errors.completionCriteria?.message}
+              register={register}
+              maxLength={{
+                value: 500,
+                message: "Max 500 characters",
+              }}
             />
-            {errors.completionCriteria && (
-              <p className="pas-error">{errors.completionCriteria.message}</p>
-            )}
           </div>
 
           {/* Auto-filled meta */}
