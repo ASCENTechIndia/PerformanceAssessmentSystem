@@ -192,7 +192,7 @@ const SpeechToTextTextarea = ({
             </div>
 
             {isListening && (
-                <p className="text-sm text-red-500">
+                <p className="text-sm text-rose-500">
                     Listening... Speak now.
                 </p>
             )}
