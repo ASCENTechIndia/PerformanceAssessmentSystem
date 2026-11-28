@@ -1,6 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { CheckCircle2, X, Check, CalendarDays, Flag, User } from "lucide-react";
+import {
+  CheckCircle2,
+  X,
+  Check,
+  UploadCloud,
+  FileText,
+  Trash2,
+} from "lucide-react";
 import apiClient from "../../../../apiClient";
 import { toast } from "sonner";
 import { useAuth } from "../../../Context/AuthContext";
@@ -38,6 +45,33 @@ function formatDateToAPI(dateString) {
   return `${day}-${monthMap[month]}-${year}`;
 }
 
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+
+const formatFileSize = (bytes) => {
+  if (bytes < 1024 * 1024) {
+    return `${(bytes / 1024).toFixed(2)} KB`;
+  }
+
+  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+};
+
+const fileToBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      const base64String = reader.result.split(",")[1];
+      resolve(base64String);
+    };
+
+    reader.onerror = () => {
+      reject(new Error("Failed to read file"));
+    };
+  });
+};
+
 const AssignTaskModal = ({ open, onClose, task, onAssign, createdBy = "" }) => {
   const { user } = useAuth();
   const { setLoading } = useLoader();
@@ -64,6 +98,7 @@ const AssignTaskModal = ({ open, onClose, task, onAssign, createdBy = "" }) => {
       priority: task?.priority || "Medium",
       active: true,
       actionRemark: "",
+      document: [],
       meetingReference: "",
     },
     mode: "onBlur",
@@ -89,6 +124,8 @@ const AssignTaskModal = ({ open, onClose, task, onAssign, createdBy = "" }) => {
         expectedCompletion: "",
         priority: task.priority || "Medium",
         active: true,
+        actionRemark: "",
+        document: [],
         meetingReference: "",
       });
     }
@@ -189,7 +226,14 @@ const AssignTaskModal = ({ open, onClose, task, onAssign, createdBy = "" }) => {
         IN_ACTIONREMARK: data.actionRemark,
         IN_meetingreference: data.meetingReference,
         IN_USERID: userId,
+        // IN_DOCUMENTS: data.document.map((file) => ({
+        //   DOCUMENTNAME: file.fileName,
+        //   DOCUMENTTYPE: file.fileType,
+        //   DOCUMENTBASE64: file.base64,
+        // })),
       };
+
+
 
       const response = await apiClient.post(
         "/AOPT_TASKASSIGNMENT_INSUPD",
@@ -199,7 +243,6 @@ const AssignTaskModal = ({ open, onClose, task, onAssign, createdBy = "" }) => {
         toast.success(response.errorMessage);
         reset();
         onClose();
-        
       } else {
         toast.error(response.errorMessage);
       }
@@ -559,6 +602,176 @@ const AssignTaskModal = ({ open, onClose, task, onAssign, createdBy = "" }) => {
                 {...register("actionRemark")}
               />
             </div>
+
+
+
+            {/* Multiple Document Upload */}
+            <div>
+              <label className="pas-label">
+                Documents <span className="text-rose-500">*</span>
+              </label>
+
+              <Controller
+                name="document"
+                control={control}
+                rules={{
+                  validate: (files) =>
+                    files?.length > 0 || "Please upload at least one document",
+                }}
+                render={({ field }) => {
+                  const files = Array.isArray(field.value) ? field.value : [];
+
+                  return (
+                    <div className="space-y-3">
+
+                      {/* Upload Area */}
+                      <label
+                        htmlFor="task-document"
+                        className="flex flex-col items-center justify-center w-full p-6
+            border-2 border-dashed border-slate-300 rounded-xl
+            bg-slate-50 hover:bg-blue-50/50 hover:border-blue-400
+            cursor-pointer transition-all"
+                      >
+                        <div className="w-12 h-12 rounded-full bg-blue-100
+            flex items-center justify-center mb-3">
+                          <UploadCloud className="w-6 h-6 text-blue-600" />
+                        </div>
+
+                        <p className="text-sm font-semibold text-slate-700">
+                          Click to upload documents
+                        </p>
+
+                        <p className="text-xs text-slate-500 mt-1">
+                          Multiple files allowed · Each file must be smaller than 10 MB
+                        </p>
+
+                        <input
+                          id="task-document"
+                          type="file"
+                          multiple
+                          className="hidden"
+                          onBlur={field.onBlur}
+                          onChange={async (e) => {
+                            const selectedFiles = Array.from(e.target.files || []);
+
+                            if (!selectedFiles.length) return;
+
+                            // Validate file size (each file must be less than 10 MB)
+                            const invalidFiles = selectedFiles.filter(
+                              (file) => file.size >= MAX_FILE_SIZE
+                            );
+
+                            if (invalidFiles.length > 0) {
+                              toast.error(
+                                `These files must be smaller than 10 MB: ${invalidFiles
+                                  .map((file) => file.name)
+                                  .join(", ")}`
+                              );
+
+                              e.target.value = "";
+                              return;
+                            }
+
+                            try {
+                              const convertedFiles = await Promise.all(
+                                selectedFiles.map(async (file) => {
+                                  const base64 = await fileToBase64(file);
+
+                                  return {
+                                    fileName: file.name,
+                                    fileType: file.type || "application/octet-stream",
+                                    fileSize: file.size,
+                                    base64,
+                                  };
+                                })
+                              );
+
+                              const existingFiles = Array.isArray(field.value)
+                                ? field.value
+                                : [];
+
+                              field.onChange([...existingFiles, ...convertedFiles]);
+
+                            } catch (error) {
+                              console.error(error);
+                              toast.error("Unable to process selected files");
+                            }
+
+                            e.target.value = "";
+                          }}
+                        />
+                      </label>
+
+                      {/* Selected Files */}
+                      {files.length > 0 && (
+                        <div className="space-y-2">
+
+                          <div className="flex items-center justify-between">
+                            <p className="text-sm font-semibold text-slate-700">
+                              Selected Documents ({files.length})
+                            </p>
+
+                            <span className="text-xs font-medium text-blue-600">
+                              {files.length} file(s)
+                            </span>
+                          </div>
+
+                          {files.map((file, index) => (
+                            <div
+                              key={`${file.fileName}-${index}`}
+                              className="flex items-center justify-between gap-3
+                  p-3 rounded-xl border border-blue-200 bg-blue-50/50"
+                            >
+                              <div className="flex items-center gap-3 min-w-0">
+
+                                <div className="w-10 h-10 shrink-0 rounded-lg
+                    bg-blue-100 flex items-center justify-center">
+                                  <FileText className="w-5 h-5 text-blue-600" />
+                                </div>
+
+                                <div className="min-w-0">
+                                  <p className="text-sm font-semibold text-slate-800 truncate">
+                                    {file.fileName}
+                                  </p>
+
+                                  <p className="text-xs text-slate-500 mt-1">
+                                    {file.fileType}
+                                    {" · "}
+                                    {formatFileSize(file.fileSize)}
+                                  </p>
+                                </div>
+                              </div>
+
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  field.onChange(
+                                    files.filter((_, i) => i !== index)
+                                  );
+                                }}
+                                className="p-2 shrink-0 rounded-lg text-rose-500
+                    hover:bg-rose-100 transition-colors"
+                                title="Remove document"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {errors.document && (
+                        <p className="pas-error">
+                          {errors.document.message}
+                        </p>
+                      )}
+                    </div>
+                  )
+                }}
+              />
+            </div>
+
+
 
             {/* ────────── Meeting Reference ────────── */}
             <div>
