@@ -14,6 +14,7 @@ import Layout from "../../../Components/Layout";
 import { useAuth } from "../../../Context/AuthContext";
 import { useLoader } from "../../../Context/LoaderContext";
 import apiClient from "../../../../apiClient";
+import { useConfirmation } from "../../../Context/ConfirmationContext";
 
 const TaskStatus = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const TaskStatus = () => {
   const { user } = useAuth();
   const userId = user?.userId
   const { setLoading } = useLoader();
+  const { confirmAction } = useConfirmation();
 
   const task = location.state?.task;
 
@@ -115,6 +117,13 @@ const TaskStatus = () => {
   // Submit Handler
   const onSubmit = async (data) => {
     try {
+      const confirmed = await confirmAction(
+        "Are you sure you want to update the task status?",
+        "Task Progress"
+      )
+
+      if (!confirmed) return;
+
       setLoading(true);
 
       const file = files[0];

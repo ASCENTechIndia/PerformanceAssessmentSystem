@@ -7,10 +7,12 @@ import apiClient from "../../../../apiClient";
 import { useAuth } from "../../../Context/AuthContext";
 import { useLoader } from "../../../Context/LoaderContext";
 import { useEffect, useState } from "react";
+import { useConfirmation } from "../../../Context/ConfirmationContext";
 
 const FrmAddTaskType = () => {
   const navigate = useNavigate();
   const { setLoading } = useLoader();
+  const { confirmAction } = useConfirmation();
   const { user } = useAuth();
   const userId = user?.userId;
   const ulbId = user?.ulbId;
@@ -45,6 +47,13 @@ const FrmAddTaskType = () => {
 
   const onSubmit = async (data) => {
     try {
+      const confirmed = await confirmAction(
+        "Are you sure you want to create this task type? This action cannot be undone.",
+        "Add Task Type"
+      );
+
+      if (!confirmed) return;
+
       setLoading(true);
 
       const payload = {

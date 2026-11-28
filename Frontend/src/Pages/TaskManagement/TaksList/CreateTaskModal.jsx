@@ -12,6 +12,7 @@ import { useLoader } from "../../../Context/LoaderContext";
 import { toast } from "sonner";
 import apiClient from "../../../../apiClient";
 import { useAuth } from "../../../Context/AuthContext";
+import { useConfirmation } from "../../../Context/ConfirmationContext";
 
 const TASK_TYPE_OPTIONS = [
   "Inspection",
@@ -31,6 +32,7 @@ const CreateTaskModal = ({
   nextTaskId = "T-NEW",
 }) => {
   const { setLoading } = useLoader();
+  const { confirmAction } = useConfirmation();
   const { user } = useAuth();
   const userName = user?.username;
   const userId = user?.userId;
@@ -97,6 +99,13 @@ const CreateTaskModal = ({
   });
 
   const submit = async (data) => {
+    const confirmed = await confirmAction(
+      "Are you sure you want to create this task? This action cannot be undone.",
+      "Create Task"
+    );
+
+    if (!confirmed) return;
+
     await new Promise((r) => setTimeout(r, 400));
     onSubmit({
       ...data,
@@ -258,10 +267,9 @@ const CreateTaskModal = ({
                   bg-gradient-to-br from-white to-blue-50/30 rounded-xl
                   placeholder:text-slate-400 placeholder:font-normal
                   border-2 transition-all duration-200 outline-none
-                  ${
-                    errors.title
-                      ? "border-rose-300 focus:border-rose-400 focus:ring-4 focus:ring-rose-400/15"
-                      : "border-slate-200 hover:border-blue-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-400/15"
+                  ${errors.title
+                    ? "border-rose-300 focus:border-rose-400 focus:ring-4 focus:ring-rose-400/15"
+                    : "border-slate-200 hover:border-blue-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-400/15"
                   }`}
                 aria-invalid={!!errors.title}
                 autoFocus
@@ -392,10 +400,9 @@ const CreateTaskModal = ({
                     onClick={() => field.onChange(!field.value)}
                     className={`w-full flex items-center justify-between gap-3
                       px-3.5 py-2.5 rounded-xl border transition-all duration-150
-                      ${
-                        field.value
-                          ? "bg-blue-50/60 border-blue-200 hover:bg-blue-50"
-                          : "bg-white border-slate-200 hover:border-slate-300"
+                      ${field.value
+                        ? "bg-blue-50/60 border-blue-200 hover:bg-blue-50"
+                        : "bg-white border-slate-200 hover:border-slate-300"
                       }`}
                   >
                     <span
@@ -504,10 +511,9 @@ const CreateTaskModal = ({
                   onClick={() => field.onChange(!field.value)}
                   className={`w-full flex items-center justify-between gap-3
                     px-3.5 py-2.5 rounded-xl border transition-all duration-150
-                    ${
-                      field.value
-                        ? "bg-blue-50/60 border-blue-200 hover:bg-blue-50"
-                        : "bg-white border-slate-200 hover:border-slate-300"
+                    ${field.value
+                      ? "bg-blue-50/60 border-blue-200 hover:bg-blue-50"
+                      : "bg-white border-slate-200 hover:border-slate-300"
                     }`}
                 >
                   <span

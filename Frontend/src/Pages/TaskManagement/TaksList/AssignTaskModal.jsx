@@ -12,6 +12,8 @@ import apiClient from "../../../../apiClient";
 import { toast } from "sonner";
 import { useAuth } from "../../../Context/AuthContext";
 import { useLoader } from "../../../Context/LoaderContext";
+import { useConfirmation } from "../../../Context/ConfirmationContext";
+
 
 const EMPLOYEES = [
   { id: "e1", name: "Sneha Patil", department: "engineering" },
@@ -78,6 +80,7 @@ const AssignTaskModal = ({ open, onClose, task, onAssign, createdBy = "" }) => {
   const userId = user?.userId;
   const ulbId = user?.ulbId;
   const deptId = user?.deptId;
+  const { confirmAction } = useConfirmation();
 
   const {
     register,
@@ -206,6 +209,13 @@ const AssignTaskModal = ({ open, onClose, task, onAssign, createdBy = "" }) => {
 
   const submit = async (data) => {
     try {
+      const confirmed = await confirmAction(
+        "Are you sure you want to assign this task? This action cannot be undone.",
+        "Assign Task"
+      );
+
+      if (!confirmed) return;
+
       setLoading(true);
 
       const payload = {
@@ -232,8 +242,6 @@ const AssignTaskModal = ({ open, onClose, task, onAssign, createdBy = "" }) => {
         //   DOCUMENTBASE64: file.base64,
         // })),
       };
-
-
 
       const response = await apiClient.post(
         "/AOPT_TASKASSIGNMENT_INSUPD",
