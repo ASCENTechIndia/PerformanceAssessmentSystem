@@ -15,6 +15,7 @@ import { useAuth } from "../../../Context/AuthContext";
 import { useLoader } from "../../../Context/LoaderContext";
 import apiClient from "../../../../apiClient";
 import { useConfirmation } from "../../../Context/ConfirmationContext";
+import SpeechToTextTextarea from "../../../Components/SpeechToTextarea/SpeechToTextarea";
 
 const TaskStatus = () => {
   const navigate = useNavigate();
@@ -121,7 +122,6 @@ const TaskStatus = () => {
         "Are you sure you want to update the task status?",
         "Task Progress"
       )
-
       if (!confirmed) return;
 
       setLoading(true);
@@ -284,7 +284,7 @@ const TaskStatus = () => {
             </div>
 
             <div>
-              <label htmlFor="remarks" className="pas-label">
+              {/* <label htmlFor="remarks" className="pas-label">
                 Remarks <span className="text-rose-500">*</span>
               </label>
               <textarea
@@ -300,7 +300,21 @@ const TaskStatus = () => {
               />
               {errors.remarks && (
                 <p className="pas-error">{errors.remarks.message}</p>
-              )}
+              )} */}
+              <SpeechToTextTextarea
+              id="remarks"
+              label="Remarks"
+              rows={4}
+              placeholder="Enter your remarks here…"
+              language="en-IN"
+              error={errors.remarks?.message}
+              register={register}
+              required="Remarks are required"
+              minLength={{
+                value: 10,
+                message: "At least 10 characters",
+              }}
+            />
             </div>
 
             <div>
